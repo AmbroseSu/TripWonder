@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/TripWonder
+    username: postgres
+    password: sa
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: haconghieu2003@gmail.com
+    password: vgmj sxkz igmi ewsk
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  main:
+    allow-circular-references: true

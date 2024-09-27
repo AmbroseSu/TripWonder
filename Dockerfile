@@ -2,7 +2,7 @@ FROM openjdk:17-slim
 
 WORKDIR /app
 
-COPY . .
+COPY src/test/java/com/ambrose/tripwonder .
 
 RUN chmod +x ./mvnw
 

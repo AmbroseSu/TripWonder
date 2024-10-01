@@ -46,8 +46,6 @@ public class User implements UserDetails {
   private List<RatingReview> ratingReviews;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<FavoritePackage> favoritePackages;
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private List<TourService> tourServices;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

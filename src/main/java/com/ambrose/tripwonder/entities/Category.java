@@ -14,7 +14,7 @@ import lombok.ToString;
 @Data
 @ToString
 @Entity
-@Table(name = "tbl_order")
+@Table(name = "tbl_category")
 public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

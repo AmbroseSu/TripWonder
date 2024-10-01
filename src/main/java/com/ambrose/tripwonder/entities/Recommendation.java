@@ -5,7 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.Data;
@@ -19,10 +21,11 @@ public class Recommendation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private int rank;
 
-  @OneToMany(mappedBy = "recommendation", cascade = CascadeType.ALL)
-  private List<PackageOfficial> packageOfficials;
-  @OneToMany(mappedBy = "recommendation", cascade = CascadeType.ALL)
-  private List<Destination> destinations;
+//  @OneToOne
+//  @JoinColumn(name = "packageOfficialId")
+//  private PackageOfficial packageOfficial;
+
 
 }

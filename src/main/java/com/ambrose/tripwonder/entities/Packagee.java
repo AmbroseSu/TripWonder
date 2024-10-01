@@ -28,9 +28,11 @@ public class Packagee {
   private String shortDescription;
   private Date startTime;
   private Date endTime;
+  private Float price;
+  private boolean isDelete;
+  private boolean status;
 
-  @OneToMany(mappedBy = "packagee", cascade = CascadeType.ALL)
-  private List<RatingReview> ratingReviews;
+
   @OneToMany(mappedBy = "packagee", cascade = CascadeType.ALL)
   private List<FavoritePackage> favoritePackages;
   @ManyToOne
@@ -39,9 +41,8 @@ public class Packagee {
   @ManyToOne
   @JoinColumn(name = "provinceId")
   private Province province;
-  @OneToOne
-  @JoinColumn(name = "tourServiceId")
-  private TourService tourService;
+  @OneToMany(mappedBy = "packagee", cascade = CascadeType.ALL)
+  private List<Gallery> galleries;
 
 
 }

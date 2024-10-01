@@ -23,9 +23,7 @@ public class Gallery {
   private boolean isDeleted;
 
   @ManyToOne
-  @JoinColumn(name = "tourServiceId")
-  private TourService tourService;
-  @ManyToOne
-  @JoinColumn(name = "destinationId")
-  private Destination destination;
+  @JoinColumn(name = "packageeId")
+  private Packagee packagee;
+
 }

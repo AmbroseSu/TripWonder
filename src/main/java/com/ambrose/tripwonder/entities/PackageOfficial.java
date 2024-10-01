@@ -33,7 +33,9 @@ public class PackageOfficial {
   private Packagee packagee;
   @OneToMany(mappedBy = "packageOfficial", cascade = CascadeType.ALL)
   private List<OrderDetail> orderDetails;
-  @ManyToOne
+  @OneToOne
   @JoinColumn(name = "recommendationId")
   private Recommendation recommendation;
+  @OneToMany(mappedBy = "packageOfficial", cascade = CascadeType.ALL)
+  private List<RatingReview> ratingReviews;
 }

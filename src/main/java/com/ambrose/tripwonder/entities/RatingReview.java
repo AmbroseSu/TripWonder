@@ -24,8 +24,8 @@ public class RatingReview {
   private Date ratingDate;
 
   @ManyToOne
-  @JoinColumn(name = "packageeId")
-  private Packagee packagee;
+  @JoinColumn(name = "packageOfficialId")
+  private PackageOfficial packageOfficial;
   @ManyToOne
   @JoinColumn(name = "userId")
   private User user;

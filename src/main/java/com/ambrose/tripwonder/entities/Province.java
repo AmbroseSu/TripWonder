@@ -24,6 +24,5 @@ public class Province {
 
   @OneToMany(mappedBy = "province", cascade = CascadeType.ALL)
   private List<Packagee> packagees;
-  @OneToMany(mappedBy = "province", cascade = CascadeType.ALL)
-  private List<Destination> destinations;
+
 }

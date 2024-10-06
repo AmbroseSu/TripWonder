@@ -7,16 +7,20 @@ import com.ambrose.tripwonder.dto.request.SigninRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthenticationService {
-  ResponseEntity<?> signin(SigninRequest signinRequest);
+    ResponseEntity<?> signin(SigninRequest signinRequest);
 
-  ResponseEntity<?> signinGoogle(String email);
-  ResponseEntity<?> refreshToken(RefreshTokenRequest refreshTokenRequest);
+    ResponseEntity<?> signinGoogle(String email);
 
-  public ResponseEntity<?> checkEmail(String email);
-  public String checkResetVerifyToken(String email, Long id);
-  public ResponseEntity<?> saveInfor(SignUp signUp);
+    ResponseEntity<?> refreshToken(RefreshTokenRequest refreshTokenRequest);
 
-  public ResponseEntity<?> checkEmailForgotPassword(String email);
-  public ResponseEntity<?> changePassword(String email, String password);
-  //public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle);
+    public ResponseEntity<?> checkEmail(String email);
+
+    public String checkResetVerifyToken(String email, Long id);
+
+    public ResponseEntity<?> saveInfor(SignUp signUp);
+
+    public ResponseEntity<?> checkEmailForgotPassword(String email);
+
+    public ResponseEntity<?> changePassword(String email, String password);
+    //public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle);
 }

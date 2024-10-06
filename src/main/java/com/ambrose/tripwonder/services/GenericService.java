@@ -3,14 +3,15 @@ package com.ambrose.tripwonder.services;
 import org.springframework.http.ResponseEntity;
 
 public interface GenericService<T> {
-  ResponseEntity<?> findById(Long id);
+    ResponseEntity<?> findById(Long id);
 
-  ResponseEntity<?> findAllByStatusTrue(int page, int limit);
-  ResponseEntity<?> findAll(int page, int limit);
+    ResponseEntity<?> findAllByStatusTrue(int page, int limit);
 
-  ResponseEntity<?> save(T t);
+    ResponseEntity<?> findAll(int page, int limit);
 
-  ResponseEntity<?> changeStatus(Long id);
+    ResponseEntity<?> save(T t);
 
-  Boolean checkExist(Long id);
+    ResponseEntity<?> changeStatus(Long id);
+
+    Boolean checkExist(Long id);
 }

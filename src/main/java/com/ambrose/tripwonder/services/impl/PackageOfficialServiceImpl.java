@@ -7,10 +7,8 @@ import com.ambrose.tripwonder.entities.enums.SortBy;
 import com.ambrose.tripwonder.repository.PackageOfficialRepository;
 import com.ambrose.tripwonder.services.PackageOfficialService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,13 +16,6 @@ import java.util.stream.Collectors;
 public class PackageOfficialServiceImpl implements PackageOfficialService {
     private final PackageOfficialRepository packageOfficialRepository;
     private final GenericConverter<PackageOfficialDTO> mapperToDto;
-    
-    public List<PackageOfficialDTO> getSortedEvents(int page, int size, SortBy sortBy) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy.getDirection(), sortBy.getField()));
-        return packageOfficialRepository.findAllBy(pageable).toList().stream()
-                .map(packageOfficial -> mapperToDto.toDTO(packageOfficial,PackageOfficialDTO.class))
-                .collect(Collectors.toList());
-    }
 
     @Override
     public PackageOfficialDTO findOne(long id) {
@@ -35,4 +26,25 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     public List<PackageOfficialDTO> findAll() {
         return List.of();
     }
+    
+    @Override
+    public List<PackageOfficialDTO> findAll(SortBy sortBy) {
+        List<PackageOfficial> packageOfficials = packageOfficialRepository.findAll();
+
+        switch (sortBy) {
+            case SORT_BY_NUM_ATTENDANCE_ASC -> packageOfficials.sort(Comparator.comparingInt(PackageOfficial::getNumberAttendance));
+            case SORT_BY_NUM_ATTENDANCE_DESC -> packageOfficials.sort((o1, o2) -> Integer.compare(o2.getNumberAttendance(), o1.getNumberAttendance()));
+            case SORT_BY_PRICE_ASC -> packageOfficials.sort((o1, o2) -> Float.compare(o1.getPrice(), o2.getPrice()));
+            case SORT_BY_PRICE_DESC -> packageOfficials.sort((o1, o2) -> Float.compare(o2.getPrice(), o1.getPrice()));
+            case SORT_BY_DATE_ASC -> packageOfficials.sort(Comparator.comparing(PackageOfficial::getDate));
+            case SORT_BY_DATE_DESC -> packageOfficials.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+        }
+        return packageOfficials.stream()
+                .map(packageOfficial -> mapperToDto.toDTO(packageOfficial, PackageOfficialDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
 }
+    
+

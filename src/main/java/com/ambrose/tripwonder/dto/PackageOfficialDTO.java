@@ -1,17 +1,18 @@
 package com.ambrose.tripwonder.dto;
 
-import com.ambrose.tripwonder.entities.OrderDetail;
-import com.ambrose.tripwonder.entities.Packagee;
 import com.ambrose.tripwonder.entities.RatingReview;
-import com.ambrose.tripwonder.entities.Recommendation;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class PackageOfficialDTO {
     private Long id;
     private Date date;

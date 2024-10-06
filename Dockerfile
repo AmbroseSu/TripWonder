@@ -10,7 +10,7 @@ RUN ./mvnw clean package -DskipTests
 
 RUN ./mvnw dependency:go-offline
 
-
+ 
 
 EXPOSE 8080
 

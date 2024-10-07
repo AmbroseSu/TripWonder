@@ -1,5 +1,6 @@
 package com.ambrose.tripwonder.services.impl;
 
+import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.entities.PackageOfficial;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -34,9 +37,16 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     }
     
     @Override
-    public Page<PackageOfficialDTO> findAll(Pageable pageable) {
+    public ResponseEntity<?> findAll(Pageable pageable) {
         Page<PackageOfficial> packageOfficials = packageOfficialRepository.findAll(pageable);
-        return packageOfficials.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
+        Page<PackageOfficialDTO> packageOfficialDTOS = packageOfficials.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
+        return ResponseUtil.getCollection(packageOfficialDTOS,
+                HttpStatus.OK,
+                "ok",
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                packageOfficials.getTotalElements());
+         
 //        switch (sortBy) {
 //            case SORT_BY_NUM_ATTENDANCE_ASC -> packageOfficials.sort(Comparator.comparingInt(PackageOfficial::getNumberAttendance));
 //            case SORT_BY_NUM_ATTENDANCE_DESC -> packageOfficials.sort((o1, o2) -> Integer.compare(o2.getNumberAttendance(), o1.getNumberAttendance()));

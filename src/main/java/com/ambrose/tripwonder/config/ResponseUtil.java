@@ -25,7 +25,7 @@ public class ResponseUtil {
         );
     }
 
-    public static ResponseEntity<?> getCollection(List result, HttpStatus status, String response
+    public static ResponseEntity<?> getCollection(Object result, HttpStatus status, String response
             , int page, int limit, long count) {
         return new ResponseEntity<>(
                 ResponseDTO.builder()

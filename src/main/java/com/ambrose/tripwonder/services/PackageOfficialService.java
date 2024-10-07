@@ -4,6 +4,7 @@ import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.entities.enums.SortBy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface PackageOfficialService {
 
     List<PackageOfficialDTO> findAll();
 
-    Page<PackageOfficialDTO> findAll(Pageable pageable);
+    ResponseEntity<?> findAll(Pageable pageable);
 }

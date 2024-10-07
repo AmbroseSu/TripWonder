@@ -27,6 +27,18 @@ public class PackageOfficialServiceController {
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam SortBy sortBy
+//            case "attendanceasc":
+//                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
+//            case "attendancedesc":
+//                    return SortBy.SORT_BY_NUM_ATTENDANCE_DESC;
+//            case "dateasc":
+//                    return SortBy.SORT_BY_DATE_ASC;
+//            case "datedesc":
+//                    return SortBy.SORT_BY_DATE_DESC;
+//            case "priceasc":
+//                    return SortBy.SORT_BY_PRICE_ASC;
+//            case "pricedesc":
+//                    return SortBy.SORT_BY_PRICE_DESC;
     ) {
         Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
         Pageable pageable = PageRequest.of(page, size,sort);

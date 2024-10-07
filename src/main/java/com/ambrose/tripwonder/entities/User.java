@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import lombok.Data;
 import lombok.ToString;
@@ -37,6 +38,7 @@ public class User implements UserDetails {
   private Gender gender;
   private String image;
   private String fcmToken;
+  private Date createDate;
   private boolean isDelete;
   private boolean isEnabled = false;
 

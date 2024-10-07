@@ -16,7 +16,7 @@ public class UpsertUserDTO {
   private String email;
   //private String password;
   private String address;
-  private String phone;
+  private String phoneNumber;
   private Gender gender;
   private Role role;
 }

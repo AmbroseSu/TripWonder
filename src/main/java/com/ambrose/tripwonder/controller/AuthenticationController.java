@@ -88,7 +88,7 @@ public class AuthenticationController {
         return ResponseUtil.error(ex.getMessage(),"Wifi not connect", HttpStatus.BAD_REQUEST);
       }
     }else{
-      return ResponseUtil.error("Send reset token false", "Reset token false", HttpStatus.BAD_REQUEST);
+      return ResponseUtil.error("Send reset token false", "Reset token false. Please reset otp after finish time", HttpStatus.BAD_REQUEST);
     }
   }
   @PostMapping("/save-infor")
@@ -115,6 +115,7 @@ public class AuthenticationController {
   public ResponseEntity<?> changePassword(@RequestParam("email") String email, @RequestParam("password") String password){
     return authenticationService.changePassword(email, password);
   }
+
 
 
 }

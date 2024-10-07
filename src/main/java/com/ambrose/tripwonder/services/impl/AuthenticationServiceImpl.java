@@ -20,6 +20,8 @@ import com.ambrose.tripwonder.services.AuthenticationService;
 import com.ambrose.tripwonder.services.JWTService;
 import com.ambrose.tripwonder.services.UserService;
 import jakarta.validation.ConstraintViolationException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -51,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   public ResponseEntity<?> checkEmail(String email){
     try {
-      if(userRepository.existsByEmail(email)){
+      if(userRepository.findUserByEmail(email) != null && userRepository.findUserByEmail(email).isEnabled()){
         return ResponseUtil.error("Email is already in use","Failed", HttpStatus.BAD_REQUEST);
       }
       String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
@@ -221,6 +223,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
       user.setAddress(signUp.getAddress());
       user.setGender(signUp.getGender());
       //user.setGender(signUp.getGender());
+      Date createDate = Date.from(Instant.now());
+      user.setCreateDate(createDate);
       user.setRole(Role.CUSTOMER);
       user.setFcmToken(signUp.getFcmtoken());
       UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
@@ -235,8 +239,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   public ResponseEntity<?> checkEmailForgotPassword(String email){
     try {
-      if(userRepository.existsByEmail(email)){
-        return ResponseUtil.error("Email is already in use","Failed", HttpStatus.BAD_REQUEST);
+      if(userRepository.findUserByEmail(email) == null){
+        return ResponseUtil.error("Email is not exits","Failed", HttpStatus.BAD_REQUEST);
+      }
+      if(userRepository.findUserByEmail(email) != null && !userRepository.findUserByEmail(email).isEnabled()){
+        return ResponseUtil.error("Account must verify email","Failed", HttpStatus.BAD_REQUEST);
       }
       String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 

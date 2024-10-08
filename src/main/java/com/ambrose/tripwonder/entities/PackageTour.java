@@ -10,31 +10,39 @@ import java.util.List;
 @Data
 @ToString
 @Entity
-@Table(name = "tbl_packagee")
-public class Packagee {
+@Table(name = "tbl_package_tour")
+public class PackageTour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String description;
     private String shortDescription;
+    private double price;
     private Date startTime;
     private Date endTime;
-    private Float price;
-    private boolean isDelete;
+    private Date date;
     private boolean status;
 
-
-    @OneToMany(mappedBy = "packagee", cascade = CascadeType.ALL)
-    private List<FavoritePackage> favoritePackages;
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
+
     @ManyToOne
     @JoinColumn(name = "provinceId")
     private Province province;
-    @OneToMany(mappedBy = "packagee", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<RatingReview> ratingReviews;
+
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Recommendation> recommendations;
+
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Gallery> galleries;
 
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<OrderDetail> orderDetails;
 
 }

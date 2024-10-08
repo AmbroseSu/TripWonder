@@ -1,22 +1,38 @@
 package com.ambrose.tripwonder.dto;
 
+import com.ambrose.tripwonder.entities.Gallery;
+import com.ambrose.tripwonder.entities.Province;
 import com.ambrose.tripwonder.entities.RatingReview;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
-@Data
+
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PackageOfficialDTO {
+    @Setter
     private Long id;
+    @Setter
+    private String name;
+    @Setter
     private Date date;
-    private Float price;
-    private int numberAttendance;
+    @Setter
+    private double price;
+    @Setter
+    private Date startTime;
+    @Setter
+    private Date endTime;
+    @Setter
     private List<RatingReview> ratingReviews;
+    @Setter
+    private List<Gallery> gallery;
+    private String province;
+
+    public void setProvince(Province province) {
+        this.province = province.getName();
+    }
 }

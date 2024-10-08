@@ -14,10 +14,12 @@ public class Province {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private boolean idDeleted;
 
-    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL)
-    private List<Packagee> packagees;
+    private String name;
+    private boolean status;
+
+    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<PackageTour> packages;
+
 
 }

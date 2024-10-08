@@ -17,7 +17,8 @@ public class FavoritePackage {
 
     @ManyToOne
     @JoinColumn(name = "packageId")
-    private Packagee packagee;
+    private PackageTour packageId;
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;

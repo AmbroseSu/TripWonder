@@ -19,7 +19,10 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name = "orderId")
     private Order order;
+
     @ManyToOne
-    @JoinColumn(name = "packageOfficialId")
-    private PackageOfficial packageOfficial;
+    @JoinColumn(name = "packageId")
+    private PackageTour packageTour;
+
+
 }

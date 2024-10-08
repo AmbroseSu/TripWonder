@@ -14,14 +14,17 @@ public class RatingReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String feedback;
     private int rating;
     private Date ratingDate;
 
     @ManyToOne
-    @JoinColumn(name = "packageOfficialId")
-    private PackageOfficial packageOfficial;
+    @JoinColumn(name = "packageId")
+    private PackageTour packageTour;
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+
 }

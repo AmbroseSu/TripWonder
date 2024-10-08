@@ -17,7 +17,7 @@ public class Gallery {
     private boolean isDeleted;
 
     @ManyToOne
-    @JoinColumn(name = "packageeId")
-    private Packagee packagee;
+    @JoinColumn(name = "packageId")
+    private PackageTour packageTour;
 
 }

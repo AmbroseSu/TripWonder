@@ -1,4 +1,4 @@
-package com.ambrose.tripwonder.config;
+package com.ambrose.tripwonder.config.converter;
 
 import com.ambrose.tripwonder.entities.enums.SortBy;
 import org.springframework.core.convert.converter.Converter;

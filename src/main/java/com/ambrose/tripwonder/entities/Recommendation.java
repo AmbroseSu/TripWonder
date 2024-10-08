@@ -9,14 +9,15 @@ import lombok.ToString;
 @Entity
 @Table(name = "tbl_recommendation")
 public class Recommendation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int rank;
 
-//  @OneToOne
-//  @JoinColumn(name = "packageOfficialId")
-//  private PackageOfficial packageOfficial;
-
+    @ManyToOne
+    @JoinColumn(name = "packageTourId")
+    private PackageTour packageTour;
 
 }

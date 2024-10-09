@@ -22,7 +22,7 @@ public class Order {
     private PaymentMethod paymentMethod;
     private boolean isDeleted;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
     @ManyToOne
     @JoinColumn(name = "userId")

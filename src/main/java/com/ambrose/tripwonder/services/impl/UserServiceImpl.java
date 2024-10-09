@@ -53,10 +53,10 @@ public class UserServiceImpl implements UserService {
         }
         User user = token.getUser();
         Calendar calendar = Calendar.getInstance();
-        Long to = token.getExpirationTime().getTime();
+        long to = token.getExpirationTime().getTime();
         long no = calendar.getTime().getTime();
         //Long time = (token.getTokenExpirationTime().getTime() - calendar.getTime().getTime());
-        Long time = (to - no);
+        long time = (to - no);
         if (time <= 0) {
             tokenRepository.delete(token);
             return "Token already expired";

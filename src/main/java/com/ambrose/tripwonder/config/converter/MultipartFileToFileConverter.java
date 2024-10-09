@@ -15,6 +15,7 @@ public class MultipartFileToFileConverter implements Converter<MultipartFile, Fi
     @Override
     public File convert(MultipartFile source) {
         String fileName = source.getOriginalFilename();
+        assert fileName != null;
         fileName = UUID.randomUUID().toString().concat(fileName.substring(fileName.lastIndexOf(".")));  // to generated random string values for file name.
         File tempFile = new File(fileName);
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {

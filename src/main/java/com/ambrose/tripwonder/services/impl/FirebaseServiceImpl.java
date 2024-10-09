@@ -24,6 +24,7 @@ public class FirebaseServiceImpl implements FirebaseService {
         BlobId blobId = BlobId.of("tripwonder-image-86819.appspot.com", file.getName()); // Replace with your bucker name
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
         InputStream inputStream = FirebaseService.class.getClassLoader().getResourceAsStream("firebase-private-key.json"); // change the file name with your one
+        assert inputStream != null;
         Credentials credentials = GoogleCredentials.fromStream(inputStream);
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));

@@ -5,10 +5,12 @@ import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.entities.PackageTour;
 import com.ambrose.tripwonder.repository.PackageOfficialRepository;
+import com.ambrose.tripwonder.repository.specification.PackageSpecification;
 import com.ambrose.tripwonder.services.PackageOfficialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,16 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 packageOfficials.getTotalElements());
+    }
+
+    public Page<PackageTour> getFilteredTours(Long categoryId, String status, Double minPrice, Double maxPrice, Pageable pageable) {
+        Specification<PackageTour> specification = Specification
+                .where(PackageSpecification.hasCategory(categoryId))    // Lọc theo category
+                .and(PackageSpecification.hasStatus(status))            // Lọc theo status
+                .and(PackageSpecification.priceBetween(minPrice, maxPrice)); // Lọc theo khoảng giá
+
+        // Trả về dữ liệu phân trang và lọc theo điều kiện
+        return packageOfficialRepository.findAll(specification, pageable);
     }
 
 

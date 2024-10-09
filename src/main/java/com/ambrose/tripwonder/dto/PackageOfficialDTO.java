@@ -30,6 +30,8 @@ public class PackageOfficialDTO {
     private List<RatingReview> ratingReviews;
     @Setter
     private List<Gallery> gallery;
+    @Setter
+    private int attendance;
     private String province;
 
     public void setProvince(Province province) {

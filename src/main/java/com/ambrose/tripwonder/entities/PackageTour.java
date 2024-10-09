@@ -23,6 +23,7 @@ public class PackageTour {
     private Date startTime;
     private Date endTime;
     private Date date;
+    private int attendance;
     private boolean status;
 
     @ManyToOne
@@ -33,16 +34,16 @@ public class PackageTour {
     @JoinColumn(name = "provinceId")
     private Province province;
 
-    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RatingReview> ratingReviews;
 
-    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Recommendation> recommendations;
 
-    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Gallery> galleries;
 
-    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
 
 }

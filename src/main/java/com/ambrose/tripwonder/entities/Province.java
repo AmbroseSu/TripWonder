@@ -18,7 +18,7 @@ public class Province {
     private String name;
     private boolean status;
 
-    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PackageTour> packages;
 
 

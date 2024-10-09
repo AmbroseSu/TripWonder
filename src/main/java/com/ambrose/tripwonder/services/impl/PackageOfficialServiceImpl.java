@@ -4,6 +4,7 @@ import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.entities.PackageTour;
+import com.ambrose.tripwonder.entities.enums.FilterBy;
 import com.ambrose.tripwonder.repository.PackageOfficialRepository;
 import com.ambrose.tripwonder.repository.specification.PackageSpecification;
 import com.ambrose.tripwonder.services.PackageOfficialService;
@@ -48,14 +49,20 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 packageOfficials.getTotalElements());
     }
 
-    public Page<PackageTour> getFilteredTours(Long categoryId, String status, Double minPrice, Double maxPrice, Pageable pageable) {
+    @Override
+    public ResponseEntity<?> getFilteredTours(FilterBy filterBy, Pageable pageable) {
         Specification<PackageTour> specification = Specification
-                .where(PackageSpecification.hasCategory(categoryId))    // Lọc theo category
-                .and(PackageSpecification.hasStatus(status))            // Lọc theo status
-                .and(PackageSpecification.priceBetween(minPrice, maxPrice)); // Lọc theo khoảng giá
+                .where(PackageSpecification.hasCategory(filterBy.getCategoryId()))    // Lọc theo category
+                .and(PackageSpecification.hasStatus(filterBy.getStatus()))            // Lọc theo status
+                .and(PackageSpecification.priceBetween(filterBy.getMinPrice(), filterBy.getMaxPrice())); // Lọc theo khoảng giá
 
         // Trả về dữ liệu phân trang và lọc theo điều kiện
-        return packageOfficialRepository.findAll(specification, pageable);
+        return  ResponseUtil.getCollection(packageOfficialRepository.findAll(specification, pageable),
+                HttpStatus.OK,
+                "ok",
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                packageOfficialRepository.findAll(specification, pageable).getTotalElements());
     }
 
 

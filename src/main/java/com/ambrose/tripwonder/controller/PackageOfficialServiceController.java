@@ -1,5 +1,6 @@
 package com.ambrose.tripwonder.controller;
 
+import com.ambrose.tripwonder.entities.enums.FilterBy;
 import com.ambrose.tripwonder.entities.enums.SortBy;
 import com.ambrose.tripwonder.services.PackageOfficialService;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,9 @@ public class PackageOfficialServiceController {
 
     @GetMapping("/get")
     public ResponseEntity<?> get(
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam SortBy sortBy
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "datedesc") SortBy sortBy
 //            case "attendanceasc":
 //                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
 //            case "attendancedesc":
@@ -46,5 +47,30 @@ public class PackageOfficialServiceController {
         Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
         Pageable pageable = PageRequest.of(page, size, sort);
         return new ResponseEntity<>(packageOfficialService.findAll(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/getFilter")
+    public ResponseEntity<?> getFilter(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "datedesc") SortBy sortBy,
+            @RequestParam(defaultValue = "") FilterBy filterBy
+//            case "attendanceasc":
+//                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
+//            case "attendancedesc":
+//                    return SortBy.SORT_BY_NUM_ATTENDANCE_DESC;
+//            case "dateasc":
+//                    return SortBy.SORT_BY_DATE_ASC;
+//            case "datedesc":
+//                    return SortBy.SORT_BY_DATE_DESC;
+//            case "priceasc":
+//                    return SortBy.SORT_BY_PRICE_ASC;
+//            case "pricedesc":
+//                    return SortBy.SORT_BY_PRICE_DESC;
+    ) {
+        
+        Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
     }
 }

@@ -55,9 +55,11 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 .where(PackageSpecification.hasCategory(filterBy.getCategoryId()))    // Lọc theo category
                 .and(PackageSpecification.hasStatus(filterBy.getStatus()))            // Lọc theo status
                 .and(PackageSpecification.priceBetween(filterBy.getMinPrice(), filterBy.getMaxPrice())); // Lọc theo khoảng giá
-
+        Page<PackageTour> page = packageOfficialRepository.findAll(specification, pageable);
+        Page<PackageOfficialDTO> pageDTOS = page.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
+        
         // Trả về dữ liệu phân trang và lọc theo điều kiện
-        return  ResponseUtil.getCollection(packageOfficialRepository.findAll(specification, pageable),
+        return  ResponseUtil.getCollection(pageDTOS,
                 HttpStatus.OK,
                 "ok",
                 pageable.getPageNumber(),

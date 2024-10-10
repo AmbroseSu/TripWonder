@@ -56,7 +56,7 @@ public class PackageOfficialServiceController {
                 .build();
         Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
         Pageable pageable = PageRequest.of(page, size, sort);
-        if (category != null && status != null && minPrice != 0.0 && maxPrice != Double.MAX_VALUE) {
+        if (!(category != null && status != null && minPrice != 0.0 && maxPrice != Double.MAX_VALUE)) {
             return  packageOfficialService.getFilteredTours(filterBy,pageable);
         }
         else

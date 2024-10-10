@@ -30,7 +30,11 @@ public class PackageOfficialServiceController {
     public ResponseEntity<?> get(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "datedesc") SortBy sortBy
+            @RequestParam(defaultValue = "datedesc") SortBy sortBy,
+            @RequestParam(required = false) Long category,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice
 //            case "attendanceasc":
 //                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
 //            case "attendancedesc":
@@ -44,33 +48,43 @@ public class PackageOfficialServiceController {
 //            case "pricedesc":
 //                    return SortBy.SORT_BY_PRICE_DESC;
     ) {
+        FilterBy filterBy = FilterBy.builder()
+                .categoryId(category)
+                .status(status)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .build();
         Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
         Pageable pageable = PageRequest.of(page, size, sort);
-        return new ResponseEntity<>(packageOfficialService.findAll(pageable), HttpStatus.OK);
+        if (category != null && status != null && minPrice != 0.0 && maxPrice != Double.MAX_VALUE) {
+            return  packageOfficialService.getFilteredTours(filterBy,pageable);
+        }
+        else
+            return packageOfficialService.findAll(pageable);
+        
     }
 
-    @GetMapping("/getFilter")
-    public ResponseEntity<?> getFilter(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "datedesc") SortBy sortBy,
-            @RequestParam(defaultValue = "") FilterBy filterBy
-//            case "attendanceasc":
-//                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
-//            case "attendancedesc":
-//                    return SortBy.SORT_BY_NUM_ATTENDANCE_DESC;
-//            case "dateasc":
-//                    return SortBy.SORT_BY_DATE_ASC;
-//            case "datedesc":
-//                    return SortBy.SORT_BY_DATE_DESC;
-//            case "priceasc":
-//                    return SortBy.SORT_BY_PRICE_ASC;
-//            case "pricedesc":
-//                    return SortBy.SORT_BY_PRICE_DESC;
-    ) {
-        
-        Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
-    }
+//    @GetMapping("/get")
+//    public ResponseEntity<?> filterBy(
+//            @RequestParam(defaultValue = "1") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "datedesc") SortBy sortBy,
+////            case "attendanceasc":
+////                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
+////            case "attendancedesc":
+////                    return SortBy.SORT_BY_NUM_ATTENDANCE_DESC;
+////            case "dateasc":
+////                    return SortBy.SORT_BY_DATE_ASC;
+////            case "datedesc":
+////                    return SortBy.SORT_BY_DATE_DESC;
+////            case "priceasc":
+////                    return SortBy.SORT_BY_PRICE_ASC;
+////            case "pricedesc":
+////                    return SortBy.SORT_BY_PRICE_DESC;
+//    ) {
+//        
+//        Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
+//    }
 }

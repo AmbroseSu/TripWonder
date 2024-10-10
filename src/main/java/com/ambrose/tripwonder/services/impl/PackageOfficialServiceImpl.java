@@ -65,6 +65,18 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 packageOfficialRepository.findAll(specification, pageable).getTotalElements());
     }
 
+    @Override
+    public ResponseEntity<?> search(String query, Pageable pageable) {
+        Page<PackageTour> packageTours = packageOfficialRepository.search(query, pageable);
+        Page<PackageOfficialDTO> packageOfficialDTOS = packageTours.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
+        return ResponseUtil.getCollection(packageOfficialDTOS,
+                HttpStatus.OK,
+                "ok",
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                packageTours.getTotalElements());
+    }
+
 
 }
     

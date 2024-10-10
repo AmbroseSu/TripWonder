@@ -6,9 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 public interface PackageOfficialRepository extends JpaRepository<PackageTour, Long>, JpaSpecificationExecutor<PackageTour> {
     Page<PackageTour> findAll(Pageable pageable);
     Page<PackageTour> findAll(Specification specification, Pageable pageable);
     
+    @Query(value = "select p from PackageTour p where p.name like ?")
+    Page<PackageTour> search(String keyword, Pageable pageable);
 }
+ 

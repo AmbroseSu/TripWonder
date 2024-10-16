@@ -13,4 +13,10 @@ public interface CategoryRepository extends JpaRepository<Category, String> {
   @Query("SELECT ca FROM Category ca")
   List<Category> getAllCategory(Pageable pageable);
 
+  @Query("SELECT ca FROM Category ca")
+  List<Category> getAllCategory();
+  Category getCategoryById(long categoryId);
+
+  Category getCategoryByName(String name);
+
 }

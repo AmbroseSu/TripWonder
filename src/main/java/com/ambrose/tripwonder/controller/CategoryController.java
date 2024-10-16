@@ -27,4 +27,19 @@ public class CategoryController {
     return categoryService.getAllCategory(page, limit);
   }
 
+  @PostMapping("/create")
+  public ResponseEntity<?> createCategory(@RequestParam(value = "name") String name){
+    return categoryService.createCategory(name);
+  }
+
+  @PostMapping("/update")
+  public ResponseEntity<?> updateCategory(@RequestParam(value = "id") long id, @RequestParam(value = "name") String name){
+    return categoryService.updateCategory(id, name);
+  }
+
+  @PostMapping("/delete")
+  public ResponseEntity<?> deleteCategory(@RequestParam(value = "id") long id){
+    return categoryService.deleteCategory(id);
+  }
+
 }

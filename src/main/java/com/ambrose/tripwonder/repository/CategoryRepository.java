@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface CategoryRepository extends JpaRepository<Category, String> {
 
   @Query("SELECT ca FROM Category ca")
-  List<Category> getAllCategory(Pageable pageable);
+  List<Category> getAllCategoryUsePageable(Pageable pageable);
 
   @Query("SELECT ca FROM Category ca")
   List<Category> getAllCategory();

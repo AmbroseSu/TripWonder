@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
   public ResponseEntity<?> getAllCategory(int page, int limit) {
     try{
       Pageable pageable = PageRequest.of(page - 1, limit);
-      List<Category> categories = categoryRepository.getAllCategory(pageable);
+      List<Category> categories = categoryRepository.getAllCategoryUsePageable(pageable);
       long count = categories.stream().count();
       List<CategoryDTO> categoryDTOS = convertCategorytoCategoryDTO(categories);
       return ResponseUtil.getCollection(categoryDTOS, HttpStatus.OK, "Update Successfully", page, limit, count);
@@ -53,6 +53,7 @@ public class CategoryServiceImpl implements CategoryService {
       return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
     }
   }
+
 
   @Override
   public ResponseEntity<?> deleteCategory(long categoryId) {

@@ -86,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
       List<Category> categories = categoryRepository.getAllCategory();
 
       for (Category category1 : categories){
-        if (category1.getName().equalsIgnoreCase(category.getName())){
+        if (category1.getName().equalsIgnoreCase(name)){
           return ResponseUtil.error("Category name exists", "Faild", HttpStatus.BAD_REQUEST);
         }
       }

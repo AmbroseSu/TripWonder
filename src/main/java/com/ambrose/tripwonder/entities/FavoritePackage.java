@@ -1,12 +1,6 @@
 package com.ambrose.tripwonder.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
@@ -15,16 +9,17 @@ import lombok.ToString;
 @Entity
 @Table(name = "tbl_favorite_package")
 public class FavoritePackage {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  private String name;
-  private boolean idDeleted;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private boolean idDeleted;
 
-  @ManyToOne
-  @JoinColumn(name = "packageId")
-  private Packagee packagee;
-  @ManyToOne
-  @JoinColumn(name = "userId")
-  private User user;
+    @ManyToOne
+    @JoinColumn(name = "packageId")
+    private PackageTour packageId;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 }

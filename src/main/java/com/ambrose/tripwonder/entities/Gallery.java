@@ -1,12 +1,6 @@
 package com.ambrose.tripwonder.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
@@ -15,15 +9,15 @@ import lombok.ToString;
 @Entity
 @Table(name = "tbl_gallery")
 public class Gallery {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  private String imageUrl;
-  private String name;
-  private boolean isDeleted;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String imageUrl;
+    private String name;
+    private boolean isDeleted;
 
-  @ManyToOne
-  @JoinColumn(name = "packageeId")
-  private Packagee packagee;
+    @ManyToOne
+    @JoinColumn(name = "packageId")
+    private PackageTour packageTour;
 
 }

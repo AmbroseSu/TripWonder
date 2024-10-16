@@ -19,4 +19,5 @@ public class UpsertUserDTO {
   private String phoneNumber;
   private Gender gender;
   private Role role;
+
 }

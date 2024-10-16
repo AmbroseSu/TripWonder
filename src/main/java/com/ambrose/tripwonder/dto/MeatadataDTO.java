@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MeatadataDTO {
-  private boolean hasNextPage;
-  private boolean hasPrevPage;
-  private int limit;
-  private int total;
-  private int page;
+    private boolean hasNextPage;
+    private boolean hasPrevPage;
+    private int limit;
+    private int total;
+    private int page;
 }

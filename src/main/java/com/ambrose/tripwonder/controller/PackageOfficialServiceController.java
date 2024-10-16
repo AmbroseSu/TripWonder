@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/packageOff")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PackageOfficialServiceController {
 
     private final PackageOfficialService packageOfficialService;

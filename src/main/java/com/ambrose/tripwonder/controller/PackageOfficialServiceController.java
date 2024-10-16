@@ -16,6 +16,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/packageOff")
@@ -29,9 +30,19 @@ public class PackageOfficialServiceController {
         return "Hello World";
     }
 
+    @GetMapping("/search/{query}")
+    public ResponseEntity<?> search(@PathVariable String query,
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam(defaultValue = "datedesc") SortBy sortBy){
+        Sort sort = Sort.by(sortBy.getDirection(),sortBy.getField());
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return ResponseEntity.ok(packageOfficialService.search(query, pageable));
+    }
+    
     @GetMapping("/get")
     public ResponseEntity<?> get(
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "datedesc") SortBy sortBy,
             @RequestParam(required = false) Long category,
@@ -66,14 +77,6 @@ public class PackageOfficialServiceController {
             return packageOfficialService.findAll(pageable);
         
     }
-
-    @GetMapping("/search")
-    public ResponseEntity<?> search(
-            @RequestParam String query
-    ){
-        return packageOfficialService.search(query);
-    }
-    
     @PostMapping("/upload")
     public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
         try {
@@ -96,4 +99,27 @@ public class PackageOfficialServiceController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+//    @GetMapping("/get")
+//    public ResponseEntity<?> filterBy(
+//            @RequestParam(defaultValue = "1") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "datedesc") SortBy sortBy,
+////            case "attendanceasc":
+////                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
+////            case "attendancedesc":
+////                    return SortBy.SORT_BY_NUM_ATTENDANCE_DESC;
+////            case "dateasc":
+////                    return SortBy.SORT_BY_DATE_ASC;
+////            case "datedesc":
+////                    return SortBy.SORT_BY_DATE_DESC;
+////            case "priceasc":
+////                    return SortBy.SORT_BY_PRICE_ASC;
+////            case "pricedesc":
+////                    return SortBy.SORT_BY_PRICE_DESC;
+//    ) {
+//        
+//        Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
+//    }
 }

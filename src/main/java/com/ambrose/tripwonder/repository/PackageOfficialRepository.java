@@ -14,7 +14,4 @@ public interface PackageOfficialRepository extends JpaRepository<PackageTour, Lo
     Page<PackageTour> findAll(Pageable pageable);
     Page<PackageTour> findAll(Specification specification, Pageable pageable);
     
-    @Query(value = "select p from PackageTour p where p.name like %?1%")
-    List<PackageTour> search(String keyword);
 }
- 

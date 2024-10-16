@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.io.File;
 import java.util.List;
 
 public interface PackageOfficialService {
@@ -16,5 +17,6 @@ public interface PackageOfficialService {
 
     ResponseEntity<?> findAll(Pageable pageable);
     ResponseEntity<?> getFilteredTours(FilterBy filterBy, Pageable pageable);
-    ResponseEntity<?> search(String query);
+    ResponseEntity<?> search(String query, Pageable pageable);
+    ResponseEntity<?> create(File file);
 }

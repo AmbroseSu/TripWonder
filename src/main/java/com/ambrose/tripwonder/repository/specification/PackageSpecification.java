@@ -6,6 +6,11 @@ import org.springframework.data.jpa.domain.Specification;
 
 @UtilityClass
 public class PackageSpecification {
+    public static Specification<PackageTour> hasNameLike(String name) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(root.get("name"), "%" + name + "%");
+    }
+    
     public  Specification<PackageTour> hasCategory(Long categoryId) {
         return (root, query, criteriaBuilder) ->
                 categoryId == null ? null : criteriaBuilder.equal(root.get("category").get("id"), categoryId);

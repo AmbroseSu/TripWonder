@@ -20,6 +20,12 @@ import com.ambrose.tripwonder.services.AuthenticationService;
 import com.ambrose.tripwonder.services.JWTService;
 import com.ambrose.tripwonder.services.UserService;
 import jakarta.validation.ConstraintViolationException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -48,6 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final ApplicationEventPublisher publisher;
     //private final OtpSmsRepository otpSmsRepository;
     //private final TwilioConfig twilioConfig;
+
 
 
     public ResponseEntity<?> checkEmail(String email) {

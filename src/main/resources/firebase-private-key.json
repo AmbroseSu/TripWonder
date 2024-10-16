@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "tripwonder-image-86819",
+  "private_key_id": "f7f7df3ffdb29ad9db82808025259d39cef3f996",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC6/f7AwpezgUPu\n2D9CexHaUUj7Xin5FSg2qsrBvH8l16emVrKt4pRngMH782ZV44AoUHfAuraGKCE9\nb+uffsdfwPaxMEsQ0OfeZhmEX6hvOu6+aYNWlqjTbLNaKZFqPyIlp5JdXeT7QY9U\npmnzStAzF1tAb/vZwp97Z8gOpLl3au4uAMHZEex8IFnW8gjgCAp5rEFtl9+CTeyR\nPN/SElumCcRzrXANHRpNfKGd3CwTLInMXXTQLnoBmJxCqZLHtoGSg31aCd43kTfD\nX5UTM8tw1agWQUQlXxGAh1vOzzFrVTJd5oPEzYCDkIzQ2DKIaJqxGmS+P84X+ee8\n+3YPeezLAgMBAAECggEAW01Ml9ML3k5mHJeC39OWpnoc//t81A2ECpk/EfSXQqN3\nTO01JlklLBp+3SX92D8SYtzTdAvWtk+e11AwBLsS30qpSV/yrx3JsVo56FwKsnDc\nhKWhRuSeP0lqk0ILqgx0gF0/Ro5jkVj0ApmUzwG/ActMN3zWRH/Wfhtw39GHa2o5\ne2ItyRzxPnX8/GA5yg3SNKqex7xSgjNxVB4bO5bp41kxx+syX8g42V9sLHPM2wEc\nHQJwfo+c6r0NaGPPcSKcHUQ9jVXdEXrYdFuoOBXurPqGs26DC7Kz6EcYYEw2AqhV\n9dkmBwovWc5K8eD1E/48OBCyUZlZfcGBi+qK2DfGlQKBgQDencwGq8aNxm7qlNaN\n0ziiv0u6VJAChHsZZ/F1KRNgzxLDskEJZKO4R7rhIg2elR9r+n02MPHaWakua5iE\nv0az3StoJCr2ATTCqdbIWefkEjfQiNiasO0ItMUMecnFsaNG+YZ20RmoJ9lMjEoZ\n02IP7Z5cVOzsB2fbWmYvQgNP1QKBgQDXCJcv9d4jLG/l46DQPLS/J0vQ2iIGlHhk\nJaex/d9GiOgviQ8JhlpUUUiqZniBQPZqSb7S9dhl9M8ICPQiveEQNdz9iZa18d9u\nlwsfAdUZjyCx0fPDqFgiE5SDDsqX6kTcYN3D+zeJPLK8qhPSrKeoq2/SVAWnM/WG\nBQVcOIk6HwKBgQChsPlM6x1HQpazWbHQx1b+lnU5fEwxF+qVVHMDhvclPKJDc8hb\nOzbTFX5+IQ7FXUi6U/D4GGrCDpecONhJquh+oajydjqh/dRFg7iWQv70H+tcUtkI\n2nL//NSWsCrGpbSTS4/H4y6AfZkOSWNVCLzUFuIL7D89XE+p+in4LzlalQKBgACW\nWmtcHY41Cd0z4PWQpOG8xr08S0l/UFDdtXaL/fcgWpn+otbg0hBW5H7qprubpNCn\ngOjsmPm2UHZyJ9CMejfkHcVngczfaz/PE82y4JUgSfOSYjsPk6YMLaSp/q2piySa\n8yAc6IrsaoSPZlx18kNIrJaDejx5rNr/2oLk+KL7AoGAF0SPPvjrZp4i2t1carY4\nSx/XIpfa/iYbdXTN8TmE9H+qczF32GNHIThuu5+N0iBATMCjMtHUpOGzCaN6brbY\nrH2KuUFzT+bo7HVT3wpoMhxbAuojWtArNewZbQN8YyVXT6vRVVK48sA8/vdAurGY\nDNrotuHo7DefGJqWLtMhMKo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-5s373@tripwonder-image-86819.iam.gserviceaccount.com",
+  "client_id": "113678982503229206735",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-5s373%40tripwonder-image-86819.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -150,5 +150,16 @@ public class UserServiceImpl implements UserService {
     }
   }
 
+  public ResponseEntity<?> getUserById(long userId) {
+    try {
+      User user = userRepository.findUserById(userId);
+      UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
+      return ResponseUtil.getObject(result, HttpStatus.OK, "Update Successfully");
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+    }
+  }
+
 
 }

@@ -40,4 +40,9 @@ public class UserController {
       @RequestParam(value = "year") int year){
     return userService.getNumberOfUsersByMonthAndYear(month, year);
   }
+
+  @GetMapping("/get-user-by-id")
+  public ResponseEntity<?> getUserById(@RequestParam(value = "userId") int userId){
+    return userService.getUserById(userId);
+  }
 }

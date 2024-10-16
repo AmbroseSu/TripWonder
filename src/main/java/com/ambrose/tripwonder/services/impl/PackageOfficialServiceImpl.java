@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +68,29 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 packageOfficialRepository.findAll(specification, pageable).getTotalElements());
     }
 
+    @Override
+    public ResponseEntity<?> search(String query, Pageable pageable) {
+        Specification<PackageTour> specification = Specification
+                .where(PackageSpecification.hasNameLike(query));
+        Page<PackageTour> page = packageOfficialRepository.findAll(specification, pageable);
+        Page<PackageOfficialDTO> packageOfficialDTOS = page.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
+        
+        return ResponseUtil.getCollection(
+                packageOfficialDTOS,
+                HttpStatus.OK,
+                "ok",
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                page.getTotalElements()
+        );
+    }
+
+    @Override
+    public ResponseEntity<?> create(File file) {
+        return null;
+    }
+    
+    
 
 }
     

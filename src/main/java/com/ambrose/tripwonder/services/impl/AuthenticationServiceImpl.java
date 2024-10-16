@@ -230,6 +230,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setAddress(signUp.getAddress());
             user.setGender(signUp.getGender());
             //user.setGender(signUp.getGender());
+            user.setImage(signUp.getImage());
             Date createDate = Date.from(Instant.now());
             user.setCreateDate(createDate);
             user.setRole(Role.CUSTOMER);

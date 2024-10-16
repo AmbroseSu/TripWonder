@@ -68,15 +68,15 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     }
 
     @Override
-    public ResponseEntity<?> search(String query, Pageable pageable) {
-        Page<PackageTour> packageTours = packageOfficialRepository.search(query, pageable);
-        Page<PackageOfficialDTO> packageOfficialDTOS = packageTours.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
+    public ResponseEntity<?> search(String query) {
+        List<PackageTour> packageTours = packageOfficialRepository.search(query);
+        List<PackageOfficialDTO> packageOfficialDTOS = packageTours.stream().map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class)).collect(Collectors.toList());
         return ResponseUtil.getCollection(packageOfficialDTOS,
                 HttpStatus.OK,
                 "ok",
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                packageTours.getTotalElements());
+                0,
+                0,
+                packageTours.size());
     }
 
 

@@ -9,10 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/v1/packageOff")
@@ -66,8 +69,31 @@ public class PackageOfficialServiceController {
 
     @GetMapping("/search")
     public ResponseEntity<?> search(
-            @RequestParam String data
+            @RequestParam String query
     ){
-        return null;
+        return packageOfficialService.search(query);
+    }
+    
+    @PostMapping("/upload")
+    public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
+        try {
+            // Tạo đường dẫn tới thư mục lưu tạm thời
+            String resourcePath = getClass().getClassLoader().getResource("").getPath();
+            Path tempDir = Path.of(resourcePath, "tmp");
+
+            // Kiểm tra và tạo thư mục nếu nó không tồn tại
+            if (!Files.exists(tempDir)) {
+                Files.createDirectories(tempDir);
+            }
+
+            // Lưu file ZIP tạm thời
+            File tempZip = new File(tempDir.toFile(), file.getOriginalFilename());
+            file.transferTo(tempZip);
+
+            return ResponseEntity.ok("File uploaded successfully: " + tempZip.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 }

@@ -16,5 +16,5 @@ public interface PackageOfficialService {
 
     ResponseEntity<?> findAll(Pageable pageable);
     ResponseEntity<?> getFilteredTours(FilterBy filterBy, Pageable pageable);
-    ResponseEntity<?> search(String query, Pageable pageable);
+    ResponseEntity<?> search(String query);
 }

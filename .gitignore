@@ -33,5 +33,5 @@ build/
 .vscode/
 /src/main/resources/application-minhbeo.yml
 /.env
-/src/main/resources/firebase-private-key.json
+#/src/main/resources/firebase-private-key.json
 /qodana.yaml

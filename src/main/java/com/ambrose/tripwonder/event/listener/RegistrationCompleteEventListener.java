@@ -32,8 +32,8 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         Random random = new Random();
 
         // Tạo một số ngẫu nhiên có 5 chữ số
-        int min = 10000; // Số nhỏ nhất có 5 chữ số
-        int max = 99999; // Số lớn nhất có 5 chữ số
+        int min = 100000; // Số nhỏ nhất có 5 chữ số
+        int max = 999999; // Số lớn nhất có 5 chữ số
         int randomNumber = random.nextInt(max - min + 1) + min;
 
         userService.saveUserVerificationToken(theUser, String.valueOf(randomNumber));

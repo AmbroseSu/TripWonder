@@ -7,9 +7,11 @@ import com.ambrose.tripwonder.dto.PackageTourDTO;
 import com.ambrose.tripwonder.entities.Category;
 import com.ambrose.tripwonder.entities.FavoritePackage;
 import com.ambrose.tripwonder.entities.PackageTour;
+import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.repository.CategoryRepository;
 import com.ambrose.tripwonder.repository.FavoritePackageRepository;
 import com.ambrose.tripwonder.repository.PackageTourRepository;
+import com.ambrose.tripwonder.repository.UserRepository;
 import com.ambrose.tripwonder.services.FavoritePackageService;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class FavoritePackageServiceImpl implements FavoritePackageService {
 
   private final FavoritePackageRepository favoritePackageRepository;
   private final PackageTourRepository packageTourRepository;
+  private final UserRepository userRepository;
   private final GenericConverter genericConverter;
 
   @Override
@@ -54,6 +57,33 @@ public class FavoritePackageServiceImpl implements FavoritePackageService {
     }
   }
 
+  @Override
+  public ResponseEntity<?> createFavoritePackage(Long userId, Long packageTourId) {
+    try{
+      FavoritePackage favoritePackageCheck = favoritePackageRepository.getFavoritePackageByUserIdAndPackageTourId(userId, packageTourId);
+      PackageTour packageTour = packageTourRepository.getPackageTourById(packageTourId);
+      User user = userRepository.findUserById(userId);
+      if (packageTour == null) {
+        return ResponseUtil.error("Package Tour not exists","Failed", HttpStatus.BAD_REQUEST);
+      }
+      if (user == null) {
+        return ResponseUtil.error("User not exists","Failed", HttpStatus.BAD_REQUEST);
+      }
+      if (favoritePackageCheck != null) {
+        return ResponseUtil.error("Favorite Package Tour not exists","Failed", HttpStatus.BAD_REQUEST);
+      }
+      FavoritePackage favoritePackage = new FavoritePackage();
+      favoritePackage.setPackageId(packageTourRepository.getPackageTourById(packageTourId));
+      favoritePackage.setUser(userRepository.findUserById(userId));
+      favoritePackage.setIdDeleted(false);
+      favoritePackageRepository.save(favoritePackage);
+      return ResponseUtil.getObject("Success", HttpStatus.CREATED, "Successfully Create");
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+    }
+  }
+
   public List<PackageTourDTO> convertPackageTourtoPackageTourDTO(List<PackageTour> packageTours){
     List<PackageTourDTO> packageTourDTOS = new ArrayList<>();
     for (PackageTour packageTour : packageTours){
@@ -62,6 +92,8 @@ public class FavoritePackageServiceImpl implements FavoritePackageService {
     }
     return packageTourDTOS;
   }
+
+
 
 
 }

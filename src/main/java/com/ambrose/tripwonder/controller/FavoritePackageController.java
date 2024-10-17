@@ -25,4 +25,9 @@ public class FavoritePackageController {
     return favoritePackageService.getAllFavoritePackage(userId, page, limit);
   }
 
+  @GetMapping("/create-favorite-package")
+  public ResponseEntity<?> getAll(@RequestParam(value = "userId") Long userId, @RequestParam(value = "packageTourId") Long packageTourId){
+    return favoritePackageService.createFavoritePackage(userId, packageTourId);
+  }
+
 }

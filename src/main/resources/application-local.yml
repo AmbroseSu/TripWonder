@@ -1,14 +1,14 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/TripWonder
-    username: postgres
-    password: sa
-    driver-class-name: org.postgresql.Driver
   #  datasource:
-  #    url: jdbc:postgresql://aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres
-  #    username: postgres.jllxeorhmoydtgzlpudw
-  #    password: TripWonder2024
+  #    url: jdbc:postgresql://localhost:5432/TripWonder
+  #    username: postgres
+  #    password: sa
   #    driver-class-name: org.postgresql.Driver
+  datasource:
+    url: jdbc:postgresql://localhost:5432/neondb
+    username: sql2
+    password: hsqn@O366psql
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update

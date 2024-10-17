@@ -26,7 +26,6 @@ public class PackageTour {
     private double price;
     private Date startTime;
     private Date endTime;
-    private Date date;
     private int attendance;
     private boolean status;
 
@@ -49,5 +48,9 @@ public class PackageTour {
 
     @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id", nullable = false)
+    private Supplier supplier; // Quan hệ 1 Tour thuộc về 1 Supplier
 
 }

@@ -8,9 +8,13 @@ import org.springframework.data.jpa.domain.Specification;
 public class PackageSpecification {
     public static Specification<PackageTour> hasNameLike(String name) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("name"), "%" + name + "%");
+                criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("name")),
+                        "%" + name.toLowerCase() + "%"
+                );
     }
-    
+
+
     public  Specification<PackageTour> hasCategory(Long categoryId) {
         return (root, query, criteriaBuilder) ->
                 categoryId == null ? null : criteriaBuilder.equal(root.get("category").get("id"), categoryId);

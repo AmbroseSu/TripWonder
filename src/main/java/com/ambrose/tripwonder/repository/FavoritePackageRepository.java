@@ -16,4 +16,9 @@ public interface FavoritePackageRepository extends JpaRepository<FavoritePackage
   @Query("SELECT fp FROM FavoritePackage fp WHERE fp.user.userId = :userId")
   Page<FavoritePackage> getAllByUserID(@Param("userId") Long userId, Pageable pageable);
 
+  @Query("SELECT fp FROM FavoritePackage fp WHERE fp.user.userId = :userId AND fp.packageId.id = :packageTourId")
+  FavoritePackage getFavoritePackageByUserIdAndPackageTourId(@Param("userId") Long userId, @Param("packageTourId") Long packageTourId);
+
+  FavoritePackage getFavoritePackageById(Long id);
+
 }

@@ -34,7 +34,7 @@ public class PackageOfficialServiceController {
     public ResponseEntity<?> search(@PathVariable String query,
                                     @RequestParam(defaultValue = "0") int page,
                                     @RequestParam(defaultValue = "10") int size,
-                                    @RequestParam(defaultValue = "datedesc") SortBy sortBy){
+                                    @RequestParam(defaultValue = "dateasc") SortBy sortBy){
         Sort sort = Sort.by(sortBy.getDirection(),sortBy.getField());
         Pageable pageable = PageRequest.of(page, size, sort);
         return ResponseEntity.ok(packageOfficialService.search(query, pageable));
@@ -44,7 +44,7 @@ public class PackageOfficialServiceController {
     public ResponseEntity<?> get(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "datedesc") SortBy sortBy,
+            @RequestParam(defaultValue = "dateasc") SortBy sortBy,
             @RequestParam(required = false) Long category,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Double minPrice,

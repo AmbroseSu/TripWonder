@@ -18,6 +18,7 @@ public class UserDTO {
     private String email;
     private String phone;
     private String status;
+    private String image;
     private Gender gender;
     private Role role;
     private String fcm;

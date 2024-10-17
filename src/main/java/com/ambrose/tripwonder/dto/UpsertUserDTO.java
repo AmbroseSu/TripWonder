@@ -10,13 +10,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpsertUserDTO {
-    private long id;
-    private String fullname;
-    //private String secondname;
-    private String email;
-    //private String password;
-    private String address;
-    private String phone;
-    private Gender gender;
-    private Role role;
+  private long id;
+  private String fullname;
+  //private String secondname;
+  private String email;
+  //private String password;
+  private String address;
+  private String phoneNumber;
+  private String image;
+  private Gender gender;
+  private Role role;
+
 }

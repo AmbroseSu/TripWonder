@@ -19,7 +19,14 @@ import com.ambrose.tripwonder.repository.VerificationTokenRepository;
 import com.ambrose.tripwonder.services.AuthenticationService;
 import com.ambrose.tripwonder.services.JWTService;
 import com.ambrose.tripwonder.services.UserService;
+import com.google.api.client.util.DateTime;
 import jakarta.validation.ConstraintViolationException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -48,6 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final ApplicationEventPublisher publisher;
     //private final OtpSmsRepository otpSmsRepository;
     //private final TwilioConfig twilioConfig;
+
 
 
     public ResponseEntity<?> checkEmail(String email) {
@@ -222,6 +230,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setAddress(signUp.getAddress());
             user.setGender(signUp.getGender());
             //user.setGender(signUp.getGender());
+            user.setImage(signUp.getImage());
+            Date createDate = Date.from(Instant.now());
+            user.setCreateDate(createDate);
             user.setRole(Role.CUSTOMER);
             user.setFcmToken(signUp.getFcmtoken());
             UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);

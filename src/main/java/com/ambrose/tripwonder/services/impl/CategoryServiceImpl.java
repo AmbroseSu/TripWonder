@@ -37,6 +37,18 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
+  public ResponseEntity<?> getNumberOfCategory() {
+    try{
+      List<Category> categories = categoryRepository.getAllCategory();
+      long count = categories.stream().count();
+      return ResponseUtil.getObject(count, HttpStatus.OK, "Update Successfully");
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Override
   public ResponseEntity<?> createCategory(String name) {
     try{
       if(categoryRepository.getCategoryByName(name) != null){

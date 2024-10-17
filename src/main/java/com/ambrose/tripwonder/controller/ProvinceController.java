@@ -25,6 +25,11 @@ public class ProvinceController {
     return provinceService.getAllProvince(page, limit);
   }
 
+  @GetMapping("/get-number-of-province")
+  public ResponseEntity<?> getNumberOfProvince(){
+    return provinceService.getNumberOfProvince();
+  }
+
   @PostMapping("/create")
   public ResponseEntity<?> createProvince(@RequestParam(value = "name") String name){
     return provinceService.createProvince(name);

@@ -28,10 +28,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findUserById(Long id);
   @Query("SELECT us FROM User us WHERE us.phoneNumber LIKE :phone")
   User findUserByPhone(String phone);
-  @Query("SELECT u FROM User u WHERE EXTRACT(MONTH FROM u.createDate) = :month AND EXTRACT(YEAR FROM u.createDate) = :year")
-  List<User> findUsersByMonthAndYear(@Param("month") int month, @Param("year") int year, Pageable pageable);
-  @Query("SELECT u FROM User u WHERE EXTRACT(MONTH FROM u.createDate) = :month AND EXTRACT(YEAR FROM u.createDate) = :year")
-  List<User> findNumberOfUsersByMonthAndYear(@Param("month") int month, @Param("year") int year);
+  @Query("SELECT u FROM User u WHERE EXTRACT(MONTH FROM u.createDate) = :month AND EXTRACT(YEAR FROM u.createDate) = :year AND u.role = :role")
+  List<User> findUsersByMonthAndYear(@Param("month") int month, @Param("year") int year, @Param("role") Role role, Pageable pageable);
+  @Query("SELECT u FROM User u WHERE EXTRACT(MONTH FROM u.createDate) = :month AND EXTRACT(YEAR FROM u.createDate) = :year AND u.role = :role")
+  List<User> findNumberOfUsersByMonthAndYear(@Param("month") int month, @Param("year") int year, @Param("role") Role role);
 
 
     boolean existsByPhoneNumber(String phone);

@@ -41,6 +41,18 @@ public class ProvinceServiceImpl implements ProvinceService {
   }
 
   @Override
+  public ResponseEntity<?> getNumberOfProvince() {
+    try{
+      List<Province> provinces = provinceRepository.getAllProvince();
+      long count = provinces.stream().count();
+      return ResponseUtil.getObject(count, HttpStatus.OK, "Update Successfully");
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Override
   public ResponseEntity<?> createProvince(String name) {
     try{
       if(provinceRepository.getProvinceByName(name) != null){

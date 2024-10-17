@@ -1,7 +1,9 @@
 package com.ambrose.tripwonder.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
@@ -11,6 +13,8 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "tbl_package_tour")
+@NoArgsConstructor
+@AllArgsConstructor
 public class PackageTour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

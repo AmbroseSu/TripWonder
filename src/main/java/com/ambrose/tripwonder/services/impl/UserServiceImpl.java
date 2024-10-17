@@ -6,6 +6,7 @@ import com.ambrose.tripwonder.dto.UpsertUserDTO;
 import com.ambrose.tripwonder.dto.UserDTO;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.VerificationToken;
+import com.ambrose.tripwonder.entities.enums.Role;
 import com.ambrose.tripwonder.repository.UserRepository;
 import com.ambrose.tripwonder.repository.VerificationTokenRepository;
 import com.ambrose.tripwonder.services.UserService;
@@ -105,6 +106,9 @@ public class UserServiceImpl implements UserService {
         if (field.getName().equals("role")) {
           continue;
         }
+        if (field.getName().equals("gender")) {
+          continue;
+        }
         Object newValue = field.get(userDTO);
         if(newValue != null){
           Field userField = User.class.getDeclaredField(field.getName());
@@ -126,7 +130,7 @@ public class UserServiceImpl implements UserService {
   public ResponseEntity<?> getUsersByMonthAndYear(int month, int year, int page, int limit){
     try {
       Pageable pageable = PageRequest.of(page - 1, limit);
-      List<User> users = userRepository.findUsersByMonthAndYear(month, year, pageable);
+      List<User> users = userRepository.findUsersByMonthAndYear(month, year, Role.CUSTOMER, pageable);
       List<UpsertUserDTO> upsertUserDTOS = new ArrayList<>();
       for (User user : users){
         UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
@@ -141,7 +145,7 @@ public class UserServiceImpl implements UserService {
   }
   public ResponseEntity<?> getNumberOfUsersByMonthAndYear(int month, int year){
     try {
-      List<User> users = userRepository.findNumberOfUsersByMonthAndYear(month, year);
+      List<User> users = userRepository.findNumberOfUsersByMonthAndYear(month, year, Role.CUSTOMER);
       long count = users.stream().count();
       return ResponseUtil.getObject(count, HttpStatus.OK, "Update Successfully");
     }catch (Exception ex){

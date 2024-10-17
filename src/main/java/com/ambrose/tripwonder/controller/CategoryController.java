@@ -27,6 +27,11 @@ public class CategoryController {
     return categoryService.getAllCategory(page, limit);
   }
 
+  @GetMapping("/get-number-of-category")
+  public ResponseEntity<?> getNumberOfCategory(){
+    return categoryService.getNumberOfCategory();
+  }
+
   @PostMapping("/create")
   public ResponseEntity<?> createCategory(@RequestParam(value = "name") String name){
     return categoryService.createCategory(name);

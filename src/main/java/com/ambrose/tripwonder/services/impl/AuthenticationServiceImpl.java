@@ -313,8 +313,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setFullname(signUpGoogle.getFullname());
             user.setPhoneNumber(signUpGoogle.getPhone());
             user.setAddress(signUpGoogle.getAddress());
-            //user.setGender(signUpGoogle.getGender());
-            user.setGender(Gender.OTHER);
+            user.setGender(signUpGoogle.getGender());
+            //user.setGender(Gender.OTHER);
             user.setRole(Role.CUSTOMER);
             user.setFcmToken(signUpGoogle.getFcmtoken());
             UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);

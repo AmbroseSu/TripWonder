@@ -14,6 +14,6 @@ public class SignUpGoogle {
   String phone;
   String address;
   String image;
-  //Gender gender;
+  Gender gender;
   String fcmtoken;
 }

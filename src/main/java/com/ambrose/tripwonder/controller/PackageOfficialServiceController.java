@@ -10,6 +10,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/packageOff")
@@ -28,7 +35,7 @@ public class PackageOfficialServiceController {
     public ResponseEntity<?> search(@PathVariable String query,
                                     @RequestParam(defaultValue = "0") int page,
                                     @RequestParam(defaultValue = "10") int size,
-                                    @RequestParam(defaultValue = "datedesc") SortBy sortBy){
+                                    @RequestParam(defaultValue = "dateasc") SortBy sortBy){
         Sort sort = Sort.by(sortBy.getDirection(),sortBy.getField());
         Pageable pageable = PageRequest.of(page, size, sort);
         return ResponseEntity.ok(packageOfficialService.search(query, pageable));
@@ -38,7 +45,7 @@ public class PackageOfficialServiceController {
     public ResponseEntity<?> get(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "datedesc") SortBy sortBy,
+            @RequestParam(defaultValue = "dateasc") SortBy sortBy,
             @RequestParam(required = false) Long category,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Double minPrice,
@@ -71,7 +78,28 @@ public class PackageOfficialServiceController {
             return packageOfficialService.findAll(pageable);
         
     }
+    @PostMapping("/upload")
+    public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
+        try {
+            // Tạo đường dẫn tới thư mục lưu tạm thời
+            String resourcePath = getClass().getClassLoader().getResource("").getPath();
+            Path tempDir = Path.of(resourcePath, "tmp");
 
+            // Kiểm tra và tạo thư mục nếu nó không tồn tại
+            if (!Files.exists(tempDir)) {
+                Files.createDirectories(tempDir);
+            }
+
+            // Lưu file ZIP tạm thời
+            File tempZip = new File(tempDir.toFile(), file.getOriginalFilename());
+            file.transferTo(tempZip);
+
+            return ResponseEntity.ok("File uploaded successfully: " + tempZip.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
 //    @GetMapping("/get")
 //    public ResponseEntity<?> filterBy(
 //            @RequestParam(defaultValue = "1") int page,

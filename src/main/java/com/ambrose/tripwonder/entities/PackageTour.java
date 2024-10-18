@@ -1,7 +1,9 @@
 package com.ambrose.tripwonder.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
@@ -11,6 +13,8 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "tbl_package_tour")
+@NoArgsConstructor
+@AllArgsConstructor
 public class PackageTour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +26,6 @@ public class PackageTour {
     private double price;
     private Date startTime;
     private Date endTime;
-    private Date date;
     private int attendance;
     private boolean status;
 
@@ -45,5 +48,9 @@ public class PackageTour {
 
     @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id", nullable = false)
+    private Supplier supplier; // Quan hệ 1 Tour thuộc về 1 Supplier
 
 }

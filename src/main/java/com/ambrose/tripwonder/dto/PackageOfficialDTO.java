@@ -1,40 +1,60 @@
 package com.ambrose.tripwonder.dto;
 
+import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.entities.Gallery;
 import com.ambrose.tripwonder.entities.Province;
 import com.ambrose.tripwonder.entities.RatingReview;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
-@Getter
+@Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+
 public class PackageOfficialDTO {
-    @Setter
+    
+    @Getter(AccessLevel.NONE)
+    private final GenericConverter<RatingReviewDto> converterRatingReview = new GenericConverter<RatingReviewDto>(new ModelMapper());
+    @Getter(AccessLevel.NONE)
+    private final GenericConverter<GalleryDto> converterGallery= new GenericConverter<GalleryDto>(new ModelMapper());
+    
+    
     private Long id;
-    @Setter
     private String name;
-    @Setter
     private Date date;
-    @Setter
     private double price;
-    @Setter
     private Date startTime;
-    @Setter
     private Date endTime;
-    @Setter
-    private List<RatingReview> ratingReviews;
-    @Setter
-    private List<Gallery> gallery;
-    @Setter
     private int attendance;
+    
+    @Setter(AccessLevel.NONE)
     private String province;
+    @Setter(AccessLevel.NONE)
+    private List<RatingReviewDto> ratingReviews;
+    @Setter(AccessLevel.NONE)
+    private List<GalleryDto> galleries;
 
     public void setProvince(Province province) {
         this.province = province.getName();
+    }
+    public void setRatingReviews(List<RatingReview> ratingReviews) {
+        this.ratingReviews = ratingReviews.stream().
+                map(ratingReview -> converterRatingReview.toDTO(ratingReview,RatingReviewDto.class))
+                .collect(Collectors.toList());
+    }
+    public void setGalleries(List<Gallery> gallerys) {
+        this.galleries = new ArrayList<>();
+        for (Gallery gallery : gallerys) {
+            if(!gallery.isDeleted()) {
+                this.galleries.add(converterGallery.toDTO(gallery,GalleryDto.class));
+            }
+        }
     }
 }

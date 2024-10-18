@@ -12,6 +12,7 @@ public class FavoritePackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private boolean idDeleted;
 
     @ManyToOne

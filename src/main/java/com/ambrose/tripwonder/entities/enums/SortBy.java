@@ -7,8 +7,8 @@ import org.springframework.data.domain.Sort;
 public enum SortBy {
     SORT_BY_NUM_ATTENDANCE_DESC("numAttendance", Sort.Direction.DESC),
     SORT_BY_NUM_ATTENDANCE_ASC("numAttendance", Sort.Direction.ASC),
-    SORT_BY_DATE_DESC("date", Sort.Direction.DESC),
-    SORT_BY_DATE_ASC("date", Sort.Direction.ASC),
+    SORT_BY_DATE_DESC("startTime", Sort.Direction.DESC),
+    SORT_BY_DATE_ASC("startTime", Sort.Direction.ASC),
     SORT_BY_PRICE_DESC("price", Sort.Direction.DESC),
     SORT_BY_PRICE_ASC("price", Sort.Direction.ASC);
 

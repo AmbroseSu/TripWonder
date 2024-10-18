@@ -56,7 +56,8 @@ public class FavoritePackageServiceImpl implements FavoritePackageService {
 //          .stream()
 //          .map(favoritePackage -> packageOfficialRepository.findPackageTourById(favoritePackage.getPackageId().getId()))
 //          .collect(Collectors.toList());
-      List<PackageOfficialDTO> packageTourDTOS = convertPackageTourtoPackageTourDTO(packageTours);
+      List<PackageOfficialDTO> packageTourDTOS = packageTours.stream().map(x -> (PackageOfficialDTO) genericConverter.toDTO(x,PackageOfficialDTO.class)).collect(
+          Collectors.toList());
       return ResponseUtil.getCollection(packageTourDTOS, HttpStatus.OK, "Update Successfully", page, limit, favoritePackages.getTotalElements());
     }catch (Exception ex){
       ex.printStackTrace();

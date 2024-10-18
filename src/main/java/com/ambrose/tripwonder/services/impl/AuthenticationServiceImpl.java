@@ -310,13 +310,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     return ResponseUtil.error("Please Save Info", "False", HttpStatus.BAD_REQUEST);
                 }
             }
-            user.setFullname(signUpGoogle.getFullname());
-            user.setPhoneNumber(signUpGoogle.getPhone());
-            user.setAddress(signUpGoogle.getAddress());
-            user.setGender(signUpGoogle.getGender());
+            if (user.getFullname() == null &&
+                user.getPhoneNumber() == null &&
+                user.getAddress() == null ){
+                user.setFullname(signUpGoogle.getFullname());
+                user.setPhoneNumber(signUpGoogle.getPhone());
+                user.setAddress(signUpGoogle.getAddress());
+                user.setGender(signUpGoogle.getGender());
+                user.setFcmToken(signUpGoogle.getFcmtoken());
+            }
+
             //user.setGender(Gender.OTHER);
             user.setRole(Role.CUSTOMER);
-            user.setFcmToken(signUpGoogle.getFcmtoken());
+
             UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
             userRepository.save(user);
 

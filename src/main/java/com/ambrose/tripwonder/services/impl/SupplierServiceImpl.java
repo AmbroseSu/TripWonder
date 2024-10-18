@@ -4,7 +4,7 @@ import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.SupplierDTO;
 import com.ambrose.tripwonder.entities.Supplier;
-import com.ambrose.tripwonder.repository.specification.SupplierRepository;
+import com.ambrose.tripwonder.repository.SupplierRepository;
 import com.ambrose.tripwonder.services.SupplierService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,7 +46,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public ResponseEntity<?> delete(UUID id) {
         Supplier supplierEntity = supplierRepository.findSuppliersById(id);
-        supplierEntity.setStatus(false);
+        supplierEntity.setStatus(!supplierEntity.isStatus());
         supplierRepository.save(supplierEntity);
         return ResponseEntity.ok("Delete success");
     }

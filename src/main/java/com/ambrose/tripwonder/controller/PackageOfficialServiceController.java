@@ -124,8 +124,8 @@ public class PackageOfficialServiceController {
 //        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
 //    }
     
-    @PostMapping("/create")
-    public ResponseEntity<?> create(){
-        return ResponseEntity.ok("");
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<?> create(@ModelAttribute){
+//        return ResponseEntity.ok("");
+//    }
 }

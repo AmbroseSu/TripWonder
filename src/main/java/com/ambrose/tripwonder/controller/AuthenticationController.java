@@ -4,6 +4,7 @@ import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.UpsertUserDTO;
 import com.ambrose.tripwonder.dto.request.SignUp;
+import com.ambrose.tripwonder.dto.request.SignUpGoogle;
 import com.ambrose.tripwonder.dto.request.SigninRequest;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.VerificationToken;
@@ -109,6 +110,11 @@ public class AuthenticationController {
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestParam("email") String email, @RequestParam("password") String password) {
         return authenticationService.changePassword(email, password);
+    }
+
+    @PostMapping("/save-infor-google")
+    public ResponseEntity<?> saveInforGoogle(@RequestBody SignUpGoogle signUpGoogle){
+        return authenticationService.saveInforGoogle(signUpGoogle);
     }
 
 

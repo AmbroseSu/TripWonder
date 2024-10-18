@@ -8,6 +8,7 @@ import com.ambrose.tripwonder.dto.UpsertUserDTO;
 import com.ambrose.tripwonder.dto.UserDTO;
 import com.ambrose.tripwonder.dto.request.RefreshTokenRequest;
 import com.ambrose.tripwonder.dto.request.SignUp;
+import com.ambrose.tripwonder.dto.request.SignUpGoogle;
 import com.ambrose.tripwonder.dto.request.SigninRequest;
 import com.ambrose.tripwonder.dto.response.JwtAuthenticationResponse;
 import com.ambrose.tripwonder.entities.User;
@@ -292,6 +293,49 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         } catch (ConstraintViolationException e) {
             return ResponseUtil.error(ConstraintViolationExceptionHandler.handleConstraintViolation(e).toString(), "False", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle) {
+        try{
+            User user = userRepository.findUserByEmail(signUpGoogle.getEmail());
+            if(user == null){
+                return ResponseUtil.error("Email not exist","Failed", HttpStatus.BAD_REQUEST);
+            }
+            //check isenable
+            if(!user.isEnabled()){
+                if(user.getFullname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getAddress().isEmpty()){
+                    return ResponseUtil.error("Please Save Info", "False", HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            //user.setCountry(signUp.getCountry());
+
+
+            String phone = signUpGoogle.getPhone();
+            String regex = "^(\\+?\\d{1,4})?[-.\\s]?\\(?(\\d{2,3})\\)?[-.\\s]?\\d{3,4}[-.\\s]?\\d{3,4}$";
+
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(phone);
+
+            if (!matcher.matches()) {
+                return ResponseUtil.error("Phone number must be 10 number", "False", HttpStatus.BAD_REQUEST);
+            }
+            user.setFullname(signUpGoogle.getFullname());
+            user.setPhoneNumber(signUpGoogle.getPhone());
+            user.setAddress(signUpGoogle.getAddress());
+            user.setGender(signUpGoogle.getGender());
+            //user.setGender(signUp.getGender());
+            user.setRole(Role.CUSTOMER);
+            user.setFcmToken(signUpGoogle.getFcmtoken());
+            UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
+            userRepository.save(user);
+
+
+            return ResponseUtil.getObject(result, HttpStatus.CREATED, "ok");
+        }catch (ConstraintViolationException e) {
+            return ConstraintViolationExceptionHandler.handleConstraintViolation(e);
         }
     }
 

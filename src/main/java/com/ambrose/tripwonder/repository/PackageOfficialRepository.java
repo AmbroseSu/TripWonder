@@ -14,6 +14,6 @@ public interface PackageOfficialRepository extends JpaRepository<PackageTour, Lo
     Page<PackageTour> findAll(Pageable pageable);
     Page<PackageTour> findAll(Specification<PackageTour> specification, Pageable pageable);
 
-
+    PackageTour findPackageTourById(long packageOfficialId);
     
 }

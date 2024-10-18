@@ -19,4 +19,5 @@ public interface PackageOfficialService {
     ResponseEntity<?> getFilteredTours(FilterBy filterBy, Pageable pageable);
     ResponseEntity<?> search(String query, Pageable pageable);
     ResponseEntity<?> create(File file);
+    ResponseEntity<?> getPackageOfficialById(long packageOfficialId);
 }

@@ -13,6 +13,7 @@ import com.ambrose.tripwonder.dto.request.SigninRequest;
 import com.ambrose.tripwonder.dto.response.JwtAuthenticationResponse;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.VerificationToken;
+import com.ambrose.tripwonder.entities.enums.Gender;
 import com.ambrose.tripwonder.entities.enums.Role;
 import com.ambrose.tripwonder.event.RegistrationCompleteEvent;
 import com.ambrose.tripwonder.repository.UserRepository;
@@ -309,24 +310,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     return ResponseUtil.error("Please Save Info", "False", HttpStatus.BAD_REQUEST);
                 }
             }
-
-            //user.setCountry(signUp.getCountry());
-
-
-            String phone = signUpGoogle.getPhone();
-            String regex = "^(\\+?\\d{1,4})?[-.\\s]?\\(?(\\d{2,3})\\)?[-.\\s]?\\d{3,4}[-.\\s]?\\d{3,4}$";
-
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(phone);
-
-            if (!matcher.matches()) {
-                return ResponseUtil.error("Phone number must be 10 number", "False", HttpStatus.BAD_REQUEST);
-            }
             user.setFullname(signUpGoogle.getFullname());
             user.setPhoneNumber(signUpGoogle.getPhone());
             user.setAddress(signUpGoogle.getAddress());
-            user.setGender(signUpGoogle.getGender());
-            //user.setGender(signUp.getGender());
+            //user.setGender(signUpGoogle.getGender());
+            user.setGender(Gender.OTHER);
             user.setRole(Role.CUSTOMER);
             user.setFcmToken(signUpGoogle.getFcmtoken());
             UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);

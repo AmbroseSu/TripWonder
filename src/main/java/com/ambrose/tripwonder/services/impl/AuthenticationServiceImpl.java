@@ -8,10 +8,12 @@ import com.ambrose.tripwonder.dto.UpsertUserDTO;
 import com.ambrose.tripwonder.dto.UserDTO;
 import com.ambrose.tripwonder.dto.request.RefreshTokenRequest;
 import com.ambrose.tripwonder.dto.request.SignUp;
+import com.ambrose.tripwonder.dto.request.SignUpGoogle;
 import com.ambrose.tripwonder.dto.request.SigninRequest;
 import com.ambrose.tripwonder.dto.response.JwtAuthenticationResponse;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.VerificationToken;
+import com.ambrose.tripwonder.entities.enums.Gender;
 import com.ambrose.tripwonder.entities.enums.Role;
 import com.ambrose.tripwonder.event.RegistrationCompleteEvent;
 import com.ambrose.tripwonder.repository.UserRepository;
@@ -292,6 +294,36 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         } catch (ConstraintViolationException e) {
             return ResponseUtil.error(ConstraintViolationExceptionHandler.handleConstraintViolation(e).toString(), "False", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle) {
+        try{
+            User user = userRepository.findUserByEmail(signUpGoogle.getEmail());
+            if(user == null){
+                return ResponseUtil.error("Email not exist","Failed", HttpStatus.BAD_REQUEST);
+            }
+            //check isenable
+            if(!user.isEnabled()){
+                if(user.getFullname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getAddress().isEmpty()){
+                    return ResponseUtil.error("Please Save Info", "False", HttpStatus.BAD_REQUEST);
+                }
+            }
+            user.setFullname(signUpGoogle.getFullname());
+            user.setPhoneNumber(signUpGoogle.getPhone());
+            user.setAddress(signUpGoogle.getAddress());
+            user.setGender(signUpGoogle.getGender());
+            //user.setGender(Gender.OTHER);
+            user.setRole(Role.CUSTOMER);
+            user.setFcmToken(signUpGoogle.getFcmtoken());
+            UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
+            userRepository.save(user);
+
+
+            return ResponseUtil.getObject(result, HttpStatus.CREATED, "ok");
+        }catch (ConstraintViolationException e) {
+            return ConstraintViolationExceptionHandler.handleConstraintViolation(e);
         }
     }
 

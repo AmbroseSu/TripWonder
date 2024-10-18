@@ -29,6 +29,8 @@ public class PackageOfficialDTO {
     private Long id;
     private String name;
     private double price;
+    private String description;
+    private String shortDescription;
     private Date startTime;
     private Date endTime;
     private int attendance;

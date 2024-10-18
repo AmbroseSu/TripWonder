@@ -3,6 +3,7 @@ package com.ambrose.tripwonder.services;
 
 import com.ambrose.tripwonder.dto.request.RefreshTokenRequest;
 import com.ambrose.tripwonder.dto.request.SignUp;
+import com.ambrose.tripwonder.dto.request.SignUpGoogle;
 import com.ambrose.tripwonder.dto.request.SigninRequest;
 import org.springframework.http.ResponseEntity;
 
@@ -22,5 +23,5 @@ public interface AuthenticationService {
     public ResponseEntity<?> checkEmailForgotPassword(String email);
 
     public ResponseEntity<?> changePassword(String email, String password);
-    //public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle);
+    public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle);
 }

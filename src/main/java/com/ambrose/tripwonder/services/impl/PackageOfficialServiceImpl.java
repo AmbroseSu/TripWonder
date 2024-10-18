@@ -7,6 +7,9 @@ import com.ambrose.tripwonder.dto.request.PackageTourRequest;
 import com.ambrose.tripwonder.entities.Gallery;
 import com.ambrose.tripwonder.entities.PackageTour;
 import com.ambrose.tripwonder.entities.RatingReview;
+import com.ambrose.tripwonder.entities.FavoritePackage;
+import com.ambrose.tripwonder.entities.PackageTour;
+import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.enums.FilterBy;
 import com.ambrose.tripwonder.repository.*;
 import com.ambrose.tripwonder.repository.specification.PackageSpecification;
@@ -147,6 +150,22 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         ratingReviewRepository.saveAll(ratingReviews);
         return ResponseEntity.status(HttpStatus.CREATED).body(packageTour1);
     }
+
+    @Override
+    public ResponseEntity<?> getPackageOfficialById(long packageOfficialId) {
+        try{
+            PackageTour packageTour = packageOfficialRepository.findPackageTourById(packageOfficialId);
+            if (packageTour == null){
+                return ResponseUtil.error("Package Tour not exists", "Faild", HttpStatus.BAD_REQUEST);
+            }
+            PackageOfficialDTO packageOfficialDTO = mapperToDto.toDTO(packageTour, PackageOfficialDTO.class);
+            return ResponseUtil.getObject(packageOfficialDTO, HttpStatus.CREATED, "Successfully Create");
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
     

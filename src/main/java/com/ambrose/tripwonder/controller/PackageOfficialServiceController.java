@@ -103,6 +103,11 @@ public class PackageOfficialServiceController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+
+    @GetMapping("/get-package-tour-by-id")
+    public ResponseEntity<?> getPackageOfficialById(@RequestParam(value = "packageOfficialId") long packageOfficialId){
+        return packageOfficialService.getPackageOfficialById(packageOfficialId);
+    }
 //    @GetMapping("/get")
 //    public ResponseEntity<?> filterBy(
 //            @RequestParam(defaultValue = "1") int page,

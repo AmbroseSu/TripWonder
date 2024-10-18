@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface PackageOfficialRepository extends JpaRepository<PackageTour, Long>, JpaSpecificationExecutor<PackageTour> {
     Page<PackageTour> findAll(Pageable pageable);
-    Page<PackageTour> findAll(Specification specification, Pageable pageable);
+    Page<PackageTour> findAll(Specification<PackageTour> specification, Pageable pageable);
+
+    PackageTour findPackageTourById(long packageOfficialId);
     
 }

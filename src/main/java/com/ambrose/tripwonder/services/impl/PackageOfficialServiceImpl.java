@@ -3,7 +3,9 @@ package com.ambrose.tripwonder.services.impl;
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
+import com.ambrose.tripwonder.entities.FavoritePackage;
 import com.ambrose.tripwonder.entities.PackageTour;
+import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.enums.FilterBy;
 import com.ambrose.tripwonder.repository.PackageOfficialRepository;
 import com.ambrose.tripwonder.repository.specification.PackageSpecification;
@@ -89,8 +91,22 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     public ResponseEntity<?> create(File file) {
         return null;
     }
-    
-    
+
+    @Override
+    public ResponseEntity<?> getPackageOfficialById(long packageOfficialId) {
+        try{
+            PackageTour packageTour = packageOfficialRepository.findPackageTourById(packageOfficialId);
+            if (packageTour == null){
+                return ResponseUtil.error("Package Tour not exists", "Faild", HttpStatus.BAD_REQUEST);
+            }
+            PackageOfficialDTO packageOfficialDTO = mapperToDto.toDTO(packageTour, PackageOfficialDTO.class);
+            return ResponseUtil.getObject(packageOfficialDTO, HttpStatus.CREATED, "Successfully Create");
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
     

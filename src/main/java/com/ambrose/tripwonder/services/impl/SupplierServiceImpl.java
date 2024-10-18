@@ -27,9 +27,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public ResponseEntity<?> create(SupplierDTO supplier) {
-        supplier.setId(UUID.randomUUID());
-        supplierRepository.save(supplierConverter.toEntity(supplier,Supplier.class));
-        return ResponseUtil.getObject(supplier, HttpStatus.CREATED,"Create success");
+        
+        return ResponseUtil.getObject(supplierRepository.save(supplierConverter.toEntity(supplier,Supplier.class)), HttpStatus.CREATED,"Create success");
     }
 
     @Override

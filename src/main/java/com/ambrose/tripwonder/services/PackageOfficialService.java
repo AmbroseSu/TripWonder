@@ -23,4 +23,5 @@ public interface PackageOfficialService {
     ResponseEntity<?> create(File file);
     ResponseEntity<?> create(PackageTourRequest packageTourRequest) throws IOException;
     ResponseEntity<?> getPackageOfficialById(long packageOfficialId);
+    ResponseEntity<?> findAllAdmin(Pageable pageable);
 }

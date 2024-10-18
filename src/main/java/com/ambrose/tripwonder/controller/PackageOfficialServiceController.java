@@ -141,38 +141,9 @@ public class PackageOfficialServiceController {
     @GetMapping("/get/admin")
     public ResponseEntity<?> getAdmin(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "dateasc") SortBy sortBy,
-            @RequestParam(required = false) Long category,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice
-//            case "attendanceasc":
-//                    return SortBy.SORT_BY_NUM_ATTENDANCE_ASC;
-//            case "attendancedesc":
-//                    return SortBy.SORT_BY_NUM_ATTENDANCE_DESC;
-//            case "dateasc":
-//                    return SortBy.SORT_BY_DATE_ASC;
-//            case "datedesc":
-//                    return SortBy.SORT_BY_DATE_DESC;
-//            case "priceasc":
-//                    return SortBy.SORT_BY_PRICE_ASC;
-//            case "pricedesc":
-//                    return SortBy.SORT_BY_PRICE_DESC;
+            @RequestParam(defaultValue = "10") int size
     ) {
-        FilterBy filterBy = FilterBy.builder()
-                .categoryId(category)
-                .status(status)
-                .minPrice(minPrice)
-                .maxPrice(maxPrice)
-                .build();
-        Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
-        Pageable pageable = PageRequest.of(page, size, sort);
-        if (!(category != null && status != null && minPrice != 0.0 && maxPrice != Double.MAX_VALUE)) {
-            return  packageOfficialService.getFilteredTours(filterBy,pageable);
-        }
-        else
-            return packageOfficialService.findAll(pageable);
-
+        Pageable pageable = PageRequest.of(page, size);
+        return packageOfficialService.findAllAdmin(pageable);
     }
 }

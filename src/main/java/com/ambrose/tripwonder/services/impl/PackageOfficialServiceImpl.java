@@ -2,6 +2,7 @@ package com.ambrose.tripwonder.services.impl;
 
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
+import com.ambrose.tripwonder.dto.PackageOfficialAdminDTO;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.dto.request.PackageTourRequest;
 import com.ambrose.tripwonder.entities.Gallery;
@@ -41,6 +42,8 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     private final GalleryRepository galleryRepository;
     private final RatingReviewRepository ratingReviewRepository;
     private final UserRepository userRepository;
+    private final GenericConverter<PackageOfficialAdminDTO> mapperAdminToDto;
+    
     
     @Override
     public PackageOfficialDTO findOne(long id) {
@@ -166,6 +169,17 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> findAllAdmin(Pageable pageable) {
+        Page<PackageTour> packageOfficials = packageOfficialRepository.findAll(pageable);
+        Page<PackageOfficialAdminDTO> packageOfficialDTOS = packageOfficials.map(obj -> mapperAdminToDto.toDTO(obj, PackageOfficialAdminDTO.class));
+        return ResponseUtil.getCollection(packageOfficialDTOS,
+                HttpStatus.OK,
+                "ok",
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                packageOfficials.getTotalElements());
+    }
 
 }
     

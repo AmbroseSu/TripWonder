@@ -2,19 +2,18 @@ package com.ambrose.tripwonder.dto;
 
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.entities.User;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.modelmapper.ModelMapper;
 
 
 import java.util.Date;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class RatingReviewDto {
     
-    private final GenericConverter<UserDTO> genericConverter;
+    private final GenericConverter<UserDTO> genericConverter = new GenericConverter<>(new ModelMapper()) ;
     
     private String feedback;
     private int rating;

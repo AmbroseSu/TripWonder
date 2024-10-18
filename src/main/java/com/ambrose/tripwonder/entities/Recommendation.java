@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString
+
 @Entity
 @Table(name = "tbl_recommendation")
 public class Recommendation {
@@ -18,6 +18,7 @@ public class Recommendation {
 
     @ManyToOne
     @JoinColumn(name = "packageTourId")
+    @ToString.Exclude
     private PackageTour packageTour;
 
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@ToString
+
 @Entity
 @Table(name = "tbl_order")
 public class Order {
@@ -26,5 +26,6 @@ public class Order {
     private List<OrderDetail> orderDetails;
     @ManyToOne
     @JoinColumn(name = "userId")
+    @ToString.Exclude
     private User user;
 }

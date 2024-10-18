@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
-@ToString
+
 @Entity
 @Table(name = "tbl_province")
 public class Province {

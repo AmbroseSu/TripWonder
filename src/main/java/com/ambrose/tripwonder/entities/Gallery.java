@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString
+
 @Entity
 @Table(name = "tbl_gallery")
 public class Gallery {
@@ -18,6 +18,7 @@ public class Gallery {
 
     @ManyToOne
     @JoinColumn(name = "packageId")
+    @ToString.Exclude
     private PackageTour packageTour;
 
 }

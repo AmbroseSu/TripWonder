@@ -26,5 +26,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      max-file-size: 100GB   # Giới hạn kích thước file tối đa
+      max-request-size: 100GB # Giới hạn kích thước yêu cầu tối đa
   main:
     allow-circular-references: true

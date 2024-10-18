@@ -1,5 +1,6 @@
 package com.ambrose.tripwonder.controller;
 
+import com.ambrose.tripwonder.dto.request.PackageTourRequest;
 import com.ambrose.tripwonder.entities.enums.FilterBy;
 import com.ambrose.tripwonder.entities.enums.SortBy;
 import com.ambrose.tripwonder.services.PackageOfficialService;
@@ -8,11 +9,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,7 +81,7 @@ public class PackageOfficialServiceController {
             return packageOfficialService.findAll(pageable);
         
     }
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
         try {
             // Tạo đường dẫn tới thư mục lưu tạm thời
@@ -129,8 +132,9 @@ public class PackageOfficialServiceController {
 //        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
 //    }
     
-//    @PostMapping("/create")
-//    public ResponseEntity<?> create(@ModelAttribute){
-//        return ResponseEntity.ok("");
-//    }
+    @PostMapping(value = "/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> create(@ModelAttribute PackageTourRequest request) throws IOException {
+        
+        return packageOfficialService.create(request);
+    }
 }

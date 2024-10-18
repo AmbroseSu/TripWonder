@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@ToString
+
 @Entity
 @Table(name = "tbl_user")
 public class User implements UserDetails {

@@ -3,12 +3,17 @@ package com.ambrose.tripwonder.services.impl;
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
+import com.ambrose.tripwonder.dto.request.PackageTourRequest;
+import com.ambrose.tripwonder.entities.Gallery;
+import com.ambrose.tripwonder.entities.PackageTour;
+import com.ambrose.tripwonder.entities.RatingReview;
 import com.ambrose.tripwonder.entities.FavoritePackage;
 import com.ambrose.tripwonder.entities.PackageTour;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.enums.FilterBy;
-import com.ambrose.tripwonder.repository.PackageOfficialRepository;
+import com.ambrose.tripwonder.repository.*;
 import com.ambrose.tripwonder.repository.specification.PackageSpecification;
+import com.ambrose.tripwonder.services.FirebaseService;
 import com.ambrose.tripwonder.services.PackageOfficialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +24,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +34,14 @@ import java.util.stream.Collectors;
 public class PackageOfficialServiceImpl implements PackageOfficialService {
     private final PackageOfficialRepository packageOfficialRepository;
     private final GenericConverter<PackageOfficialDTO> mapperToDto;
-
+    private final CategoryRepository categoryRepository;
+    private final ProvinceRepository provinceRepository;
+    private final SupplierRepository supplierRepository;
+    private final FirebaseService firebaseService;
+    private final GalleryRepository galleryRepository;
+    private final RatingReviewRepository ratingReviewRepository;
+    private final UserRepository userRepository;
+    
     @Override
     public PackageOfficialDTO findOne(long id) {
         return null;
@@ -90,6 +104,51 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     @Override
     public ResponseEntity<?> create(File file) {
         return null;
+    }
+    
+    @Override
+    public ResponseEntity<?> create(PackageTourRequest packageTourRequest) throws IOException {
+        
+        List<File> files = packageTourRequest.getGalleries();
+        List<Gallery> galleries = new ArrayList<>();
+        
+        for (File file : files) {
+            Gallery gallery = new Gallery();
+            gallery.setName(file.getName());
+            gallery.setImageUrl(firebaseService.upload(file));
+            gallery.setDeleted(false);
+            galleries.add(gallery);
+        }
+
+        RatingReview ratingReview = new RatingReview();
+        ratingReview.setRating(packageTourRequest.getRatingReviews());
+        ratingReview.setFeedback("");
+        ratingReview.setUser(userRepository.findUserById(packageTourRequest.getStaffId()));
+        List<RatingReview> ratingReviews = new ArrayList<>();
+        ratingReviews.add(ratingReview);
+        PackageTour packageTour = PackageTour.builder()
+                .name(packageTourRequest.getName())
+                .price(packageTourRequest.getPrice())
+                .category(categoryRepository.getCategoryById(packageTourRequest.getCategoryId()))
+                .description(packageTourRequest.getDescription())
+                .attendance(packageTourRequest.getAttendance())
+                .endTime(packageTourRequest.getEndTime())
+                .province(provinceRepository.getProvinceById(packageTourRequest.getProvinceId()))
+                .startTime(packageTourRequest.getStartTime())
+                .supplier(supplierRepository.findSuppliersById(packageTourRequest.getSupplierId()))
+                .shortDescription(packageTourRequest.getShortDescription())
+                .status(true)
+                .build();
+        PackageTour packageTour1 = packageOfficialRepository.save(packageTour);
+        for(Gallery gallery : galleries) {
+            gallery.setPackageTour(packageTour1);
+        }
+        for(RatingReview gallery : ratingReviews) {
+            gallery.setPackageTour(packageTour1);
+        }
+        galleryRepository.saveAll(galleries);
+        ratingReviewRepository.saveAll(ratingReviews);
+        return ResponseEntity.status(HttpStatus.CREATED).body(packageTour1);
     }
 
     @Override

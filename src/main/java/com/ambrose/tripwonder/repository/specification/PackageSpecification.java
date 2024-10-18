@@ -1,16 +1,21 @@
 package com.ambrose.tripwonder.repository.specification;
 
 import com.ambrose.tripwonder.entities.PackageTour;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
+
 
 @UtilityClass
 public class PackageSpecification {
     public static Specification<PackageTour> hasNameLike(String name) {
+
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("name")),
-                        "%" + name.toLowerCase() + "%"
+                        criteriaBuilder.function("unaccent",String.class,criteriaBuilder.lower(root.get("name"))),
+                        "%" +  unaccent(name).toLowerCase() + "%"
                 );
     }
 
@@ -49,5 +54,20 @@ public class PackageSpecification {
             else 
                 return criteriaBuilder.lessThanOrEqualTo(root.get("attendance"), maxAttendance);
         };
+    }
+    private static String unaccent(String value) {
+        return value.replaceAll("[đĐ]", "d")
+                .replaceAll("[áàạảãâấầậẩẫăắằặẳẵ]", "a")
+                .replaceAll("[ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ]", "A")
+                .replaceAll("[éèẹẻẽêếềệểễ]", "e")
+                .replaceAll("[ÉÈẸẺẼÊẾỀỆỂỄ]", "E")
+                .replaceAll("[íìịỉĩ]", "i")
+                .replaceAll("[ÍÌỊỈĨ]", "I")
+                .replaceAll("[óòọỏõôốồộổỗơớờợởỡ]", "o")
+                .replaceAll("[ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ]", "O")
+                .replaceAll("[úùụủũưứừựửữ]", "u")
+                .replaceAll("[ÚÙỤỦŨƯỨỪỰỬỮ]", "U")
+                .replaceAll("[ýỳỵỷỹ]", "y")
+                .replaceAll("[ÝỲỴỶỸ]", "Y");
     }
 }

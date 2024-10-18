@@ -128,4 +128,9 @@ public class PackageOfficialServiceController {
 //        Pageable pageable = PageRequest.of(page, size, sort);
 //        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
 //    }
+    
+    @PostMapping("/create")
+    public ResponseEntity<?> create(){
+        return ResponseEntity.ok("");
+    }
 }

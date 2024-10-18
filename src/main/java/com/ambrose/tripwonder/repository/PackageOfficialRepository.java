@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface PackageOfficialRepository extends JpaRepository<PackageTour, Long>, JpaSpecificationExecutor<PackageTour> {
     Page<PackageTour> findAll(Pageable pageable);
     Page<PackageTour> findAll(Specification<PackageTour> specification, Pageable pageable);
+
+    PackageTour findPackageTourById(long packageTourId);
     
     
 

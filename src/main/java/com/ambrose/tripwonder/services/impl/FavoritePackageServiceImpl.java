@@ -3,6 +3,7 @@ package com.ambrose.tripwonder.services.impl;
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.CategoryDTO;
+import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.dto.PackageTourDTO;
 import com.ambrose.tripwonder.entities.Category;
 import com.ambrose.tripwonder.entities.FavoritePackage;
@@ -10,6 +11,7 @@ import com.ambrose.tripwonder.entities.PackageTour;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.repository.CategoryRepository;
 import com.ambrose.tripwonder.repository.FavoritePackageRepository;
+import com.ambrose.tripwonder.repository.PackageOfficialRepository;
 import com.ambrose.tripwonder.repository.PackageTourRepository;
 import com.ambrose.tripwonder.repository.UserRepository;
 import com.ambrose.tripwonder.services.FavoritePackageService;
@@ -30,6 +32,7 @@ public class FavoritePackageServiceImpl implements FavoritePackageService {
 
   private final FavoritePackageRepository favoritePackageRepository;
   private final PackageTourRepository packageTourRepository;
+  private final PackageOfficialRepository packageOfficialRepository;
   private final UserRepository userRepository;
   private final GenericConverter genericConverter;
 
@@ -44,12 +47,17 @@ public class FavoritePackageServiceImpl implements FavoritePackageService {
 //        packageTours.add(packageTour);
 //      }
 //      long count = packageTours.stream().count();
-      List<PackageTour> packageTours = favoritePackages
-          .getContent()
-          .stream()
-          .map(favoritePackage -> packageTourRepository.getPackageTourById(favoritePackage.getPackageId().getId()))
-          .collect(Collectors.toList());
-      List<PackageTourDTO> packageTourDTOS = convertPackageTourtoPackageTourDTO(packageTours);
+      List<PackageTour> packageTours =new ArrayList<>() ;
+      for (FavoritePackage favoritePackage:
+      favoritePackages
+          .getContent()) {
+        packageTours.add(favoritePackage.getPackageId());
+      }
+//          .stream()
+//          .map(favoritePackage -> packageOfficialRepository.findPackageTourById(favoritePackage.getPackageId().getId()))
+//          .collect(Collectors.toList());
+      List<PackageOfficialDTO> packageTourDTOS = packageTours.stream().map(x -> (PackageOfficialDTO) genericConverter.toDTO(x,PackageOfficialDTO.class)).collect(
+          Collectors.toList());
       return ResponseUtil.getCollection(packageTourDTOS, HttpStatus.OK, "Update Successfully", page, limit, favoritePackages.getTotalElements());
     }catch (Exception ex){
       ex.printStackTrace();
@@ -84,10 +92,10 @@ public class FavoritePackageServiceImpl implements FavoritePackageService {
     }
   }
 
-  public List<PackageTourDTO> convertPackageTourtoPackageTourDTO(List<PackageTour> packageTours){
-    List<PackageTourDTO> packageTourDTOS = new ArrayList<>();
+  public List<PackageOfficialDTO> convertPackageTourtoPackageTourDTO(List<PackageTour> packageTours){
+    List<PackageOfficialDTO> packageTourDTOS = new ArrayList<>();
     for (PackageTour packageTour : packageTours){
-      PackageTourDTO result = (PackageTourDTO) genericConverter.toDTO(packageTour, PackageTourDTO.class);
+      PackageOfficialDTO result = (PackageOfficialDTO) genericConverter.toDTO(packageTour, PackageOfficialDTO.class);
       packageTourDTOS.add(result);
     }
     return packageTourDTOS;

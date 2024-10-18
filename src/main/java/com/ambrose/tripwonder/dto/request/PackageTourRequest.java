@@ -22,9 +22,9 @@ public class PackageTourRequest {
     private String description;
     private String shortDescription;
     private double price;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")   
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")   
     private Date startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
     private Date endTime;
     private int attendance;
     private boolean status;

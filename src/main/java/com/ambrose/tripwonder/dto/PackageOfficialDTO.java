@@ -1,6 +1,7 @@
 package com.ambrose.tripwonder.dto;
 
 import com.ambrose.tripwonder.converter.GenericConverter;
+import com.ambrose.tripwonder.entities.Category;
 import com.ambrose.tripwonder.entities.Gallery;
 import com.ambrose.tripwonder.entities.Province;
 import com.ambrose.tripwonder.entities.RatingReview;
@@ -41,6 +42,9 @@ public class PackageOfficialDTO {
     private List<RatingReviewDto> ratingReviews;
     @Setter(AccessLevel.NONE)
     private List<GalleryDto> galleries;
+    @Setter(AccessLevel.NONE)
+    private String category;
+
 
     public void setProvince(Province province) {
         this.province = province.getName();
@@ -57,5 +61,9 @@ public class PackageOfficialDTO {
                 this.galleries.add(converterGallery.toDTO(gallery,GalleryDto.class));
             }
         }
+    }
+    
+    public void setCategory(Category category) {
+        this.category = category.getName();
     }
 }

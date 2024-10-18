@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString
+
 @Entity
 @Table(name = "tbl_favorite_package")
 public class FavoritePackage {
@@ -17,9 +17,11 @@ public class FavoritePackage {
 
     @ManyToOne
     @JoinColumn(name = "packageId")
+    @ToString.Exclude
     private PackageTour packageId;
 
     @ManyToOne
     @JoinColumn(name = "userId")
+    @ToString.Exclude
     private User user;
 }

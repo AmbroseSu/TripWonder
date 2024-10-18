@@ -7,7 +7,6 @@ import lombok.ToString;
 import java.util.Date;
 
 @Data
-@ToString
 @Entity
 @Table(name = "tbl_rating_review")
 public class RatingReview {
@@ -21,10 +20,12 @@ public class RatingReview {
 
     @ManyToOne
     @JoinColumn(name = "packageId")
+    @ToString.Exclude
     private PackageTour packageTour;
 
     @ManyToOne
     @JoinColumn(name = "userId")
+    @ToString.Exclude
     private User user;
 
 }

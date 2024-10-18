@@ -7,7 +7,6 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
-@ToString
 @Entity
 @Table(name = "tbl_category")
 public class Category {

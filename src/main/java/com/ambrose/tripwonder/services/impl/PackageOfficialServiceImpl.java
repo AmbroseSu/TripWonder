@@ -2,6 +2,7 @@ package com.ambrose.tripwonder.services.impl;
 
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
+import com.ambrose.tripwonder.dto.GalleryDto;
 import com.ambrose.tripwonder.dto.PackageOfficialAdminDTO;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.dto.request.PackageTourRequest;
@@ -30,6 +31,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -111,17 +115,34 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         return null;
     }
     
+    private String getNameFile(String url){
+        String decodedUrl = url.replace("%2F", "/");
+
+        // Sử dụng regex để tìm tên tệp
+        String regex = "([^/]+\\.png)(?=[^/]*$)"; // Tìm 'cat4.png' trong đường dẫn
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(decodedUrl);
+        String fileName ;
+
+        if (matcher.find()) {
+            fileName = matcher.group(1);
+        } else {
+            fileName = UUID.randomUUID().toString();
+        }
+        return fileName;
+    }
+    
     @Override
     @Transactional
     public ResponseEntity<?> create(PackageTourRequest packageTourRequest) throws IOException {
         
-        List<File> files = packageTourRequest.getGalleries();
+        List<String> galleryDtos = packageTourRequest.getGalleries();
         List<Gallery> galleries = new ArrayList<>();
         
-        for (File file : files) {
+        for (String file : galleryDtos) {
             Gallery gallery = new Gallery();
-            gallery.setName(file.getName());
-            gallery.setImageUrl(firebaseService.upload(file));
+            gallery.setName(getNameFile(file));
+            gallery.setImageUrl(file);
             gallery.setDeleted(false);
             galleries.add(gallery);
         }
@@ -159,12 +180,7 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
 
         // Lưu tất cả cùng lúc
         PackageTour savedPackageTour = packageOfficialRepository.save(packageTour);
-        for(File file : packageTourRequest.getGalleries()) {
-            if (file.exists()) {
-                // Xóa file
-                file.delete();
-            } 
-        }
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperToDto.toDTO(savedPackageTour, PackageOfficialDTO.class));
     }
 

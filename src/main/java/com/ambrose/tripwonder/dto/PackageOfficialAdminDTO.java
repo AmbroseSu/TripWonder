@@ -1,10 +1,7 @@
 package com.ambrose.tripwonder.dto;
 
 import com.ambrose.tripwonder.converter.GenericConverter;
-import com.ambrose.tripwonder.entities.Category;
-import com.ambrose.tripwonder.entities.Gallery;
-import com.ambrose.tripwonder.entities.Province;
-import com.ambrose.tripwonder.entities.RatingReview;
+import com.ambrose.tripwonder.entities.*;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
@@ -44,6 +41,7 @@ public class PackageOfficialAdminDTO {
     private List<GalleryDto> galleries;
     @Setter(AccessLevel.NONE)
     private String category;
+    private SupplierDTO supplier; 
 
 
     public void setProvince(Province province) {

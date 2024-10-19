@@ -151,7 +151,7 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         }
         galleryRepository.saveAll(galleries);
         ratingReviewRepository.saveAll(ratingReviews);
-        return ResponseEntity.status(HttpStatus.CREATED).body(packageTour1);
+        return ResponseEntity.status(HttpStatus.CREATED).body(getPackageOfficialById(packageTour1.getId()));
     }
 
     @Override

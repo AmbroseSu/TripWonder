@@ -16,7 +16,9 @@ import com.ambrose.tripwonder.repository.*;
 import com.ambrose.tripwonder.repository.specification.PackageSpecification;
 import com.ambrose.tripwonder.services.FirebaseService;
 import com.ambrose.tripwonder.services.PackageOfficialService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -110,6 +112,7 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     }
     
     @Override
+    @Transactional
     public ResponseEntity<?> create(PackageTourRequest packageTourRequest) throws IOException {
         
         List<File> files = packageTourRequest.getGalleries();
@@ -141,17 +144,28 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 .supplier(supplierRepository.findSuppliersById(packageTourRequest.getSupplierId()))
                 .shortDescription(packageTourRequest.getShortDescription())
                 .status(true)
+                .galleries(galleries)  // Thêm galleries trực tiếp vào đây
+                .ratingReviews(ratingReviews) // Thêm reviews trực tiếp vào đây
                 .build();
-        PackageTour packageTour1 = packageOfficialRepository.save(packageTour);
-        for(Gallery gallery : galleries) {
-            gallery.setPackageTour(packageTour1);
+
+        // Set liên kết tour trong Gallery và RatingReview
+        for (Gallery gallery : galleries) {
+            gallery.setPackageTour(packageTour);
+            
         }
-        for(RatingReview gallery : ratingReviews) {
-            gallery.setPackageTour(packageTour1);
+        for (RatingReview review : ratingReviews) {
+            review.setPackageTour(packageTour);
         }
-        galleryRepository.saveAll(galleries);
-        ratingReviewRepository.saveAll(ratingReviews);
-        return ResponseEntity.status(HttpStatus.CREATED).body(getPackageOfficialById(packageTour1.getId()));
+
+        // Lưu tất cả cùng lúc
+        PackageTour savedPackageTour = packageOfficialRepository.save(packageTour);
+        for(File file : packageTourRequest.getGalleries()) {
+            if (file.exists()) {
+                // Xóa file
+                file.delete();
+            } 
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapperToDto.toDTO(savedPackageTour, PackageOfficialDTO.class));
     }
 
     @Override

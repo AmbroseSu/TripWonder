@@ -132,9 +132,8 @@ public class PackageOfficialServiceController {
 //        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
 //    }
     
-    @PostMapping(value = "/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> create(@ModelAttribute PackageTourRequest request) throws IOException {
-        
+    @PostMapping(value = "/create")
+    public ResponseEntity<?> create(@RequestBody PackageTourRequest request) throws IOException {
         return packageOfficialService.create(request);
     }
 

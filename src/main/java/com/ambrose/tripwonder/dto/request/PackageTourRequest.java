@@ -1,5 +1,6 @@
 package com.ambrose.tripwonder.dto.request;
 
+import com.ambrose.tripwonder.dto.GalleryDto;
 import com.ambrose.tripwonder.entities.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -36,7 +37,7 @@ public class PackageTourRequest {
 
     private int ratingReviews;
     
-    private List<File> galleries;
+    private List<String> galleries;
     
     private UUID supplierId; // Quan hệ 1 Tour thuộc về 1 Supplier
     private Long staffId;

@@ -9,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +25,9 @@ public class PackageTourRequest {
     private String shortDescription;
     private double price;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")   
-    private Date startTime;
+    private LocalDateTime startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
-    private Date endTime;
+    private LocalDateTime endTime;
     private int attendance;
     private boolean status;
     private Long categoryId;

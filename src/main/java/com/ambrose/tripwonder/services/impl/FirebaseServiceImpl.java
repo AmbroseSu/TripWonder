@@ -37,14 +37,14 @@ public class FirebaseServiceImpl implements FirebaseService {
 
 //        InputStream inputStream = FirebaseService.class.getClassLoader().getResourceAsStream("firebase-private-key.json"); // change the file name with your one
         assert inputStream != null;
-        FirebaseOptions options = new FirebaseOptions.Builder()
-
-                .setCredentials(GoogleCredentials.fromStream(inputStream))
-
-                .build();
-
-
-        FirebaseApp.initializeApp(options);
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//
+//                .setCredentials(GoogleCredentials.fromStream(inputStream))
+//
+//                .build();
+//
+//
+//        FirebaseApp.initializeApp(options);
 
 //        Credentials credentials = GoogleCredentials.fromStream(inputStream);
         inputStream.close();

@@ -3,6 +3,8 @@ package com.ambrose.tripwonder.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class PackageTour {
     private String description;
     private String shortDescription;
     private double price;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private int attendance;
     private boolean status;
 

@@ -129,6 +129,8 @@
             <artifactId>firebase-admin</artifactId>
             <version>9.3.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
+       
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
         <dependency>

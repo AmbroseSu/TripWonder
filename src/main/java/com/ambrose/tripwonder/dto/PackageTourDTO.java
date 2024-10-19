@@ -1,5 +1,6 @@
 package com.ambrose.tripwonder.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,9 +15,8 @@ public class PackageTourDTO {
   private String description;
   private String shortDescription;
   private double price;
-  private Date startTime;
-  private Date endTime;
-  private Date date;
+  private LocalDateTime startTime;
+  private LocalDateTime endTime;
   private int attendance;
   private boolean status;
 }

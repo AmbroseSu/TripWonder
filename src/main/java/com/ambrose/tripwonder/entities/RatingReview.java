@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -16,7 +17,7 @@ public class RatingReview {
 
     private String feedback;
     private int rating;
-    private Date ratingDate;
+    private LocalDateTime ratingDate;
 
     @ManyToOne
     @JoinColumn(name = "packageId")

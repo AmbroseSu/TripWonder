@@ -8,6 +8,7 @@ import com.ambrose.tripwonder.entities.RatingReview;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,8 +33,8 @@ public class PackageOfficialDTO {
     private double price;
     private String description;
     private String shortDescription;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private int attendance;
     
     @Setter(AccessLevel.NONE)

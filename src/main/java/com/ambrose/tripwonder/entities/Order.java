@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Float totalPrice;
-    private Date orderDate;
-    private Date paymentDate;
+    private LocalDateTime orderDate;
+    private LocalDateTime paymentDate;
     private PaymentMethod paymentMethod;
     private boolean isDeleted;
 

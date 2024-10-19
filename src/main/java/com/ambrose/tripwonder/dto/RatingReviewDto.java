@@ -6,6 +6,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -17,7 +18,7 @@ public class RatingReviewDto {
     
     private String feedback;
     private int rating;
-    private Date ratingDate;
+    private LocalDateTime ratingDate;
     @Setter(AccessLevel.NONE)
     private UserDTO user; 
     

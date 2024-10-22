@@ -53,6 +53,8 @@ public class User implements UserDetails {
     private List<RatingReview> ratingReviews;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<FavoritePackage> favoritePackages;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Cart> carts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -82,6 +82,7 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<?> deleteTourInCart(Long cartId) {
         Optional<Cart> cart = cartRepository.findById(cartId);
         cart.ifPresent(cart2 -> cart2.setQuantity(cart2.getQuantity()-1));
+        cartRepository.save(cart.get());
         return ResponseEntity.ok("Deleted");
     }
 
@@ -89,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<?> deleteAllCart(Long cartId) {
         Optional<Cart> cart = cartRepository.findById(cartId);
         cart.ifPresent(cartRepository::delete);
+        cartRepository.save(cart.get());
         return ResponseEntity.ok("Deleted");
     }
     

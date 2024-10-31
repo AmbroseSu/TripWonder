@@ -37,4 +37,19 @@ public class DashboardController {
     public ResponseEntity<?> totalOrders() {
         return ResponseUtil.getObject(dashboardService.totalOrder(),HttpStatus.OK,"Total Orders");
     }
+    
+    @GetMapping("/totalGender")
+    public ResponseEntity<?> totalGender() {
+        return ResponseUtil.getObject(dashboardService.getGenders(), HttpStatus.OK,"Total Gender");
+    }
+    
+    @GetMapping("/topFiveOrder")
+    public ResponseEntity<?> topFiveOrder() {
+        return ResponseUtil.getObject(dashboardService.getTopFiveOrders(), HttpStatus.OK,"Top Five Orders");
+    }
+    
+    @GetMapping("/topFiveTours")
+    public ResponseEntity<?> topFiveTours() {
+        return ResponseUtil.getObject(dashboardService.getTopFivePackageTours(), HttpStatus.OK,"Top Five Tours");
+    }
 }

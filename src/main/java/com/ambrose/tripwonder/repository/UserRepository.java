@@ -1,6 +1,7 @@
 package com.ambrose.tripwonder.repository;
 
 import com.ambrose.tripwonder.entities.User;
+import com.ambrose.tripwonder.entities.enums.Gender;
 import com.ambrose.tripwonder.entities.enums.Role;
 
 import java.util.List;
@@ -40,5 +41,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT us FROM User us WHERE us.email LIKE :email")
     User findUserByEmail(String email);
-
+    
+    @Query("select u from User u where u.isDelete = false and u.isEnabled = true and u.gender = :gender")
+    List<User> findAlLGender(Gender gender);
 }

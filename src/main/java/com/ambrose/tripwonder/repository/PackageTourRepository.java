@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface PackageTourRepository extends JpaRepository<PackageTour, String> {
 
   PackageTour getPackageTourById(Long packageId);
-
+  List<PackageTour> findAllByStatus(boolean status);
 }

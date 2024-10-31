@@ -53,10 +53,14 @@ public class OrderController {
         return orderService.deleteAllCart(cardId);
     }
     
-    @PostMapping("/checkout/{userId}")
-    public ResponseEntity<?> checkout(@PathVariable("userId") long userId, @RequestParam PaymentMethod paymentMethod) {
-        return orderService.checkOutCart(userId,paymentMethod);
+    @GetMapping("/checkStatus")
+    public ResponseEntity<?> checkStatus(@RequestParam long orderCode){
+        return orderService.getStatusOrder(orderCode);
     }
+//    @PostMapping("/checkout/{userId}")
+//    public ResponseEntity<?> checkout(@PathVariable("userId") long userId, @RequestParam PaymentMethod paymentMethod) {
+//        return orderService.checkOutCart(userId,paymentMethod);
+//    }
     
     
 }

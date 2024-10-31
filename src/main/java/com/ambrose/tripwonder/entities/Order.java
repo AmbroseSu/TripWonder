@@ -23,6 +23,7 @@ public class Order {
     @Setter(AccessLevel.NONE)
     private Double totalPrice = 0.0;
     private LocalDateTime orderDate;
+    private long orderCode;
     private LocalDateTime paymentDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;

@@ -9,6 +9,7 @@ public interface OrderService {
     ResponseEntity<?> addToCard(Long userId, Long tourId);
     ResponseEntity<?> getAllCart(long userId, Pageable pageable);
     ResponseEntity<?> deleteTourInCart(Long cartId);
-    ResponseEntity<?> checkOutCart(Long userId, PaymentMethod paymentMethod);
+//    ResponseEntity<?> checkOutCart(Long userId, PaymentMethod paymentMethod);
     ResponseEntity<?> deleteAllCart(Long cartId);
+    ResponseEntity<?> getStatusOrder(Long orderCode);
 }

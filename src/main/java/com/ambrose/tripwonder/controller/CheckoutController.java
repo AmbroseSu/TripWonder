@@ -2,6 +2,7 @@ package com.ambrose.tripwonder.controller;
 
 import java.util.Date;
 
+import com.ambrose.tripwonder.services.CheckOutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,61 +19,34 @@ import vn.payos.type.PaymentData;
 @CrossOrigin
 @RequiredArgsConstructor
 public class CheckoutController {
-    private final PayOS payOS;
+    
+    private final CheckOutService checkoutService;
     
     @GetMapping("/success")
-    public ResponseEntity<?> success(
+    public void success(
             @RequestParam String code,
             @RequestParam String id,
             @RequestParam boolean cancel,
             @RequestParam String status,
-            @RequestParam String orderCode
+            @RequestParam long orderCode
     ){
-        return ResponseEntity.ok(code + " " + id + " " + cancel + " " + status + " " + orderCode);
+        checkoutService.successfulCheckout(orderCode);
     }
 
     @GetMapping("/cancel")
-    public ResponseEntity<?> cancel(
+    public void cancel(
             @RequestParam String code,
             @RequestParam String id,
             @RequestParam boolean cancel,
             @RequestParam String status,
-            @RequestParam String orderCode
+            @RequestParam long orderCode
     ){
-        return ResponseEntity.ok(code + " " + id + " " + cancel + " " + status + " " + orderCode);
+        checkoutService.failedCheckout(orderCode);
     }
     
-    @RequestMapping(method = RequestMethod.POST, value = "/create-payment-link")
-    public ResponseEntity<?> checkout(HttpServletRequest request, HttpServletResponse httpServletResponse,long userId) throws Exception {
-            final String baseUrl = getBaseUrl(request);
-            final String productName = "Mì tôm hảo hảo ly";
-            final String description = "Thanh toan don hang";
-            final String returnUrl = baseUrl + "/success";
-            final String cancelUrl = baseUrl + "/cancel";
-            final int price = 2000;
-            // Gen order code
-            String currentTimeString = String.valueOf(new Date().getTime());
-            long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
-            ItemData item = ItemData.builder().name(productName).quantity(1).price(price).build();
-            PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(price).description(description)
-                    .returnUrl(returnUrl).cancelUrl(cancelUrl).item(item).build();
-            CheckoutResponseData data = payOS.createPaymentLink(paymentData);
-
-            String checkoutUrl = data.getCheckoutUrl();
-
-            httpServletResponse.setHeader("Location", checkoutUrl);
-            httpServletResponse.setStatus(302);
-            return ResponseEntity.ok(data);
+    @PostMapping( "/linkPay")
+    public ResponseEntity<?> checkout(HttpServletRequest request,long userId) throws Exception {
+        return checkoutService.getLink(request, userId);
     }
-
-    private String getBaseUrl(HttpServletRequest request) {
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
-        String contextPath = request.getContextPath();
-        
-        String url = scheme + "://" + serverName + (serverPort > 0 ? ":"+ serverPort  : "") + contextPath+"/api/v1/checkout";
-       
-        return url;
-    }
+    
 }

@@ -93,39 +93,49 @@ public class OrderServiceImpl implements OrderService {
         cartRepository.save(cart.get());
         return ResponseEntity.ok("Deleted");
     }
-    
+
     @Override
-    public ResponseEntity<?> checkOutCart(Long userId, PaymentMethod paymentMethod){
-        List<Cart> carts = cartRepository.findAllByUserUserId(userId);
-        User user = userRepository.findUserById(userId);
-        Order order = new Order();
-        List<OrderDetail> orderDetails = new ArrayList<>();
-        for(Cart cart : carts) {
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setPackageTour(cart.getPackageTour());
-            orderDetail.setQuantity(cart.getQuantity());
-            
-            orderDetails.add(orderDetail);
-            cartRepository.delete(cart);
+    public ResponseEntity<?> getStatusOrder(Long orderCode) {
+        Order order = orderRepository.findByOrderCode(orderCode).orElse(null);
+        if (order == null) {
+            return null;
         }
-        order.setOrderDetails(orderDetails);
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(Payment.WAITING);
-        order.setPaymentMethod(paymentMethod);
-        order.setUser(user);
-        
-        return ResponseEntity.ok(generateCode(orderRepository.save(order).getId()));
+        else 
+            return ResponseUtil.getObject(order.getStatus(),HttpStatus.OK,"Status");
     }
+
+//    @Override
+//    public ResponseEntity<?> checkOutCart(Long userId, PaymentMethod paymentMethod){
+//        List<Cart> carts = cartRepository.findAllByUserUserId(userId);
+//        User user = userRepository.findUserById(userId);
+//        Order order = new Order();
+//        List<OrderDetail> orderDetails = new ArrayList<>();
+//        for(Cart cart : carts) {
+//            OrderDetail orderDetail = new OrderDetail();
+//            orderDetail.setPackageTour(cart.getPackageTour());
+//            orderDetail.setQuantity(cart.getQuantity());
+//            
+//            orderDetails.add(orderDetail);
+//            cartRepository.delete(cart);
+//        }
+//        order.setOrderDetails(orderDetails);
+//        order.setOrderDate(LocalDateTime.now());
+//        order.setStatus(Payment.WAITING);
+//        order.setPaymentMethod(paymentMethod);
+//        order.setUser(user);
+//        
+//        return ResponseEntity.ok(generateCode(orderRepository.save(order).getId()));
+//    }
     
-    private String generateCode(Long id){
-        String header = "TW";
-        String hex = Long.toHexString(id);
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < 8-hex.length(); i++) {
-            result.append("0");
-        }
-        result.append(hex);
-        header += result;
-        return header;
-    }
+//    private String generateCode(Long id){
+//        String header = "TW";
+//        String hex = Long.toHexString(id);
+//        StringBuilder result = new StringBuilder();
+//        for (int i = 0; i < 8-hex.length(); i++) {
+//            result.append("0");
+//        }
+//        result.append(hex);
+//        header += result;
+//        return header;
+//    }
 }

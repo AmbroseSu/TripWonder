@@ -18,9 +18,9 @@ public class OrderDto {
     @Enumerated(EnumType.STRING)
     private Payment status;
     @Setter(AccessLevel.NONE)
-    private String userName;
+    private String name;
     
-    public void setUserName(User user){
-        userName = user.getFullname();
+    public void setUser(User user){
+        name = user.getFullname();
     }
 }

@@ -15,11 +15,15 @@ public interface PackageOfficialRepository extends JpaRepository<PackageTour, Lo
     Page<PackageTour> findAll(Specification<PackageTour> specification, Pageable pageable);
 
     PackageTour findPackageTourById(long packageOfficialId);
-    @Query("SELECT t.id AS tourId, t.name AS tourName, AVG(r.rating) AS avgRating " +
-            "FROM PackageTour t JOIN RatingReview r ON t.id = r.packageTour.id " +
-            "GROUP BY t.id, t.name " +
+    @Query("SELECT t.id AS tourId, t.name AS tourName, AVG(r.rating) AS avgRating, g.imageUrl AS galleryUrl,t.price as price " +
+            "FROM PackageTour t " +
+            "JOIN RatingReview r ON t.id = r.packageTour.id " +
+            "JOIN Gallery g ON g.packageTour.id = t.id " +
+            "GROUP BY t.id, t.name, g.imageUrl " +
             "ORDER BY avgRating DESC")
-    List<PackageTour> findTop5ToursWithHighestAvgRating(Pageable pageable);
+
+    List<Object[]> findTop5ToursWithHighestAvgRating(Pageable pageable);
+    //id anh ten ratting gia tien
 
 
 }

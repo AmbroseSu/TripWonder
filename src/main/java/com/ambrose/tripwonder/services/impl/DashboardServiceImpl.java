@@ -11,16 +11,11 @@ import com.ambrose.tripwonder.entities.enums.Gender;
 import com.ambrose.tripwonder.entities.enums.Payment;
 import com.ambrose.tripwonder.repository.*;
 import com.ambrose.tripwonder.services.DashboardService;
-import com.ambrose.tripwonder.services.OrderService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -82,8 +77,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
     
     @Override
-    public List<PackageTourDTO> getTopFivePackageTours() {
-        List<PackageTour> packageTours = packageOfficialRepository.findTop5ToursWithHighestAvgRating(PageRequest.of(0,5));
-        return packageTours.stream().map(x -> mapperPackageDto.toDTO(x, PackageTourDTO.class)).toList();
+    public List<Object[]> getTopFivePackageTours() {
+        return packageOfficialRepository.findTop5ToursWithHighestAvgRating(PageRequest.of(0,5));
     }
 }

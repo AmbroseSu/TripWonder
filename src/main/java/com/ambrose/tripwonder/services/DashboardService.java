@@ -2,7 +2,6 @@ package com.ambrose.tripwonder.services;
 
 
 import com.ambrose.tripwonder.dto.OrderDto;
-import com.ambrose.tripwonder.dto.PackageTourDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -14,5 +13,5 @@ public interface DashboardService {
     Long totalOrder();
     Map<String,Integer> getGenders();
     List<OrderDto> getTopFiveOrders();
-    List<PackageTourDTO> getTopFivePackageTours();
+    List<Object[]> getTopFivePackageTours();
 }

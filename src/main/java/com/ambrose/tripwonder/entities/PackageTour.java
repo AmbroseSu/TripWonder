@@ -49,6 +49,9 @@ public class PackageTour {
 
     @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
+    
+    @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TourLocation> tourLocations;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)

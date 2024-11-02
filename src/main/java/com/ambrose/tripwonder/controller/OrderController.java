@@ -57,6 +57,12 @@ public class OrderController {
     public ResponseEntity<?> checkStatus(@RequestParam long orderCode){
         return orderService.getStatusOrder(orderCode);
     }
+    
+    //TODO fix this
+    @GetMapping("/getAllOrder")
+    public ResponseEntity<?> getAllOrder(@RequestParam long userId){
+        return orderService.getAllOrder(userId);
+    }
 //    @PostMapping("/checkout/{userId}")
 //    public ResponseEntity<?> checkout(@PathVariable("userId") long userId, @RequestParam PaymentMethod paymentMethod) {
 //        return orderService.checkOutCart(userId,paymentMethod);

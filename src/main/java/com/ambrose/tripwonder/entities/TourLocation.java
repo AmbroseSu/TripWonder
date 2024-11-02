@@ -21,6 +21,7 @@ public class TourLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalTime startTime;
@@ -30,7 +31,12 @@ public class TourLocation {
     private String facilitate;
     private Double latitude;
     private Double longitude;
-    
+
+    @ManyToOne
+    @JoinColumn(name = "package_id")
+    @ToString.Exclude
+    private PackageTour packageTour;
+
     public void setFacilitate(List<String> facilitate) {
         StringBuilder sb = new StringBuilder();
         for (String fac : facilitate) {
@@ -46,10 +52,7 @@ public class TourLocation {
         return new ArrayList<>(Arrays.asList(facArrArr));
     }
 
-    @ManyToOne
-    @JoinColumn(name = "package_id")
-    @ToString.Exclude
-    private PackageTour packageTour;    
+    
 }
 /*
 - name

@@ -3,6 +3,7 @@ package com.ambrose.tripwonder.services.impl;
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.CartDto;
+import com.ambrose.tripwonder.dto.OrderGetAllDto;
 import com.ambrose.tripwonder.entities.*;
 import com.ambrose.tripwonder.entities.enums.Payment;
 import com.ambrose.tripwonder.entities.enums.PaymentMethod;
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     
     private final GenericConverter<CartDto> cartDtoGenericConverter;
+    private final GenericConverter<OrderGetAllDto> orderGetAllDtoGenericConverter;
     
     @Override
     public ResponseEntity<?> addToCard(Long userId, Long tourId) {
@@ -101,6 +103,22 @@ public class OrderServiceImpl implements OrderService {
         }
         else 
             return ResponseUtil.getObject(order.getStatus(),HttpStatus.OK,"Status");
+    }
+    
+    public ResponseEntity<?> getAllOrder(long userId){
+        List<Object[]> results = orderDetailRepository.findPackageToursByUserId(userId);
+        List<Long> orderCodes = new ArrayList<>();
+        List<PackageTour> packageTours = new ArrayList<>();
+        for (Object[] result : results) {
+            packageTours.add((PackageTour) result[0]);
+            orderCodes.add((Long) result[1]);
+        }
+        List<OrderGetAllDto> orderGetAllDtos =  packageTours.stream()
+                .map(x -> orderGetAllDtoGenericConverter.toDTO(x, OrderGetAllDto.class)).toList();
+        for(int i =0;i<orderGetAllDtos.size();i++){
+            orderGetAllDtos.get(i).setOrderCode(orderCodes.get(i));
+        }
+        return ResponseUtil.getCollection(orderGetAllDtos,HttpStatus.OK,"",0,0,0);
     }
 
 //    @Override

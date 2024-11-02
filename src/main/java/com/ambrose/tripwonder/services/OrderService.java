@@ -12,4 +12,5 @@ public interface OrderService {
 //    ResponseEntity<?> checkOutCart(Long userId, PaymentMethod paymentMethod);
     ResponseEntity<?> deleteAllCart(Long cartId);
     ResponseEntity<?> getStatusOrder(Long orderCode);
+    ResponseEntity<?> getAllOrder(long userId);
 }

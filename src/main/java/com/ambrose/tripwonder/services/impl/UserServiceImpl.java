@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -154,7 +155,15 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  public ResponseEntity<?> getUserById(long userId) {
+    @Override
+    public ResponseEntity<?> findAll(int page, int limit) {
+        Pageable pageable = PageRequest.of(page - 1, limit);
+        Page<User> users = userRepository.findAll(pageable);
+        Page<UserDTO> upsertUserDTOS = users.map(x -> ((UserDTO)genericConverter.toDTO(x,UserDTO.class)));
+        return null;
+    }
+
+    public ResponseEntity<?> getUserById(long userId) {
     try {
       User user = userRepository.findUserById(userId);
       UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);

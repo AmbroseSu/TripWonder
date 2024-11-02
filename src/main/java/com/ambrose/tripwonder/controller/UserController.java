@@ -45,4 +45,5 @@ public class UserController {
   public ResponseEntity<?> getUserById(@RequestParam(value = "userId") int userId){
     return userService.getUserById(userId);
   }
+  
 }

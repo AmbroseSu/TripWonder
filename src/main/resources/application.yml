@@ -2,6 +2,9 @@ payos:
   client-id: ${PAYOS_CLIENT_ID}
   api-key: ${PAYOS_API_KEY}
   checksum-key: ${PAYOS_CHECKSUM_KEY}
+fe:
+  success: https://tripwonder-success-payment.vercel.app/
+  cancel: https://tripwonder-cancel-payment.vercel.app/
 spring:
   #  datasource:
   #    url: jdbc:postgresql://localhost:5432/TripWonder

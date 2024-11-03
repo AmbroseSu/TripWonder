@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class OrderGetAllDto {
+    private Long id;
     private String name;
     @Setter(AccessLevel.NONE)
     private String state;

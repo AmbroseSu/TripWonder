@@ -1,5 +1,6 @@
 package com.ambrose.tripwonder.dto.request;
 
+import com.ambrose.tripwonder.dto.LocationDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,5 @@ public class PackageTourRequest {
 
     private UUID supplierId; // Quan hệ 1 Tour thuộc về 1 Supplier
     private Long staffId;
+    private List<LocationRequest> locations;
 }

@@ -5,6 +5,7 @@ import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.LocationDto;
 import com.ambrose.tripwonder.dto.PackageOfficialAdminDTO;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
+import com.ambrose.tripwonder.dto.request.LocationRequest;
 import com.ambrose.tripwonder.dto.request.PackageTourRequest;
 import com.ambrose.tripwonder.entities.Gallery;
 import com.ambrose.tripwonder.entities.PackageTour;
@@ -143,7 +144,11 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
             gallery.setDeleted(false);
             galleries.add(gallery);
         }
-
+        List<TourLocation> tourLocations = new ArrayList<>();
+        for(LocationRequest locationRequest : packageTourRequest.getLocations()) {
+            TourLocation tourLocation = getTourLocation(locationRequest);
+            tourLocations.add(tourLocation);
+        }
         RatingReview ratingReview = new RatingReview();
         ratingReview.setRating(packageTourRequest.getRatingReviews());
         ratingReview.setFeedback("");
@@ -164,12 +169,16 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 .status(true)
                 .galleries(galleries)  // Thêm galleries trực tiếp vào đây
                 .ratingReviews(ratingReviews) // Thêm reviews trực tiếp vào đây
+                .tourLocations(tourLocations)
                 .build();
 
         // Set liên kết tour trong Gallery và RatingReview
         for (Gallery gallery : galleries) {
             gallery.setPackageTour(packageTour);
 
+        }
+        for (TourLocation tourLocation : tourLocations) {
+            tourLocation.setPackageTour(packageTour);
         }
         for (RatingReview review : ratingReviews) {
             review.setPackageTour(packageTour);
@@ -179,6 +188,19 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         PackageTour savedPackageTour = packageOfficialRepository.save(packageTour);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperToDto.toDTO(savedPackageTour, PackageOfficialDTO.class));
+    }
+
+    private static TourLocation getTourLocation(LocationRequest locationRequest) {
+        TourLocation tourLocation = new TourLocation();
+        tourLocation.setLatitude(locationRequest.getLatitude());
+        tourLocation.setLongitude(locationRequest.getLongitude());
+        tourLocation.setName(locationRequest.getName());
+        tourLocation.setFacilitate(locationRequest.getFacilitate());
+        tourLocation.setEndDate(locationRequest.getEndTime().toLocalDate());
+        tourLocation.setStartDate(locationRequest.getStartTime().toLocalDate());
+        tourLocation.setEndTime(locationRequest.getEndTime().toLocalTime());
+        tourLocation.setStartTime(locationRequest.getStartTime().toLocalTime());
+        return tourLocation;
     }
 
     @Override

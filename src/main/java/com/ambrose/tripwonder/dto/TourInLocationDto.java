@@ -3,6 +3,7 @@ package com.ambrose.tripwonder.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class TourInLocationDto {
@@ -13,6 +14,7 @@ public class TourInLocationDto {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private CategoryDTO category;
+    private List<GalleryDto> galleries;
     
     
      /*

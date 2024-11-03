@@ -45,7 +45,7 @@ public class LocationDto {
 
     public void setPackageTour(TourInLocationDto packageTour) {
         this.packageTour = packageTour;
-        if (startDate != null && endDate != null && packageTour != null) {
+        if (startDate != null && endDate != null) {
             setDays();
         }
     }
@@ -53,8 +53,8 @@ public class LocationDto {
     private void setDays() {
         LocalDate start = packageTour.getStartTime().toLocalDate();
         LocalDate end = packageTour.getEndTime().toLocalDate();
-        long numberDayStart = ChronoUnit.DAYS.between(start, startDate);
-        long numberDay = ChronoUnit.DAYS.between(startDate, endDate);
+        long numberDayStart = ChronoUnit.DAYS.between(start, startDate)+1;
+        long numberDay = ChronoUnit.DAYS.between(startDate, endDate)+1;
         days = new ArrayList<>();
         for (long i = 0; i < numberDay; i++) {
             days.add((int) (numberDayStart + i));

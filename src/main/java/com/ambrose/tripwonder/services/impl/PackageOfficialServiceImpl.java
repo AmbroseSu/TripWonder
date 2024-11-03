@@ -2,16 +2,14 @@ package com.ambrose.tripwonder.services.impl;
 
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
-import com.ambrose.tripwonder.dto.GalleryDto;
+import com.ambrose.tripwonder.dto.LocationDto;
 import com.ambrose.tripwonder.dto.PackageOfficialAdminDTO;
 import com.ambrose.tripwonder.dto.PackageOfficialDTO;
 import com.ambrose.tripwonder.dto.request.PackageTourRequest;
 import com.ambrose.tripwonder.entities.Gallery;
 import com.ambrose.tripwonder.entities.PackageTour;
 import com.ambrose.tripwonder.entities.RatingReview;
-import com.ambrose.tripwonder.entities.FavoritePackage;
-import com.ambrose.tripwonder.entities.PackageTour;
-import com.ambrose.tripwonder.entities.User;
+import com.ambrose.tripwonder.entities.TourLocation;
 import com.ambrose.tripwonder.entities.enums.FilterBy;
 import com.ambrose.tripwonder.repository.*;
 import com.ambrose.tripwonder.repository.specification.PackageSpecification;
@@ -19,7 +17,6 @@ import com.ambrose.tripwonder.services.FirebaseService;
 import com.ambrose.tripwonder.services.PackageOfficialService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -29,9 +26,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -49,8 +46,8 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     private final RatingReviewRepository ratingReviewRepository;
     private final UserRepository userRepository;
     private final GenericConverter<PackageOfficialAdminDTO> mapperAdminToDto;
-    
-    
+    private final GenericConverter<LocationDto> mapperLocationToDto;
+
     @Override
     public PackageOfficialDTO findOne(long id) {
         return null;
@@ -83,9 +80,9 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 .and(PackageSpecification.priceBetween(filterBy.getMinPrice(), filterBy.getMaxPrice())); // Lọc theo khoảng giá
         Page<PackageTour> page = packageOfficialRepository.findAll(specification, pageable);
         Page<PackageOfficialDTO> pageDTOS = page.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
-        
+
         // Trả về dữ liệu phân trang và lọc theo điều kiện
-        return  ResponseUtil.getCollection(pageDTOS,
+        return ResponseUtil.getCollection(pageDTOS,
                 HttpStatus.OK,
                 "ok",
                 pageable.getPageNumber(),
@@ -99,7 +96,7 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 .where(PackageSpecification.hasNameLike(query));
         Page<PackageTour> page = packageOfficialRepository.findAll(specification, pageable);
         Page<PackageOfficialDTO> packageOfficialDTOS = page.map(obj -> mapperToDto.toDTO(obj, PackageOfficialDTO.class));
-        
+
         return ResponseUtil.getCollection(
                 packageOfficialDTOS,
                 HttpStatus.OK,
@@ -114,15 +111,15 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
     public ResponseEntity<?> create(File file) {
         return null;
     }
-    
-    private String getNameFile(String url){
+
+    private String getNameFile(String url) {
         String decodedUrl = url.replace("%2F", "/");
 
         // Sử dụng regex để tìm tên tệp
         String regex = "([^/]+\\.png)(?=[^/]*$)"; // Tìm 'cat4.png' trong đường dẫn
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(decodedUrl);
-        String fileName ;
+        String fileName;
 
         if (matcher.find()) {
             fileName = matcher.group(1);
@@ -131,14 +128,14 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         }
         return fileName;
     }
-    
+
     @Override
     @Transactional
     public ResponseEntity<?> create(PackageTourRequest packageTourRequest) throws IOException {
-        
+
         List<String> galleryDtos = packageTourRequest.getGalleries();
         List<Gallery> galleries = new ArrayList<>();
-        
+
         for (String file : galleryDtos) {
             Gallery gallery = new Gallery();
             gallery.setName(getNameFile(file));
@@ -172,7 +169,7 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         // Set liên kết tour trong Gallery và RatingReview
         for (Gallery gallery : galleries) {
             gallery.setPackageTour(packageTour);
-            
+
         }
         for (RatingReview review : ratingReviews) {
             review.setPackageTour(packageTour);
@@ -180,22 +177,22 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
 
         // Lưu tất cả cùng lúc
         PackageTour savedPackageTour = packageOfficialRepository.save(packageTour);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperToDto.toDTO(savedPackageTour, PackageOfficialDTO.class));
     }
 
     @Override
     public ResponseEntity<?> getPackageOfficialById(long packageOfficialId) {
-        try{
+        try {
             PackageTour packageTour = packageOfficialRepository.findPackageTourById(packageOfficialId);
-            if (packageTour == null){
+            if (packageTour == null) {
                 return ResponseUtil.error("Package Tour not exists", "Faild", HttpStatus.BAD_REQUEST);
             }
             PackageOfficialDTO packageOfficialDTO = mapperToDto.toDTO(packageTour, PackageOfficialDTO.class);
             return ResponseUtil.getObject(packageOfficialDTO, HttpStatus.CREATED, "Successfully Create");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-            return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+            return ResponseUtil.error(ex.getMessage(), "Failed", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -211,6 +208,18 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
                 packageOfficials.getTotalElements());
     }
 
+    public ResponseEntity<?> getAllDetailTour(long tourId) {
+        List<TourLocation> tourLocations = packageOfficialRepository.findAllTourLocations(tourId);
+        PackageTour packageTour = packageOfficialRepository.findPackageTourById(tourId);
+        LocalDateTime startTime = packageTour.getStartTime();
+        LocalDateTime endTime = packageTour.getEndTime();
+        long totalDay = ChronoUnit.DAYS.between(startTime, endTime);
+        List<LocationDto> locationDtos = tourLocations.stream()
+                .map(x -> mapperLocationToDto.toDTO(x, LocationDto.class)).toList();
+        Map<Long, List<LocationDto>> listMap = new LinkedHashMap<>();
+        listMap.put(totalDay, locationDtos);
+        return ResponseUtil.getCollection(listMap, HttpStatus.OK, "totalDay,List location", 0, 0, 0);
+    }
 }
     
 

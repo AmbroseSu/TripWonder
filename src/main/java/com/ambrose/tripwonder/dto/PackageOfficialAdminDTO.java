@@ -1,7 +1,10 @@
 package com.ambrose.tripwonder.dto;
 
 import com.ambrose.tripwonder.converter.GenericConverter;
-import com.ambrose.tripwonder.entities.*;
+import com.ambrose.tripwonder.entities.Category;
+import com.ambrose.tripwonder.entities.Gallery;
+import com.ambrose.tripwonder.entities.Province;
+import com.ambrose.tripwonder.entities.RatingReview;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
@@ -17,11 +20,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 
 public class PackageOfficialAdminDTO {
-    
+
     @Getter(AccessLevel.NONE)
     private final GenericConverter<RatingReviewDto> converterRatingReview = new GenericConverter<RatingReviewDto>(new ModelMapper());
     @Getter(AccessLevel.NONE)
-    private final GenericConverter<GalleryDto> converterGallery= new GenericConverter<GalleryDto>(new ModelMapper());
+    private final GenericConverter<GalleryDto> converterGallery = new GenericConverter<GalleryDto>(new ModelMapper());
 
     private boolean status;
     private Long id;
@@ -32,7 +35,7 @@ public class PackageOfficialAdminDTO {
     private Date startTime;
     private Date endTime;
     private int attendance;
-    
+
     @Setter(AccessLevel.NONE)
     private String province;
     @Setter(AccessLevel.NONE)
@@ -41,26 +44,28 @@ public class PackageOfficialAdminDTO {
     private List<GalleryDto> galleries;
     @Setter(AccessLevel.NONE)
     private String category;
-    private SupplierDTO supplier; 
+    private SupplierDTO supplier;
 
 
     public void setProvince(Province province) {
         this.province = province.getName();
     }
+
     public void setRatingReviews(List<RatingReview> ratingReviews) {
         this.ratingReviews = ratingReviews.stream().
-                map(ratingReview -> converterRatingReview.toDTO(ratingReview,RatingReviewDto.class))
+                map(ratingReview -> converterRatingReview.toDTO(ratingReview, RatingReviewDto.class))
                 .collect(Collectors.toList());
     }
+
     public void setGalleries(List<Gallery> gallerys) {
         this.galleries = new ArrayList<>();
         for (Gallery gallery : gallerys) {
-            if(!gallery.isDeleted()) {
-                this.galleries.add(converterGallery.toDTO(gallery,GalleryDto.class));
+            if (!gallery.isDeleted()) {
+                this.galleries.add(converterGallery.toDTO(gallery, GalleryDto.class));
             }
         }
     }
-    
+
     public void setCategory(Category category) {
         this.category = category.getName();
     }

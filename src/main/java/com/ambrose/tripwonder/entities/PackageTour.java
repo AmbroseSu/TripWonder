@@ -3,9 +3,7 @@ package com.ambrose.tripwonder.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -49,7 +47,7 @@ public class PackageTour {
 
     @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
-    
+
     @OneToMany(mappedBy = "packageTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TourLocation> tourLocations;
 
@@ -57,7 +55,6 @@ public class PackageTour {
     @JoinColumn(name = "supplier_id", nullable = false)
     @ToString.Exclude
     private Supplier supplier; // Quan hệ 1 Tour thuộc về 1 Supplier
-
 
 
 }

@@ -15,41 +15,41 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RequiredArgsConstructor
 public class DashboardController {
-    
+
     private final DashboardService dashboardService;
-    
+
     @GetMapping("/totalRevenues")
     public ResponseEntity<?> totalRevenues() {
-        return ResponseUtil.getObject(dashboardService.totalRevenues(), HttpStatus.OK,"Total Revenues");
+        return ResponseUtil.getObject(dashboardService.totalRevenues(), HttpStatus.OK, "Total Revenues");
     }
-    
+
     @GetMapping("/totalSuppliers")
     public ResponseEntity<?> totalSuppliers() {
-        return ResponseUtil.getObject(dashboardService.totalSupplier(), HttpStatus.OK,"Total Suppliers");
+        return ResponseUtil.getObject(dashboardService.totalSupplier(), HttpStatus.OK, "Total Suppliers");
     }
-    
+
     @GetMapping("/totalTours")
     public ResponseEntity<?> totalTours() {
-        return ResponseUtil.getObject(dashboardService.totalPackageTour(),HttpStatus.OK,"Total Tours");
+        return ResponseUtil.getObject(dashboardService.totalPackageTour(), HttpStatus.OK, "Total Tours");
     }
-    
+
     @GetMapping("/totalOrders")
     public ResponseEntity<?> totalOrders() {
-        return ResponseUtil.getObject(dashboardService.totalOrder(),HttpStatus.OK,"Total Orders");
+        return ResponseUtil.getObject(dashboardService.totalOrder(), HttpStatus.OK, "Total Orders");
     }
-    
+
     @GetMapping("/totalGender")
     public ResponseEntity<?> totalGender() {
-        return ResponseUtil.getObject(dashboardService.getGenders(), HttpStatus.OK,"Total Gender");
+        return ResponseUtil.getObject(dashboardService.getGenders(), HttpStatus.OK, "Total Gender");
     }
-    
+
     @GetMapping("/topFiveOrder")
     public ResponseEntity<?> topFiveOrder() {
-        return ResponseUtil.getObject(dashboardService.getTopFiveOrders(), HttpStatus.OK,"Top Five Orders");
+        return ResponseUtil.getObject(dashboardService.getTopFiveOrders(), HttpStatus.OK, "Top Five Orders");
     }
-    
+
     @GetMapping("/topFiveTours")
     public ResponseEntity<?> topFiveTours() {
-        return ResponseUtil.getObject(dashboardService.getTopFivePackageTours(), HttpStatus.OK,"Top Five Tours");
+        return ResponseUtil.getObject(dashboardService.getTopFivePackageTours(), HttpStatus.OK, "Top Five Tours");
     }
 }

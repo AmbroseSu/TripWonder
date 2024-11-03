@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/packageOff")
@@ -38,12 +35,12 @@ public class PackageOfficialServiceController {
     public ResponseEntity<?> search(@PathVariable String query,
                                     @RequestParam(defaultValue = "0") int page,
                                     @RequestParam(defaultValue = "10") int size,
-                                    @RequestParam(defaultValue = "dateasc") SortBy sortBy){
-        Sort sort = Sort.by(sortBy.getDirection(),sortBy.getField());
+                                    @RequestParam(defaultValue = "dateasc") SortBy sortBy) {
+        Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
         Pageable pageable = PageRequest.of(page, size, sort);
         return ResponseEntity.ok(packageOfficialService.search(query, pageable));
     }
-    
+
     @GetMapping("/get")
     public ResponseEntity<?> get(
             @RequestParam(defaultValue = "0") int page,
@@ -75,13 +72,13 @@ public class PackageOfficialServiceController {
         Sort sort = Sort.by(sortBy.getDirection(), sortBy.getField());
         Pageable pageable = PageRequest.of(page, size, sort);
         if (!(category != null && status != null && minPrice != 0.0 && maxPrice != Double.MAX_VALUE)) {
-            return  packageOfficialService.getFilteredTours(filterBy,pageable);
-        }
-        else
+            return packageOfficialService.getFilteredTours(filterBy, pageable);
+        } else
             return packageOfficialService.findAll(pageable);
-        
+
     }
-    @PostMapping(value = "/upload" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
         try {
             // Tạo đường dẫn tới thư mục lưu tạm thời
@@ -105,7 +102,7 @@ public class PackageOfficialServiceController {
     }
 
     @GetMapping("/get-package-tour-by-id")
-    public ResponseEntity<?> getPackageOfficialById(@RequestParam(value = "packageOfficialId") long packageOfficialId){
+    public ResponseEntity<?> getPackageOfficialById(@RequestParam(value = "packageOfficialId") long packageOfficialId) {
         return packageOfficialService.getPackageOfficialById(packageOfficialId);
     }
 //    @GetMapping("/get")
@@ -131,7 +128,7 @@ public class PackageOfficialServiceController {
 //        Pageable pageable = PageRequest.of(page, size, sort);
 //        return new ResponseEntity<>(packageOfficialService.getFilteredTours(filterBy,pageable), HttpStatus.OK);
 //    }
-    
+
     @PostMapping(value = "/create")
     public ResponseEntity<?> create(@RequestBody PackageTourRequest request) throws IOException {
         return packageOfficialService.create(request);
@@ -144,5 +141,10 @@ public class PackageOfficialServiceController {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         return packageOfficialService.findAllAdmin(pageable);
+    }
+
+    @GetMapping("/get-detail-tour/{tourId}")
+    public ResponseEntity<?> getDetailTour(@PathVariable long tourId) {
+        return packageOfficialService.getAllDetailTour(tourId);
     }
 }

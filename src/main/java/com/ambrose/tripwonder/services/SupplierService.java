@@ -8,9 +8,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.UUID;
 
 public interface SupplierService {
-    ResponseEntity<?> create(SupplierDTO supplier); 
+    ResponseEntity<?> create(SupplierDTO supplier);
+
     ResponseEntity<?> update(SupplierDTO supplier);
+
     ResponseEntity<?> delete(UUID id);
+
     ResponseEntity<?> findOne(UUID id);
+
     ResponseEntity<?> findAll(Pageable pageable);
 }

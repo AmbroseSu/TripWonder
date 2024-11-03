@@ -1,19 +1,12 @@
 package com.ambrose.tripwonder.controller;
 
-import java.util.Date;
-
 import com.ambrose.tripwonder.services.CheckOutService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import vn.payos.PayOS;
-import vn.payos.type.CheckoutResponseData;
-import vn.payos.type.ItemData;
-import vn.payos.type.PaymentData;
 
 @RestController
 @RequestMapping("/api/v1/checkout")
@@ -21,12 +14,12 @@ import vn.payos.type.PaymentData;
 @RequiredArgsConstructor
 public class CheckoutController {
 
+    private final CheckOutService checkoutService;
     @Value("${fe.success}")
     public String successUrl;
     @Value("${fe.cancel}")
     public String cancelUrl;
-    private final CheckOutService checkoutService;
-    
+
     @GetMapping("/success")
     public void success(
             HttpServletResponse response,
@@ -35,8 +28,8 @@ public class CheckoutController {
             @RequestParam boolean cancel,
             @RequestParam String status,
             @RequestParam long orderCode
-    ){
-        response.setHeader("Location",successUrl);
+    ) {
+        response.setHeader("Location", successUrl);
         response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
         checkoutService.successfulCheckout(orderCode);
     }
@@ -49,15 +42,15 @@ public class CheckoutController {
             @RequestParam boolean cancel,
             @RequestParam String status,
             @RequestParam long orderCode
-    ){
-        response.setHeader("Location",cancelUrl);
+    ) {
+        response.setHeader("Location", cancelUrl);
         response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
         checkoutService.failedCheckout(orderCode);
     }
-    
-    @PostMapping( "/linkPay")
-    public ResponseEntity<?> checkout(HttpServletRequest request,long userId) throws Exception {
+
+    @PostMapping("/linkPay")
+    public ResponseEntity<?> checkout(HttpServletRequest request, long userId) throws Exception {
         return checkoutService.getLink(request, userId);
     }
-    
+
 }

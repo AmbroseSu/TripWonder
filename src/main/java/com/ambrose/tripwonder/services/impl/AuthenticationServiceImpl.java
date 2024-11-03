@@ -13,7 +13,6 @@ import com.ambrose.tripwonder.dto.request.SigninRequest;
 import com.ambrose.tripwonder.dto.response.JwtAuthenticationResponse;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.VerificationToken;
-import com.ambrose.tripwonder.entities.enums.Gender;
 import com.ambrose.tripwonder.entities.enums.Role;
 import com.ambrose.tripwonder.event.RegistrationCompleteEvent;
 import com.ambrose.tripwonder.repository.UserRepository;
@@ -21,14 +20,7 @@ import com.ambrose.tripwonder.repository.VerificationTokenRepository;
 import com.ambrose.tripwonder.services.AuthenticationService;
 import com.ambrose.tripwonder.services.JWTService;
 import com.ambrose.tripwonder.services.UserService;
-import com.google.api.client.util.DateTime;
 import jakarta.validation.ConstraintViolationException;
-import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -38,6 +30,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -57,7 +51,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final ApplicationEventPublisher publisher;
     //private final OtpSmsRepository otpSmsRepository;
     //private final TwilioConfig twilioConfig;
-
 
 
     public ResponseEntity<?> checkEmail(String email) {
@@ -299,20 +292,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle) {
-        try{
+        try {
             User user = userRepository.findUserByEmail(signUpGoogle.getEmail());
-            if(user == null){
-                return ResponseUtil.error("Email not exist","Failed", HttpStatus.BAD_REQUEST);
+            if (user == null) {
+                return ResponseUtil.error("Email not exist", "Failed", HttpStatus.BAD_REQUEST);
             }
             //check isenable
-            if(!user.isEnabled()){
-                if(user.getFullname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getAddress().isEmpty()){
+            if (!user.isEnabled()) {
+                if (user.getFullname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getAddress().isEmpty()) {
                     return ResponseUtil.error("Please Save Info", "False", HttpStatus.BAD_REQUEST);
                 }
             }
             if (user.getFullname() == null &&
-                user.getPhoneNumber() == null &&
-                user.getAddress() == null ){
+                    user.getPhoneNumber() == null &&
+                    user.getAddress() == null) {
                 user.setFullname(signUpGoogle.getFullname());
                 user.setPhoneNumber(signUpGoogle.getPhone());
                 user.setAddress(signUpGoogle.getAddress());
@@ -328,7 +321,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
             return ResponseUtil.getObject(result, HttpStatus.CREATED, "ok");
-        }catch (ConstraintViolationException e) {
+        } catch (ConstraintViolationException e) {
             return ConstraintViolationExceptionHandler.handleConstraintViolation(e);
         }
     }

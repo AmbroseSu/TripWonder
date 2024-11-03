@@ -1,6 +1,5 @@
 package com.ambrose.tripwonder.dto;
 
-import com.ambrose.tripwonder.entities.Category;
 import lombok.Data;
 
 import java.time.LocalDateTime;

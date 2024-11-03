@@ -10,10 +10,6 @@ import com.ambrose.tripwonder.entities.enums.Role;
 import com.ambrose.tripwonder.repository.UserRepository;
 import com.ambrose.tripwonder.repository.VerificationTokenRepository;
 import com.ambrose.tripwonder.services.UserService;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -87,92 +85,93 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-  public ResponseEntity<?> editProfile(UpsertUserDTO userDTO){
-    try {
+    public ResponseEntity<?> editProfile(UpsertUserDTO userDTO) {
+        try {
 
-      User user = userRepository.findUserById(userDTO.getId());
-      if(user == null){
-        return ResponseUtil.error("User not exist","Failed", HttpStatus.BAD_REQUEST);
-      }
+            User user = userRepository.findUserById(userDTO.getId());
+            if (user == null) {
+                return ResponseUtil.error("User not exist", "Failed", HttpStatus.BAD_REQUEST);
+            }
 
-      Field[] fields = UpsertUserDTO.class.getDeclaredFields();
-      for(Field field : fields){
-        field.setAccessible(true);
-        if (field.getName().equals("id")) {
-          continue;
-        }
-        if (field.getName().equals("email")) {
-          continue;
-        }
-        if (field.getName().equals("role")) {
-          continue;
-        }
-        if (field.getName().equals("gender")) {
-          continue;
-        }
-        Object newValue = field.get(userDTO);
-        if(newValue != null){
-          Field userField = User.class.getDeclaredField(field.getName());
-          userField.setAccessible(true);
-          userField.set(user, newValue);
-        }
-      }
+            Field[] fields = UpsertUserDTO.class.getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (field.getName().equals("id")) {
+                    continue;
+                }
+                if (field.getName().equals("email")) {
+                    continue;
+                }
+                if (field.getName().equals("role")) {
+                    continue;
+                }
+                if (field.getName().equals("gender")) {
+                    continue;
+                }
+                Object newValue = field.get(userDTO);
+                if (newValue != null) {
+                    Field userField = User.class.getDeclaredField(field.getName());
+                    userField.setAccessible(true);
+                    userField.set(user, newValue);
+                }
+            }
 
-      userRepository.save(user);
-      UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
-      return ResponseUtil.getObject(result, HttpStatus.OK, "Update Successfully");
+            userRepository.save(user);
+            UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
+            return ResponseUtil.getObject(result, HttpStatus.OK, "Update Successfully");
 
-    }catch (Exception ex){
-      ex.printStackTrace();
-      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseUtil.error(ex.getMessage(), "Failed", HttpStatus.BAD_REQUEST);
+        }
     }
-  }
 
-  public ResponseEntity<?> getUsersByMonthAndYear(int month, int year, int page, int limit){
-    try {
-      Pageable pageable = PageRequest.of(page - 1, limit);
-      List<User> users = userRepository.findUsersByMonthAndYear(month, year, Role.CUSTOMER, pageable);
-      List<UpsertUserDTO> upsertUserDTOS = new ArrayList<>();
-      for (User user : users){
-        UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
-        upsertUserDTOS.add(result);
-      }
-      long count = upsertUserDTOS.stream().count();
-      return ResponseUtil.getCollection(upsertUserDTOS, HttpStatus.OK, "Update Successfully", page, limit, count);
-    }catch (Exception ex){
-      ex.printStackTrace();
-      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getUsersByMonthAndYear(int month, int year, int page, int limit) {
+        try {
+            Pageable pageable = PageRequest.of(page - 1, limit);
+            List<User> users = userRepository.findUsersByMonthAndYear(month, year, Role.CUSTOMER, pageable);
+            List<UpsertUserDTO> upsertUserDTOS = new ArrayList<>();
+            for (User user : users) {
+                UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
+                upsertUserDTOS.add(result);
+            }
+            long count = upsertUserDTOS.stream().count();
+            return ResponseUtil.getCollection(upsertUserDTOS, HttpStatus.OK, "Update Successfully", page, limit, count);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseUtil.error(ex.getMessage(), "Failed", HttpStatus.BAD_REQUEST);
+        }
     }
-  }
-  public ResponseEntity<?> getNumberOfUsersByMonthAndYear(int month, int year){
-    try {
-      List<User> users = userRepository.findNumberOfUsersByMonthAndYear(month, year, Role.CUSTOMER);
-      long count = users.stream().count();
-      return ResponseUtil.getObject(count, HttpStatus.OK, "Update Successfully");
-    }catch (Exception ex){
-      ex.printStackTrace();
-      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+
+    public ResponseEntity<?> getNumberOfUsersByMonthAndYear(int month, int year) {
+        try {
+            List<User> users = userRepository.findNumberOfUsersByMonthAndYear(month, year, Role.CUSTOMER);
+            long count = users.stream().count();
+            return ResponseUtil.getObject(count, HttpStatus.OK, "Update Successfully");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseUtil.error(ex.getMessage(), "Failed", HttpStatus.BAD_REQUEST);
+        }
     }
-  }
 
     @Override
     public ResponseEntity<?> findAll(int page, int limit) {
         Pageable pageable = PageRequest.of(page - 1, limit);
         Page<User> users = userRepository.findAll(pageable);
-        Page<UserDTO> upsertUserDTOS = users.map(x -> ((UserDTO)genericConverter.toDTO(x,UserDTO.class)));
+        Page<UserDTO> upsertUserDTOS = users.map(x -> ((UserDTO) genericConverter.toDTO(x, UserDTO.class)));
         return null;
     }
 
     public ResponseEntity<?> getUserById(long userId) {
-    try {
-      User user = userRepository.findUserById(userId);
-      UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
-      return ResponseUtil.getObject(result, HttpStatus.OK, "Update Successfully");
-    }catch (Exception ex){
-      ex.printStackTrace();
-      return ResponseUtil.error(ex.getMessage(),"Failed", HttpStatus.BAD_REQUEST);
+        try {
+            User user = userRepository.findUserById(userId);
+            UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
+            return ResponseUtil.getObject(result, HttpStatus.OK, "Update Successfully");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseUtil.error(ex.getMessage(), "Failed", HttpStatus.BAD_REQUEST);
+        }
     }
-  }
 
 
 }

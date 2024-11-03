@@ -13,8 +13,8 @@ import java.util.List;
 public class CartDto {
     private GenericConverter<PackageTourDTO> cartConverter = new GenericConverter<>(new ModelMapper());
     private GenericConverter<GalleryDto> galleryDtoGenericConverter = new GenericConverter<>(new ModelMapper());
-    
-    
+
+
     private long id;
     private Double totalPrice;
     private int quantity;
@@ -23,11 +23,11 @@ public class CartDto {
     private PackageTourDTO packageTour;
     @Setter(AccessLevel.NONE)
     private List<GalleryDto> galleryDtos;
-    
+
     public void setPackageTour(PackageTour packageTour) {
-        this.packageTour = cartConverter.toDTO(packageTour,PackageTourDTO.class);
-        this.galleryDtos = packageTour.getGalleries().stream().map(x -> galleryDtoGenericConverter.toDTO(x,GalleryDto.class)).toList();
+        this.packageTour = cartConverter.toDTO(packageTour, PackageTourDTO.class);
+        this.galleryDtos = packageTour.getGalleries().stream().map(x -> galleryDtoGenericConverter.toDTO(x, GalleryDto.class)).toList();
     }
-    
-    
+
+
 }

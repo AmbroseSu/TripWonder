@@ -2,8 +2,6 @@ package com.ambrose.tripwonder.config;
 
 import com.ambrose.tripwonder.config.converter.MultipartFileToFileConverter;
 import com.ambrose.tripwonder.config.converter.StringToSortByConverter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

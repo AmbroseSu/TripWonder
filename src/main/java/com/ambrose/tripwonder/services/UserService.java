@@ -11,13 +11,18 @@ public interface UserService {
     UserDetailsService userDetailsService();
 
     void saveUserVerificationToken(User theUser, String verificationToken);
+
     //void saveUserVerificationTokenSMS(User theUser, String token);
-  String validateToken(String theToken, Long id);
-  ResponseEntity<?> editProfile(UpsertUserDTO userDTO);
-  ResponseEntity<?> getUserById(long userId);
-  ResponseEntity<?> getUsersByMonthAndYear(int month, int year, int page, int limit);
-  ResponseEntity<?> getNumberOfUsersByMonthAndYear(int month, int year);
-  //String validateTokenSms(String theToken, Long id);
+    String validateToken(String theToken, Long id);
+
+    ResponseEntity<?> editProfile(UpsertUserDTO userDTO);
+
+    ResponseEntity<?> getUserById(long userId);
+
+    ResponseEntity<?> getUsersByMonthAndYear(int month, int year, int page, int limit);
+
+    ResponseEntity<?> getNumberOfUsersByMonthAndYear(int month, int year);
+    //String validateTokenSms(String theToken, Long id);
     //String validateTokenSms(String theToken, Long id);
 
     //ResponseEntity<?> findUserByRole(Role role, int page, int limit);

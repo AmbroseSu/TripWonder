@@ -3,7 +3,7 @@ package com.ambrose.tripwonder.config;
 import java.util.List;
 
 public class CustomValidationException extends RuntimeException {
-    private List<String> errors;
+    private final List<String> errors;
 
     public CustomValidationException(List<String> errors) {
         super(String.join(", ", errors));

@@ -113,10 +113,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/save-infor-google")
-    public ResponseEntity<?> saveInforGoogle(@RequestBody SignUpGoogle signUpGoogle){
+    public ResponseEntity<?> saveInforGoogle(@RequestBody SignUpGoogle signUpGoogle) {
         return authenticationService.saveInforGoogle(signUpGoogle);
     }
-
 
 
 }

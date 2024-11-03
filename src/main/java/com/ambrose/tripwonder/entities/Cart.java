@@ -17,26 +17,26 @@ public class Cart {
     private Double totalPrice;
     @Setter(AccessLevel.NONE)
     private int quantity;
-    
+
     @ManyToOne
     @JoinColumn(name = "packageId")
     @ToString.Exclude
     @Setter(AccessLevel.NONE)
     private PackageTour packageTour;
-    
+
     @ManyToOne
-    @JoinColumn(name = "userId",referencedColumnName = "userId")
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
         if (packageTour != null) {
-            totalPrice = packageTour.getPrice()*quantity;
+            totalPrice = packageTour.getPrice() * quantity;
         }
     }
 
     public void setPackageTour(PackageTour packageTour) {
         this.packageTour = packageTour;
-        if(quantity != 0) totalPrice = packageTour.getPrice()*quantity;
+        if (quantity != 0) totalPrice = packageTour.getPrice() * quantity;
     }
 }

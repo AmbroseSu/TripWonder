@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class DashboardServiceImpl implements DashboardService {
     private final GenericConverter<OrderDto> mapperOrderDto;
     private final PackageOfficialRepository packageOfficialRepository;
     private final GenericConverter<PackageTourDTO> mapperPackageDto;
-    
+
     @Override
     public Long totalRevenues() {
         List<Order> orders = orderRepository.findAllByStatus(Payment.PAID);
@@ -37,47 +39,47 @@ public class DashboardServiceImpl implements DashboardService {
             total += order.getTotalPrice();
         }
 
-        return (long) Math.ceil((total * 5)/100);
+        return (long) Math.ceil((total * 5) / 100);
     }
-    
+
     @Override
-    public Long totalSupplier(){
+    public Long totalSupplier() {
         List<Supplier> suppliers = supplierRepository.findAllByStatus(true);
         return (long) suppliers.size();
     }
-    
+
     @Override
-    public Long totalPackageTour(){
+    public Long totalPackageTour() {
         List<PackageTour> packageTours = packageTourRepository.findAllByStatus(true);
         return (long) packageTours.size();
     }
-    
+
     @Override
-    public Long totalOrder(){
+    public Long totalOrder() {
         List<Order> orders = orderRepository.findAllByStatus(Payment.PAID);
         return (long) orders.size();
     }
-    
+
     @Override
-    public Map<String,Integer> getGenders() {
+    public Map<String, Integer> getGenders() {
         List<User> males = userRepository.findAlLGender(Gender.MALE);
         List<User> females = userRepository.findAlLGender(Gender.FEMALE);
         List<User> others = userRepository.findAlLGender(Gender.OTHER);
-        Map<String,Integer> genders = new HashMap<>();
+        Map<String, Integer> genders = new HashMap<>();
         genders.put("Male", males.size());
         genders.put("Female", females.size());
         genders.put("Other", others.size());
         return genders;
     }
-    
+
     @Override
     public List<OrderDto> getTopFiveOrders() {
-        List<Order> orders = orderRepository.findTop5Records(PageRequest.of(0,5));
+        List<Order> orders = orderRepository.findTop5Records(PageRequest.of(0, 5));
         return orders.stream().map(x -> mapperOrderDto.toDTO(x, OrderDto.class)).toList();
     }
-    
+
     @Override
     public List<Object[]> getTopFivePackageTours() {
-        return packageOfficialRepository.findTop5ToursWithHighestAvgRating(PageRequest.of(0,5));
+        return packageOfficialRepository.findTop5ToursWithHighestAvgRating(PageRequest.of(0, 5));
     }
 }

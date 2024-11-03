@@ -19,8 +19,8 @@ public class OrderDto {
     private Payment status;
     @Setter(AccessLevel.NONE)
     private String name;
-    
-    public void setUser(User user){
+
+    public void setUser(User user) {
         name = user.getFullname();
     }
 }

@@ -1,6 +1,5 @@
 package com.ambrose.tripwonder.dto;
 
-import com.ambrose.tripwonder.entities.Category;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -18,13 +17,12 @@ public class OrderGetAllDto {
     private LocalDateTime endTime;
     private CategoryDTO category;
     private Long orderCode;
-    
+
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-        if(LocalDateTime.now().isAfter(endTime)) {
+        if (LocalDateTime.now().isAfter(endTime)) {
             state = "Done";
-        }
-        else {
+        } else {
             state = "Active";
         }
     }

@@ -4,14 +4,11 @@ import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.CartDto;
 import com.ambrose.tripwonder.dto.OrderGetAllDto;
-import com.ambrose.tripwonder.entities.*;
-import com.ambrose.tripwonder.entities.enums.Payment;
-import com.ambrose.tripwonder.entities.enums.PaymentMethod;
-import com.ambrose.tripwonder.repository.OrderDetailRepository;
-import com.ambrose.tripwonder.repository.OrderRepository;
-import com.ambrose.tripwonder.repository.PackageTourRepository;
-import com.ambrose.tripwonder.repository.UserRepository;
-import com.ambrose.tripwonder.repository.CartRepository;
+import com.ambrose.tripwonder.entities.Cart;
+import com.ambrose.tripwonder.entities.Order;
+import com.ambrose.tripwonder.entities.PackageTour;
+import com.ambrose.tripwonder.entities.User;
+import com.ambrose.tripwonder.repository.*;
 import com.ambrose.tripwonder.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +25,16 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    
+
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final CartRepository cartRepository;
     private final PackageTourRepository packageTourRepository;
     private final UserRepository userRepository;
-    
+
     private final GenericConverter<CartDto> cartDtoGenericConverter;
     private final GenericConverter<OrderGetAllDto> orderGetAllDtoGenericConverter;
-    
+
     @Override
     public ResponseEntity<?> addToCard(Long userId, Long tourId) {
         User user = userRepository.findUserById(userId);
@@ -46,44 +42,42 @@ public class OrderServiceImpl implements OrderService {
         Cart cart;
         try {
             cart = cartRepository.findByUserUserIdAndPackageTourId(userId, packageTour.getId());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             cart = new Cart();
             cart.setPackageTour(packageTour);
             cart.setUser(user);
             cart.setQuantity(cart.getQuantity() + 1);
         }
-        if(cart == null) {
+        if (cart == null) {
             cart = new Cart();
             cart.setPackageTour(packageTour);
             cart.setUser(user);
             cart.setQuantity(cart.getQuantity() + 1);
-        }
-        else {
+        } else {
             cart.setQuantity(cart.getQuantity() + 1);
         }
         cartRepository.save(cart);
         return ResponseEntity.ok("ok");
     }
-    
+
     @Override
     public ResponseEntity<?> getAllCart(long userId, Pageable pageable) {
-        Page<Cart> carts = cartRepository.findAllByUserUserId(userId,pageable);
+        Page<Cart> carts = cartRepository.findAllByUserUserId(userId, pageable);
         Page<CartDto> cartDtos = carts.map(cart -> cartDtoGenericConverter.toDTO(cart, CartDto.class));
-        
+
         return ResponseUtil.getCollection(
-                cartDtos, 
+                cartDtos,
                 HttpStatus.OK,
                 "",
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 cartDtos.getTotalElements());
     }
-    
+
     @Override
     public ResponseEntity<?> deleteTourInCart(Long cartId) {
         Optional<Cart> cart = cartRepository.findById(cartId);
-        cart.ifPresent(cart2 -> cart2.setQuantity(cart2.getQuantity()-1));
+        cart.ifPresent(cart2 -> cart2.setQuantity(cart2.getQuantity() - 1));
         cartRepository.save(cart.get());
         return ResponseEntity.ok("Deleted");
     }
@@ -100,12 +94,11 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findByOrderCode(orderCode).orElse(null);
         if (order == null) {
             return null;
-        }
-        else 
-            return ResponseUtil.getObject(order.getStatus(),HttpStatus.OK,"Status");
+        } else
+            return ResponseUtil.getObject(order.getStatus(), HttpStatus.OK, "Status");
     }
-    
-    public ResponseEntity<?> getAllOrder(long userId){
+
+    public ResponseEntity<?> getAllOrder(long userId) {
         List<Object[]> results = orderDetailRepository.findPackageToursByUserId(userId);
         List<Long> orderCodes = new ArrayList<>();
         List<PackageTour> packageTours = new ArrayList<>();
@@ -113,12 +106,12 @@ public class OrderServiceImpl implements OrderService {
             packageTours.add((PackageTour) result[0]);
             orderCodes.add((Long) result[1]);
         }
-        List<OrderGetAllDto> orderGetAllDtos =  packageTours.stream()
+        List<OrderGetAllDto> orderGetAllDtos = packageTours.stream()
                 .map(x -> orderGetAllDtoGenericConverter.toDTO(x, OrderGetAllDto.class)).toList();
-        for(int i =0;i<orderGetAllDtos.size();i++){
+        for (int i = 0; i < orderGetAllDtos.size(); i++) {
             orderGetAllDtos.get(i).setOrderCode(orderCodes.get(i));
         }
-        return ResponseUtil.getCollection(orderGetAllDtos,HttpStatus.OK,"",0,0,0);
+        return ResponseUtil.getCollection(orderGetAllDtos, HttpStatus.OK, "", 0, 0, 0);
     }
 
 //    @Override
@@ -143,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
 //        
 //        return ResponseEntity.ok(generateCode(orderRepository.save(order).getId()));
 //    }
-    
+
 //    private String generateCode(Long id){
 //        String header = "TW";
 //        String hex = Long.toHexString(id);

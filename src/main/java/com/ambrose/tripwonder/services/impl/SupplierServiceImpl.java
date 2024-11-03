@@ -20,27 +20,27 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class SupplierServiceImpl implements SupplierService {
-    
+
     private final SupplierRepository supplierRepository;
     private final GenericConverter<Supplier> supplierConverter;
     private final GenericConverter<SupplierDTO> supplierDTOConverter;
 
     @Override
     public ResponseEntity<?> create(SupplierDTO supplier) {
-        
-        return ResponseUtil.getObject(supplierRepository.save(supplierConverter.toEntity(supplier,Supplier.class)), HttpStatus.CREATED,"Create success");
+
+        return ResponseUtil.getObject(supplierRepository.save(supplierConverter.toEntity(supplier, Supplier.class)), HttpStatus.CREATED, "Create success");
     }
 
     @Override
     public ResponseEntity<?> update(SupplierDTO supplier) {
         Supplier supplierEntity = supplierRepository.findSuppliersById(supplier.getId());
-        supplierEntity.setAddress( supplier.getAddress());
-        supplierEntity.setName( supplier.getName());
+        supplierEntity.setAddress(supplier.getAddress());
+        supplierEntity.setName(supplier.getName());
         supplierEntity.setStatus(supplier.isStatus());
         supplierEntity.setContactEmail(supplier.getContactEmail());
         supplierEntity.setContactPhone(supplier.getContactPhone());
         supplierRepository.save(supplierEntity);
-        return ResponseUtil.getObject(supplier, HttpStatus.CREATED,"Update success");
+        return ResponseUtil.getObject(supplier, HttpStatus.CREATED, "Update success");
     }
 
     @Override
@@ -54,16 +54,16 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public ResponseEntity<?> findOne(UUID id) {
         Supplier supplierEntity = supplierRepository.findSuppliersById(id);
-        return ResponseUtil.getObject(supplierDTOConverter.toDTO(supplierEntity,SupplierDTO.class), HttpStatus.OK,"Find one success");
+        return ResponseUtil.getObject(supplierDTOConverter.toDTO(supplierEntity, SupplierDTO.class), HttpStatus.OK, "Find one success");
     }
 
     @Override
     public ResponseEntity<?> findAll(Pageable pageable) {
         Page<Supplier> suppliers = supplierRepository.findAll(pageable);
-        Page<SupplierDTO> supplierDTOS = suppliers.map(supplier -> supplierDTOConverter.toDTO(supplier,SupplierDTO.class));
+        Page<SupplierDTO> supplierDTOS = suppliers.map(supplier -> supplierDTOConverter.toDTO(supplier, SupplierDTO.class));
         for (SupplierDTO supplierDTO : supplierDTOS) {
             supplierDTO.setTours(new ArrayList<>());
         }
-        return ResponseUtil.getCollection(supplierDTOS,HttpStatus.OK,"ok",pageable.getPageNumber(), pageable.getPageSize(), suppliers.getTotalElements());
+        return ResponseUtil.getCollection(supplierDTOS, HttpStatus.OK, "ok", pageable.getPageNumber(), pageable.getPageSize(), suppliers.getTotalElements());
     }
 }

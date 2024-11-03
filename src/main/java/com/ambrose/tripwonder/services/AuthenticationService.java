@@ -14,14 +14,15 @@ public interface AuthenticationService {
 
     ResponseEntity<?> refreshToken(RefreshTokenRequest refreshTokenRequest);
 
-    public ResponseEntity<?> checkEmail(String email);
+    ResponseEntity<?> checkEmail(String email);
 
-    public String checkResetVerifyToken(String email, Long id);
+    String checkResetVerifyToken(String email, Long id);
 
-    public ResponseEntity<?> saveInfor(SignUp signUp);
+    ResponseEntity<?> saveInfor(SignUp signUp);
 
-    public ResponseEntity<?> checkEmailForgotPassword(String email);
+    ResponseEntity<?> checkEmailForgotPassword(String email);
 
-    public ResponseEntity<?> changePassword(String email, String password);
-    public ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle);
+    ResponseEntity<?> changePassword(String email, String password);
+
+    ResponseEntity<?> saveInforGoogle(SignUpGoogle signUpGoogle);
 }

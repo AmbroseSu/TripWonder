@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO {
-  private Long id;
-  private boolean isDelete;
-  private String name;
+    private Long id;
+    private boolean isDelete;
+    private String name;
 }

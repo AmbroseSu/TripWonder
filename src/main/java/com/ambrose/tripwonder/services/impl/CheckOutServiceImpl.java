@@ -1,7 +1,10 @@
 package com.ambrose.tripwonder.services.impl;
 
 import com.ambrose.tripwonder.config.ResponseUtil;
-import com.ambrose.tripwonder.entities.*;
+import com.ambrose.tripwonder.entities.Cart;
+import com.ambrose.tripwonder.entities.Order;
+import com.ambrose.tripwonder.entities.OrderDetail;
+import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.enums.Payment;
 import com.ambrose.tripwonder.entities.enums.PaymentMethod;
 import com.ambrose.tripwonder.repository.CartRepository;
@@ -9,7 +12,6 @@ import com.ambrose.tripwonder.repository.OrderRepository;
 import com.ambrose.tripwonder.repository.UserRepository;
 import com.ambrose.tripwonder.services.CheckOutService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class CheckOutServiceImpl implements CheckOutService {
     private final CartRepository cartRepository;
     private final PayOS payOS;
     private final OrderRepository orderRepository;
-    
+
     @Override
     @Transactional
     public ResponseEntity<?> successfulCheckout(long orderCode) {
@@ -46,8 +48,7 @@ public class CheckOutServiceImpl implements CheckOutService {
             order.setPaymentDate(LocalDateTime.now());
             order.setStatus(Payment.PAID);
             orderRepository.save(order);
-        }
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return ResponseEntity.ok().build();
     }
 
@@ -57,9 +58,8 @@ public class CheckOutServiceImpl implements CheckOutService {
         if (order != null) {
             order.setStatus(Payment.CANCELLED);
             orderRepository.save(order);
-        }
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        return ResponseEntity.ok().build();    
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok().build();
     }
 
     @Override
@@ -81,13 +81,13 @@ public class CheckOutServiceImpl implements CheckOutService {
         PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(total).description("Thanh toan Trip Wonder")
                 .returnUrl(returnUrl).cancelUrl(cancelUrl).build();
         paymentData.setItems(itemDataList);
-        
+
         CheckoutResponseData data = payOS.createPaymentLink(paymentData);
 
         User user = userRepository.findUserById(userId);
         Order order = new Order();
         List<OrderDetail> orderDetails = new ArrayList<>();
-        for(Cart cart : cartList) {
+        for (Cart cart : cartList) {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setPackageTour(cart.getPackageTour());
             orderDetail.setQuantity(cart.getQuantity());
@@ -100,7 +100,7 @@ public class CheckOutServiceImpl implements CheckOutService {
         order.setUser(user);
         order.setOrderCode(data.getOrderCode());
         orderRepository.save(order);
-        return ResponseUtil.getObject(data, HttpStatus.OK,"URL payment link");
+        return ResponseUtil.getObject(data, HttpStatus.OK, "URL payment link");
     }
 
     private String getBaseUrl(HttpServletRequest request) {
@@ -109,7 +109,7 @@ public class CheckOutServiceImpl implements CheckOutService {
         int serverPort = request.getServerPort();
         String contextPath = request.getContextPath();
 
-        String url = scheme + "://" + serverName + (serverPort > 0 ? ":"+ serverPort  : "") + contextPath+"/api/v1/checkout";
+        String url = scheme + "://" + serverName + (serverPort > 0 ? ":" + serverPort : "") + contextPath + "/api/v1/checkout";
 
         return url;
     }

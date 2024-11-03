@@ -13,9 +13,13 @@ import java.util.Optional;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
     Cart findByUserUserIdAndPackageTourId(Long userId, Long packageId);
+
     Page<Cart> findAllByUserUserId(Long userId, Pageable pageable);
+
     List<Cart> findAllByUserUserId(Long userId);
+
     Optional<Cart> findById(long id);
+
     void deleteByPackageTour(PackageTour packageTour);
-    
+
 }

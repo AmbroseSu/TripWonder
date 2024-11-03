@@ -13,7 +13,9 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByOrderCode(Long orderCode);
+
     List<Order> findAllByStatus(Payment status);
+
     @Query("SELECT e FROM Order e ORDER BY e.orderDate DESC")
     List<Order> findTop5Records(Pageable pageable);
 }

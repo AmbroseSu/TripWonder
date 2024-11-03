@@ -1,10 +1,9 @@
 package com.ambrose.tripwonder.entities;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -36,5 +35,5 @@ public class Supplier {
     private boolean status;
 
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PackageTour> tours; 
+    private List<PackageTour> tours;
 }

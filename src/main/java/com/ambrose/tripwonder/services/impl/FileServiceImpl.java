@@ -1,7 +1,6 @@
 package com.ambrose.tripwonder.services.impl;
 
 import com.ambrose.tripwonder.services.FileService;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;

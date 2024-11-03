@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpGoogle {
-  String email;
-  String fullname;
-  String phone;
-  String address;
-  String image;
-  Gender gender;
-  String fcmtoken;
+    String email;
+    String fullname;
+    String phone;
+    String address;
+    String image;
+    Gender gender;
+    String fcmtoken;
 }

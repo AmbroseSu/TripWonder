@@ -5,24 +5,22 @@ import com.ambrose.tripwonder.entities.User;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RatingReviewDto {
-    
-    private final GenericConverter<UserDTO> genericConverter = new GenericConverter<>(new ModelMapper()) ;
-    
+
+    private final GenericConverter<UserDTO> genericConverter = new GenericConverter<>(new ModelMapper());
+
     private String feedback;
     private int rating;
     private LocalDateTime ratingDate;
     @Setter(AccessLevel.NONE)
-    private UserDTO user; 
-    
+    private UserDTO user;
+
     public void setUser(User user) {
-         this.user = (UserDTO) genericConverter.toDTO(user, UserDTO.class);
+        this.user = genericConverter.toDTO(user, UserDTO.class);
     }
 }

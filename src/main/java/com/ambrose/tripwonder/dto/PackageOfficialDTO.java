@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,13 +20,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 
 public class PackageOfficialDTO {
-    
+
     @Getter(AccessLevel.NONE)
     private final GenericConverter<RatingReviewDto> converterRatingReview = new GenericConverter<RatingReviewDto>(new ModelMapper());
     @Getter(AccessLevel.NONE)
-    private final GenericConverter<GalleryDto> converterGallery= new GenericConverter<GalleryDto>(new ModelMapper());
-    
-    
+    private final GenericConverter<GalleryDto> converterGallery = new GenericConverter<GalleryDto>(new ModelMapper());
+
+
     private Long id;
     private String name;
     private double price;
@@ -36,7 +35,7 @@ public class PackageOfficialDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int attendance;
-    
+
     @Setter(AccessLevel.NONE)
     private String province;
     @Setter(AccessLevel.NONE)
@@ -50,20 +49,22 @@ public class PackageOfficialDTO {
     public void setProvince(Province province) {
         this.province = province.getName();
     }
+
     public void setRatingReviews(List<RatingReview> ratingReviews) {
         this.ratingReviews = ratingReviews.stream().
-                map(ratingReview -> converterRatingReview.toDTO(ratingReview,RatingReviewDto.class))
+                map(ratingReview -> converterRatingReview.toDTO(ratingReview, RatingReviewDto.class))
                 .collect(Collectors.toList());
     }
+
     public void setGalleries(List<Gallery> gallerys) {
         this.galleries = new ArrayList<>();
         for (Gallery gallery : gallerys) {
-            if(!gallery.isDeleted()) {
-                this.galleries.add(converterGallery.toDTO(gallery,GalleryDto.class));
+            if (!gallery.isDeleted()) {
+                this.galleries.add(converterGallery.toDTO(gallery, GalleryDto.class));
             }
         }
     }
-    
+
     public void setCategory(Category category) {
         this.category = category.getName();
     }

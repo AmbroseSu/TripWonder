@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,16 +11,16 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "tbl_package_tour")
+@Table(name = "tbl_tour_location")
 @NoArgsConstructor
 @AllArgsConstructor
 public class TourLocation {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    
+
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalTime startTime;
@@ -37,6 +36,12 @@ public class TourLocation {
     @ToString.Exclude
     private PackageTour packageTour;
 
+    public List<String> getFacilitate() {
+        String facArr = this.facilitate.trim();
+        String[] facArrArr = facArr.split(",");
+        return new ArrayList<>(Arrays.asList(facArrArr));
+    }
+
     public void setFacilitate(List<String> facilitate) {
         StringBuilder sb = new StringBuilder();
         for (String fac : facilitate) {
@@ -45,14 +50,8 @@ public class TourLocation {
         }
         this.facilitate = sb.toString();
     }
-    
-    public List<String> getFacilitate() {
-        String facArr = this.facilitate.trim();
-        String[] facArrArr = facArr.split(",");
-        return new ArrayList<>(Arrays.asList(facArrArr));
-    }
 
-    
+
 }
 /*
 - name

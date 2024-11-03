@@ -1,8 +1,6 @@
 package com.ambrose.tripwonder.repository;
 
 import com.ambrose.tripwonder.entities.FavoritePackage;
-import com.ambrose.tripwonder.entities.PackageTour;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,12 +11,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FavoritePackageRepository extends JpaRepository<FavoritePackage, String> {
 
-  @Query("SELECT fp FROM FavoritePackage fp WHERE fp.user.userId = :userId")
-  Page<FavoritePackage> getAllByUserID(@Param("userId") Long userId, Pageable pageable);
+    @Query("SELECT fp FROM FavoritePackage fp WHERE fp.user.userId = :userId")
+    Page<FavoritePackage> getAllByUserID(@Param("userId") Long userId, Pageable pageable);
 
-  @Query("SELECT fp FROM FavoritePackage fp WHERE fp.user.userId = :userId AND fp.packageId.id = :packageTourId")
-  FavoritePackage getFavoritePackageByUserIdAndPackageTourId(@Param("userId") Long userId, @Param("packageTourId") Long packageTourId);
+    @Query("SELECT fp FROM FavoritePackage fp WHERE fp.user.userId = :userId AND fp.packageId.id = :packageTourId")
+    FavoritePackage getFavoritePackageByUserIdAndPackageTourId(@Param("userId") Long userId, @Param("packageTourId") Long packageTourId);
 
-  FavoritePackage getFavoritePackageById(Long id);
+    FavoritePackage getFavoritePackageById(Long id);
 
 }

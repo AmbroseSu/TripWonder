@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Data
 public class OrderGetAllDto {
@@ -20,7 +22,11 @@ public class OrderGetAllDto {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-        if (LocalDateTime.now().isAfter(endTime)) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault()); // Chuyển sang múi giờ hệ thống
+        LocalDateTime adjustedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDateTime();
+
+        if (adjustedDateTime.isAfter(endTime)) {
             state = "Done";
         } else {
             state = "Active";

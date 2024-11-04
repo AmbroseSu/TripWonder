@@ -24,6 +24,8 @@ import vn.payos.type.ItemData;
 import vn.payos.type.PaymentData;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +47,11 @@ public class CheckOutServiceImpl implements CheckOutService {
             for (OrderDetail orderDetail : orderDetails) {
                 cartRepository.deleteByPackageTour(orderDetail.getPackageTour());
             }
-            order.setPaymentDate(LocalDateTime.now());
+            LocalDateTime localDateTime = LocalDateTime.now();
+            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault()); // Chuyển sang múi giờ hệ thống
+            LocalDateTime adjustedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDateTime();
+
+            order.setPaymentDate(adjustedDateTime);
             order.setStatus(Payment.PAID);
             orderRepository.save(order);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -94,7 +100,11 @@ public class CheckOutServiceImpl implements CheckOutService {
             orderDetails.add(orderDetail);
         }
         order.setOrderDetails(orderDetails);
-        order.setOrderDate(LocalDateTime.now());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault()); // Chuyển sang múi giờ hệ thống
+        LocalDateTime adjustedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDateTime();
+
+        order.setOrderDate(adjustedDateTime);
         order.setStatus(Payment.PENDING);
         order.setPaymentMethod(PaymentMethod.QRCODE);
         order.setUser(user);

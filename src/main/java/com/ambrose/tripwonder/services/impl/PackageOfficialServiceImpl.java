@@ -239,7 +239,15 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         List<LocationDto> locationDtos = tourLocations.stream()
                 .map(x -> mapperLocationToDto.toDTO(x, LocationDto.class)).toList();
         Map<Long, List<LocationDto>> listMap = new LinkedHashMap<>();
-        listMap.put(totalDay, locationDtos);
+        for(long i =1;i<=totalDay;i++) {
+            List<LocationDto> subLocationDtos = new ArrayList<>();
+            for(LocationDto locationDto : locationDtos) {
+                if(locationDto.getDays().contains((int)i)) {
+                    subLocationDtos.add(locationDto);
+                }
+            }
+            listMap.put(i,subLocationDtos);
+        }
         return ResponseUtil.getCollection(listMap, HttpStatus.OK, "totalDay,List location", 0, 0, 0);
     }
 }

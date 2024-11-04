@@ -1,5 +1,6 @@
 package com.ambrose.tripwonder.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class LocationDto {
     private Long id;
     private String name;
     @Setter(AccessLevel.NONE)
+    @JsonIgnore
     private List<Integer> days;
     @Setter(AccessLevel.NONE)
     private LocalDate startDate;

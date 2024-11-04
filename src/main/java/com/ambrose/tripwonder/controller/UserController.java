@@ -38,5 +38,10 @@ public class UserController {
     public ResponseEntity<?> getUserById(@RequestParam(value = "userId") int userId) {
         return userService.getUserById(userId);
     }
+    
+    @GetMapping("/get-all-user")
+    public ResponseEntity<?> getAllUser(@RequestParam int page, @RequestParam int limit) {
+        return userService.findAll(page, limit);
+    }
 
 }

@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(page - 1, limit);
         Page<User> users = userRepository.findAll(pageable);
         Page<UserDTO> upsertUserDTOS = users.map(x -> ((UserDTO) genericConverter.toDTO(x, UserDTO.class)));
-        return null;
+        return ResponseUtil.getCollection(upsertUserDTOS,HttpStatus.OK,"ok",page,limit,users.getTotalElements());
     }
 
     public ResponseEntity<?> getUserById(long userId) {

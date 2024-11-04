@@ -240,6 +240,57 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    public ResponseEntity<?> saveInfoStaff(SignUp signUp) {
+        try {
+            User user = userRepository.findUserByEmail(signUp.getEmail());
+            if (user == null) {
+                return ResponseUtil.error("Email not exist", "Failed", HttpStatus.BAD_REQUEST);
+            }
+            //check isenable
+            if (!user.isEnabled()) {
+                return ResponseUtil.error("Please verify email before send password", "False", HttpStatus.BAD_REQUEST);
+            }
+
+            //user.setCountry(signUp.getCountry());
+            String regexPassword = "^(?=.*[A-Z])(?=.*[!@#$%^&*()])(?=.*[0-9]).{8,32}$";
+
+            Pattern patternPassword = Pattern.compile(regexPassword);
+            Matcher matcherPassword = patternPassword.matcher(signUp.getPassword());
+
+            if (!matcherPassword.matches()) {
+                return ResponseUtil.error("Password Invalid", "False", HttpStatus.BAD_REQUEST);
+            }
+
+            String phone = signUp.getPhone();
+            String regex = "^(\\+?\\d{1,4})?[-.\\s]?\\(?(\\d{2,3})\\)?[-.\\s]?\\d{3,4}[-.\\s]?\\d{3,4}$";
+
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(phone);
+
+            if (!matcher.matches()) {
+                return ResponseUtil.error("Phone number must be 10 number", "False", HttpStatus.BAD_REQUEST);
+            }
+            user.setFullname(signUp.getFullname());
+            user.setPhoneNumber(signUp.getPhone());
+            user.setPassword(passwordEncoder.encode(signUp.getPassword()));
+            user.setAddress(signUp.getAddress());
+            user.setGender(signUp.getGender());
+            //user.setGender(signUp.getGender());
+            user.setImage(signUp.getImage());
+            Date createDate = Date.from(Instant.now());
+            user.setCreateDate(createDate);
+            user.setRole(Role.CUSTOMER);
+            user.setFcmToken(signUp.getFcmtoken());
+            UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
+            userRepository.save(user);
+
+
+            return ResponseUtil.getObject(result, HttpStatus.CREATED, "ok");
+        } catch (ConstraintViolationException e) {
+            return ConstraintViolationExceptionHandler.handleConstraintViolation(e);
+        }
+    }
+
     public ResponseEntity<?> checkEmailForgotPassword(String email) {
         try {
             if (userRepository.existsByEmail(email)) {

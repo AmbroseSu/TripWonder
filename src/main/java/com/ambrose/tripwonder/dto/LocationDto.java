@@ -24,7 +24,7 @@ public class LocationDto {
     private LocalDate endDate;
     private LocalTime startTime;
     private LocalTime endTime;
-    private List<String> facilitate;
+    private String facilitate;
     private Double latitude;
     private Double longitude;
     @Setter(AccessLevel.NONE)

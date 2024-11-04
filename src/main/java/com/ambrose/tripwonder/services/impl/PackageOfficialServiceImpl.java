@@ -243,7 +243,9 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
             List<LocationDto> subLocationDtos = new ArrayList<>();
             for(LocationDto locationDto : locationDtos) {
                 if(locationDto.getDays().contains((int)i)) {
-                    subLocationDtos.add(locationDto);
+                    locationDto.setDayString("Day:"+i);
+                    
+                    subLocationDtos.add(new LocationDto(locationDto));
                 }
             }
             listMap.put(i,subLocationDtos);

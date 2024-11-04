@@ -3,6 +3,7 @@ package com.ambrose.tripwonder.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -12,12 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class LocationDto {
     private Long id;
     private String name;
     @Setter(AccessLevel.NONE)
     @JsonIgnore
     private List<Integer> days;
+    private String dayString;
     @Setter(AccessLevel.NONE)
     private LocalDate startDate;
     @Setter(AccessLevel.NONE)
@@ -63,4 +66,31 @@ public class LocationDto {
         }
     }
 
+    public LocationDto(LocationDto other) {
+        this.id = other.id;
+        this.name = other.name;
+
+        // Sao chép sâu cho danh sách days nếu không null
+        if (other.days != null) {
+            this.days = new ArrayList<>(other.days);
+        } else {
+            this.days = null;
+        }
+
+        this.dayString = other.dayString;
+        this.startDate = other.startDate;
+        this.endDate = other.endDate;
+        this.startTime = other.startTime;
+        this.endTime = other.endTime;
+        this.facilitate = other.facilitate;
+        this.latitude = other.latitude;
+        this.longitude = other.longitude;
+
+        // Sao chép sâu cho packageTour nếu không null
+        if (other.packageTour != null) {
+            this.packageTour = other.packageTour;
+        } else {
+            this.packageTour = null;
+        }
+    }
 }

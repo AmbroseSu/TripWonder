@@ -2,6 +2,8 @@ package com.ambrose.tripwonder.controller;
 
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.UpsertUserDTO;
+import com.ambrose.tripwonder.dto.request.SignUpStaff;
+import com.ambrose.tripwonder.services.AuthenticationService;
 import com.ambrose.tripwonder.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final GenericConverter genericConverter;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/edit-profile")
     public ResponseEntity<?> saveInfor(@RequestBody UpsertUserDTO userDTO) {
@@ -42,6 +45,15 @@ public class UserController {
     @GetMapping("/get-all-user")
     public ResponseEntity<?> getAllUser(@RequestParam int page, @RequestParam int limit) {
         return userService.findAll(page, limit);
+    }
+    @PostMapping("/create-staff")
+    public ResponseEntity<?> createStaff(@RequestBody SignUpStaff signUpStaff){
+        return authenticationService.saveInfoStaff(signUpStaff);
+    }
+    
+    @PostMapping("/status")
+    public ResponseEntity<?> updateStatus(@RequestParam int userId) {
+        return userService.changeStatus(userId);
     }
 
 }

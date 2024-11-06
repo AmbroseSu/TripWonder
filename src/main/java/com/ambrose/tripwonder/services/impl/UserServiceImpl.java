@@ -172,6 +172,18 @@ public class UserServiceImpl implements UserService {
             return ResponseUtil.error(ex.getMessage(), "Failed", HttpStatus.BAD_REQUEST);
         }
     }
+    
+    public ResponseEntity<?> changeStatus(long userId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            return ResponseUtil.error("User not exist", "Failed", HttpStatus.BAD_REQUEST);
+        }
+        
+        user.setDelete(!user.isDelete());
+        boolean status = user.isDelete();
+        userRepository.save(user);
+        return ResponseUtil.getObject(status, HttpStatus.OK, "Status");
+    }
 
 
 }

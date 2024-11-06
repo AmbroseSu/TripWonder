@@ -27,6 +27,7 @@ public interface UserService {
 
     //ResponseEntity<?> findUserByRole(Role role, int page, int limit);
     //ResponseEntity<?> findById(Long id);
+    ResponseEntity<?> changeStatus(long userId);
     ResponseEntity<?> findAll(int page, int limit);
 
 }

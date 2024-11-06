@@ -6,10 +6,7 @@ import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.UpsertUserDTO;
 import com.ambrose.tripwonder.dto.UserDTO;
-import com.ambrose.tripwonder.dto.request.RefreshTokenRequest;
-import com.ambrose.tripwonder.dto.request.SignUp;
-import com.ambrose.tripwonder.dto.request.SignUpGoogle;
-import com.ambrose.tripwonder.dto.request.SigninRequest;
+import com.ambrose.tripwonder.dto.request.*;
 import com.ambrose.tripwonder.dto.response.JwtAuthenticationResponse;
 import com.ambrose.tripwonder.entities.User;
 import com.ambrose.tripwonder.entities.VerificationToken;
@@ -240,16 +237,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    public ResponseEntity<?> saveInfoStaff(SignUp signUp) {
+    public ResponseEntity<?> saveInfoStaff(SignUpStaff signUp) {
         try {
             User user = userRepository.findUserByEmail(signUp.getEmail());
-            if (user == null) {
-                return ResponseUtil.error("Email not exist", "Failed", HttpStatus.BAD_REQUEST);
+            if (user != null) {
+                return ResponseUtil.error("Email exist", "Failed", HttpStatus.BAD_REQUEST);
             }
+            user = new User();
             //check isenable
-            if (!user.isEnabled()) {
-                return ResponseUtil.error("Please verify email before send password", "False", HttpStatus.BAD_REQUEST);
-            }
 
             //user.setCountry(signUp.getCountry());
             String regexPassword = "^(?=.*[A-Z])(?=.*[!@#$%^&*()])(?=.*[0-9]).{8,32}$";
@@ -270,6 +265,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if (!matcher.matches()) {
                 return ResponseUtil.error("Phone number must be 10 number", "False", HttpStatus.BAD_REQUEST);
             }
+            user.setEmail(signUp.getEmail());
             user.setFullname(signUp.getFullname());
             user.setPhoneNumber(signUp.getPhone());
             user.setPassword(passwordEncoder.encode(signUp.getPassword()));
@@ -279,8 +275,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setImage(signUp.getImage());
             Date createDate = Date.from(Instant.now());
             user.setCreateDate(createDate);
-            user.setRole(Role.CUSTOMER);
-            user.setFcmToken(signUp.getFcmtoken());
+            user.setRole(Role.STAFF);
+//            user.setFcmToken(signUp.getFcmtoken());
             UpsertUserDTO result = (UpsertUserDTO) genericConverter.toDTO(user, UpsertUserDTO.class);
             userRepository.save(user);
 

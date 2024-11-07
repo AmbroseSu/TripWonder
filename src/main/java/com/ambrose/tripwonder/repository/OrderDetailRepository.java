@@ -14,4 +14,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             "join Order o on od.order.id = o.id " +
             "where o.status = 'PAID' and o.user.userId = :userId")
     List<Object[]> findPackageToursByUserId(Long userId);
+    
+    
 }

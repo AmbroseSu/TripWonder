@@ -17,4 +17,5 @@ public interface OrderService {
     ResponseEntity<?> getStatusOrder(Long orderCode);
 
     ResponseEntity<?> getAllOrder(long userId);
+    ResponseEntity<?> getAllOrder(Pageable pageable);
 }

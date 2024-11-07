@@ -3,7 +3,9 @@ package com.ambrose.tripwonder.services.impl;
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
 import com.ambrose.tripwonder.dto.CartDto;
+import com.ambrose.tripwonder.dto.OrderDto;
 import com.ambrose.tripwonder.dto.OrderGetAllDto;
+import com.ambrose.tripwonder.dto.OrderUserDto;
 import com.ambrose.tripwonder.entities.Cart;
 import com.ambrose.tripwonder.entities.Order;
 import com.ambrose.tripwonder.entities.PackageTour;
@@ -17,9 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -34,6 +34,8 @@ public class OrderServiceImpl implements OrderService {
 
     private final GenericConverter<CartDto> cartDtoGenericConverter;
     private final GenericConverter<OrderGetAllDto> orderGetAllDtoGenericConverter;
+    private final GenericConverter<OrderDto> orderDtoGenericConverter;
+    
 
     @Override
     public ResponseEntity<?> addToCard(Long userId, Long tourId) {
@@ -112,6 +114,27 @@ public class OrderServiceImpl implements OrderService {
             orderGetAllDtos.get(i).setOrderCode(orderCodes.get(i));
         }
         return ResponseUtil.getCollection(orderGetAllDtos, HttpStatus.OK, "", 0, 0, 0);
+    }
+
+    public ResponseEntity<?> getAllOrder(Pageable pageable) {
+        Page<OrderUserDto> orders = orderRepository.getAll(pageable);
+        List<Map<String,Object>> results = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+//        Page<Map<String,Object>>
+//        for (Object[] order : orders) {
+//            map.put("orderId", order[0]);
+////            map.put("isDeleted", order[1]);
+//            map.put("orderDate", order[2]);
+////            map.put("paymentDate", order[3]);
+//            map.put("totalPrice", order[4]);
+//            map.put("status", order[5]);
+////            map.put("paymentMethod", order[6]);
+////            map.put("orderCode", order[7]);
+//            map.put("userId", order[8]);
+//            map.put("userName", order[9]);
+//            results.add(map);
+//        }
+        return ResponseUtil.getCollection(orders, HttpStatus.OK, "", 0, 0, 0);
     }
 
 //    @Override

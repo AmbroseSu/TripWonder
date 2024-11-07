@@ -24,11 +24,12 @@ public class OrderController {
 
     @GetMapping("/getall/{userId}")
     public ResponseEntity<?> getCart(
-            @PathVariable long userId,
+            @PathVariable(required = false) long userId,
             @RequestParam(defaultValue = "0") int Page,
             @RequestParam(defaultValue = "10") int PageSize
     ) {
         Pageable pageable = PageRequest.of(Page, PageSize);
+        
         return orderService.getAllCart(userId, pageable);
     }
 
@@ -57,8 +58,14 @@ public class OrderController {
 
 
     @GetMapping("/getAllOrder")
-    public ResponseEntity<?> getAllOrder(@RequestParam long userId) {
-        return orderService.getAllOrder(userId);
+    public ResponseEntity<?> getAllOrder(@RequestParam(required = false) Long userId,
+                                         @RequestParam(defaultValue = "0") int Page,
+                                         @RequestParam(defaultValue = "10") int PageSize) {
+        Pageable pageable = PageRequest.of(Page, PageSize);
+        if(userId != null) {
+            return orderService.getAllOrder(userId);
+        }
+        else return orderService.getAllOrder(pageable); 
     }
 //    @PostMapping("/checkout/{userId}")
 //    public ResponseEntity<?> checkout(@PathVariable("userId") long userId, @RequestParam PaymentMethod paymentMethod) {

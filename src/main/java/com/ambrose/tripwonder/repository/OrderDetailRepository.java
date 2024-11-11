@@ -1,6 +1,8 @@
 package com.ambrose.tripwonder.repository;
 
 import com.ambrose.tripwonder.entities.OrderDetail;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,5 +17,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             "where o.status = 'PAID' and o.user.userId = :userId")
     List<Object[]> findPackageToursByUserId(Long userId);
     
+    List<OrderDetail> findAllBy();
+    @Query("select od from OrderDetail od where od.order.id= :orderId")
+    List<OrderDetail> getOrderDetailByOrderId(Long orderId);
     
 }

@@ -67,6 +67,11 @@ public class OrderController {
         }
         else return orderService.getAllOrder(pageable); 
     }
+    
+    @GetMapping("/getOrderDetail/{orderId}")
+    public ResponseEntity<?> getOrderDetail(@PathVariable long orderId) {
+        return orderService.getOrderDetailsByOrderId(orderId);
+    }
 //    @PostMapping("/checkout/{userId}")
 //    public ResponseEntity<?> checkout(@PathVariable("userId") long userId, @RequestParam PaymentMethod paymentMethod) {
 //        return orderService.checkOutCart(userId,paymentMethod);

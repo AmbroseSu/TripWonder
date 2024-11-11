@@ -2,18 +2,13 @@ package com.ambrose.tripwonder.services.impl;
 
 import com.ambrose.tripwonder.config.ResponseUtil;
 import com.ambrose.tripwonder.converter.GenericConverter;
-import com.ambrose.tripwonder.dto.CartDto;
-import com.ambrose.tripwonder.dto.OrderDto;
-import com.ambrose.tripwonder.dto.OrderGetAllDto;
-import com.ambrose.tripwonder.dto.OrderUserDto;
-import com.ambrose.tripwonder.entities.Cart;
-import com.ambrose.tripwonder.entities.Order;
-import com.ambrose.tripwonder.entities.PackageTour;
-import com.ambrose.tripwonder.entities.User;
+import com.ambrose.tripwonder.dto.*;
+import com.ambrose.tripwonder.entities.*;
 import com.ambrose.tripwonder.repository.*;
 import com.ambrose.tripwonder.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -118,57 +113,13 @@ public class OrderServiceImpl implements OrderService {
 
     public ResponseEntity<?> getAllOrder(Pageable pageable) {
         Page<OrderUserDto> orders = orderRepository.getAll(pageable);
-        List<Map<String,Object>> results = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
-//        Page<Map<String,Object>>
-//        for (Object[] order : orders) {
-//            map.put("orderId", order[0]);
-////            map.put("isDeleted", order[1]);
-//            map.put("orderDate", order[2]);
-////            map.put("paymentDate", order[3]);
-//            map.put("totalPrice", order[4]);
-//            map.put("status", order[5]);
-////            map.put("paymentMethod", order[6]);
-////            map.put("orderCode", order[7]);
-//            map.put("userId", order[8]);
-//            map.put("userName", order[9]);
-//            results.add(map);
-//        }
         return ResponseUtil.getCollection(orders, HttpStatus.OK, "", 0, 0, 0);
     }
-
-//    @Override
-//    public ResponseEntity<?> checkOutCart(Long userId, PaymentMethod paymentMethod){
-//        List<Cart> carts = cartRepository.findAllByUserUserId(userId);
-//        User user = userRepository.findUserById(userId);
-//        Order order = new Order();
-//        List<OrderDetail> orderDetails = new ArrayList<>();
-//        for(Cart cart : carts) {
-//            OrderDetail orderDetail = new OrderDetail();
-//            orderDetail.setPackageTour(cart.getPackageTour());
-//            orderDetail.setQuantity(cart.getQuantity());
-//            
-//            orderDetails.add(orderDetail);
-//            cartRepository.delete(cart);
-//        }
-//        order.setOrderDetails(orderDetails);
-//        order.setOrderDate(LocalDateTime.now());
-//        order.setStatus(Payment.WAITING);
-//        order.setPaymentMethod(paymentMethod);
-//        order.setUser(user);
-//        
-//        return ResponseEntity.ok(generateCode(orderRepository.save(order).getId()));
-//    }
-
-//    private String generateCode(Long id){
-//        String header = "TW";
-//        String hex = Long.toHexString(id);
-//        StringBuilder result = new StringBuilder();
-//        for (int i = 0; i < 8-hex.length(); i++) {
-//            result.append("0");
-//        }
-//        result.append(hex);
-//        header += result;
-//        return header;
-//    }
+    
+    public ResponseEntity<?> getOrderDetailsByOrderId(Long orderId) {
+        List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(orderId);
+        Order order = orderRepository.findById(orderId).orElse(null);
+        OrderDetailDto orderDetailDto = new OrderDetailDto(order,orderDetails);
+        return ResponseUtil.getObject(orderDetailDto,HttpStatus.OK,"Order detail");        
+    }
 }

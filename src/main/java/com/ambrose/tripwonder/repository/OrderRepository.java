@@ -2,11 +2,13 @@ package com.ambrose.tripwonder.repository;
 
 import com.ambrose.tripwonder.dto.OrderUserDto;
 import com.ambrose.tripwonder.entities.Order;
+import com.ambrose.tripwonder.entities.OrderDetail;
 import com.ambrose.tripwonder.entities.enums.Payment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

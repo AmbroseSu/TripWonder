@@ -252,6 +252,13 @@ public class PackageOfficialServiceImpl implements PackageOfficialService {
         }
         return ResponseUtil.getCollection(listMap, HttpStatus.OK, "totalDay,List location", 0, 0, 0);
     }
+    
+    public ResponseEntity<?> chaneStatus(long packageOfficialId) {
+        PackageTour packageTour = packageOfficialRepository.findPackageTourById(packageOfficialId);
+        packageTour.setStatus(!packageTour.isStatus());
+        packageOfficialRepository.save(packageTour);
+        return ResponseEntity.status(HttpStatus.OK).body(packageTour);
+    }
 }
     
 

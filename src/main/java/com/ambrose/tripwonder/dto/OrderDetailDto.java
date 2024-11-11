@@ -8,6 +8,7 @@ import com.ambrose.tripwonder.entities.enums.Payment;
 import com.ambrose.tripwonder.entities.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,9 +18,10 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class OrderDetailDto {
     
-    private GenericConverter<UserDTO> userConverter;
+    private GenericConverter<UserDTO> userConverter = new GenericConverter<UserDTO>(new ModelMapper()) {};
     
     private Long id;
     private Double totalPrice = 0.0;

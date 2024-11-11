@@ -147,4 +147,9 @@ public class PackageOfficialServiceController {
     public ResponseEntity<?> getDetailTour(@PathVariable long tourId) {
         return packageOfficialService.getAllDetailTour(tourId);
     }
+    
+    @PostMapping("/change-status/{tourId}")
+    public ResponseEntity<?> changeStatus(@PathVariable long tourId) {
+        return packageOfficialService.chaneStatus(tourId);
+    }
 }

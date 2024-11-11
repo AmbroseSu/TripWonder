@@ -30,4 +30,5 @@ public interface PackageOfficialService {
     ResponseEntity<?> findAllAdmin(Pageable pageable);
 
     ResponseEntity<?> getAllDetailTour(long tourId);
+    ResponseEntity<?> chaneStatus(long packageOfficialId);
 }
